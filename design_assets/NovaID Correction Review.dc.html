@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin: 0; padding: 0; }
+  body { background: #eef4f4; -webkit-font-smoothing: antialiased; }
+  a { color: #1f8a86; text-decoration: none; }
+  a:hover { color: #14615e; text-decoration: underline; }
+  ::selection { background: #cfe9e5; }
+  input, select, textarea { font-family: inherit; }
+</style>
+</helmet>
+<div style="min-height: 100vh; min-width: 1280px; display: flex; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #14232a; background: linear-gradient(135deg, #e9f4f1 0%, #f2f5fb 46%, #f7f1f7 100%);">
+
+  <aside style="width: {{ railWidth }}; flex: 0 0 {{ railWidth }}; background: linear-gradient(180deg, #123035 0%, #10262c 100%); display: flex; flex-direction: column; padding: 26px 16px 18px; box-sizing: border-box;">
+    <div onClick="{{ toggleRail }}" style="display: flex; justify-content: flex-end; margin-bottom: 10px; {{ railRowExtra }}">
+      <div style="width: 30px; height: 30px; border-radius: 9px; background: rgba(255,255,255,0.06); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3.5px; cursor: pointer;" style-hover="background: rgba(255,255,255,0.15);">
+        <div style="width: 13px; height: 1.5px; border-radius: 2px; background: #9dbcc2;"></div>
+        <div style="width: 13px; height: 1.5px; border-radius: 2px; background: #9dbcc2;"></div>
+        <div style="width: 13px; height: 1.5px; border-radius: 2px; background: #9dbcc2;"></div>
+      </div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 11px; padding: 0 8px 24px; {{ railRowExtra }}">
+      <div style="width: 32px; height: 32px; border-radius: 10px; background: linear-gradient(140deg, #5ec9bd, #4a9ec9); display: flex; align-items: center; justify-content: center;">
+        <div style="width: 11px; height: 11px; border-radius: 50%; border: 2.5px solid rgba(255,255,255,0.95); box-sizing: border-box;"></div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 1px; {{ hideLabel }}">
+        <div style="font-family: 'Jost', sans-serif; font-size: 17px; font-weight: 500; letter-spacing: 0.2px; color: #f2fbfa;">NovaID</div>
+        <div style="font-size: 9.5px; letter-spacing: 1.1px; text-transform: uppercase; color: #6f9299;">NICRS Console</div>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 3px;">
+      <div style="font-size: 9.5px; letter-spacing: 1.1px; text-transform: uppercase; color: #55787f; padding: 0 10px 9px; {{ hideLabel }}">Operations</div>
+      <div style="display: flex; align-items: center; gap: 11px; padding: 9px 10px; border-radius: 10px; color: #b6cdd1; font-size: 13.5px; {{ railRowExtra }}" style-hover="background: rgba(255,255,255,0.06); color: #e6f3f2;">
+        <div style="width: 16px; height: 16px; border-radius: 5px; background: rgba(255,255,255,0.13); display: flex; align-items: center; justify-content: center;"><div style="width: 6px; height: 6px; border-radius: 2px; background: currentColor; opacity: 0.7;"></div></div><span style="{{ hideLabel }} font-size: 13.5px;">Dashboard</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 11px; padding: 9px 10px; border-radius: 10px; color: #b6cdd1; font-size: 13.5px; {{ railRowExtra }}" style-hover="background: rgba(255,255,255,0.06); color: #e6f3f2;">
+        <div style="width: 16px; height: 16px; border-radius: 5px; background: rgba(255,255,255,0.13); display: flex; align-items: center; justify-content: center;"><div style="width: 6px; height: 6px; border-radius: 2px; background: currentColor; opacity: 0.7;"></div></div><span style="{{ hideLabel }} font-size: 13.5px;">Verification</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 10px; background: linear-gradient(100deg, rgba(94,201,189,0.22), rgba(94,201,189,0.08)); box-shadow: inset 0 0 0 1px rgba(140,226,215,0.28); color: #f0fbfa; font-size: 13.5px; font-weight: 500; {{ railRowExtra }}">
+        <div style="width: 16px; height: 16px; border-radius: 4px; background: #5ec9bd; display: flex; align-items: center; justify-content: center;"><div style="width: 5px; height: 5px; border-radius: 50%; background: #10262c;"></div></div>
+        <span style="flex: 1; {{ hideLabel }}">Corrections</span>
+        <span style="{{ hideLabel }} font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; padding: 2px 6px; border-radius: 20px; background: #5ec9bd; color: #0d2226;">31</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 11px; padding: 9px 10px; border-radius: 10px; color: #b6cdd1; font-size: 13.5px; {{ railRowExtra }}" style-hover="background: rgba(255,255,255,0.06); color: #e6f3f2;">
+        <div style="width: 16px; height: 16px; border-radius: 5px; background: rgba(255,255,255,0.13); display: flex; align-items: center; justify-content: center;"><div style="width: 6px; height: 6px; border-radius: 2px; background: currentColor; opacity: 0.7;"></div></div><span style="{{ hideLabel }} font-size: 13.5px;">Duplicate review</span>
+      </div>
+      <div style="font-size: 9.5px; letter-spacing: 1.1px; text-transform: uppercase; color: #55787f; padding: 18px 10px 9px; {{ hideLabel }}">Records</div>
+      <div style="display: flex; align-items: center; gap: 11px; padding: 9px 10px; border-radius: 10px; color: #b6cdd1; font-size: 13.5px; {{ railRowExtra }}" style-hover="background: rgba(255,255,255,0.06); color: #e6f3f2;">
+        <div style="width: 16px; height: 16px; border-radius: 5px; background: rgba(255,255,255,0.13); display: flex; align-items: center; justify-content: center;"><div style="width: 6px; height: 6px; border-radius: 2px; background: currentColor; opacity: 0.7;"></div></div><span style="{{ hideLabel }} font-size: 13.5px;">Identity search</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 11px; padding: 9px 10px; border-radius: 10px; color: #b6cdd1; font-size: 13.5px; {{ railRowExtra }}" style-hover="background: rgba(255,255,255,0.06); color: #e6f3f2;">
+        <div style="width: 16px; height: 16px; border-radius: 5px; background: rgba(255,255,255,0.13); display: flex; align-items: center; justify-content: center;"><div style="width: 6px; height: 6px; border-radius: 2px; background: currentColor; opacity: 0.7;"></div></div><span style="{{ hideLabel }} font-size: 13.5px;">Change history</span>
+      </div>
+    </div>
+
+    <div style="margin-top: auto; padding: 14px 12px; border-radius: 14px; background: rgba(255,255,255,0.055); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.07); display: flex; gap: 11px; align-items: center;">
+      <div style="width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(140deg, #7c8fd6, #5ec9bd); display: flex; align-items: center; justify-content: center; font-family: 'Jost', sans-serif; font-size: 13px; color: #0d2226; font-weight: 500;">IB</div>
+      <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0; {{ hideLabel }}">
+        <div style="font-size: 12.5px; color: #e9f5f4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">I. Brandt</div>
+        <div style="font-size: 10.5px; color: #7d9ea4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Verification Officer</div>
+      </div>
+    </div>
+  </aside>
+
+  <main style="flex: 1; min-width: 0; display: flex; flex-direction: column;">
+
+    <header style="display: flex; align-items: center; gap: 20px; padding: 18px 32px; background: rgba(255,255,255,0.55); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255,255,255,0.8);">
+      <div style="display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: #4f6a72;">
+        <span>Corrections</span>
+        <span style="color: #a8bcc1;">/</span>
+        <span>Kandova queue</span>
+        <span style="color: #a8bcc1;">/</span>
+        <span style="font-family: 'IBM Plex Mono', monospace; color: #14232a;">{{ caseRef }}</span>
+      </div>
+      <div style="flex: 1;"></div>
+      <div style="display: flex; align-items: center; gap: 7px; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: #4f6a72;">
+        <div style="width: 6px; height: 6px; border-radius: 50%; background: #35946c;"></div>08/13/2026 14:22
+      </div>
+    </header>
+
+    <div style="flex: 1; padding: 26px 32px 44px; display: flex; flex-direction: column; gap: 20px;">
+
+      <div style="display: flex; align-items: flex-start; flex-wrap: wrap; gap: 24px;">
+        <div style="display: flex; flex-direction: column; gap: 10px; flex: 1; min-width: 340px;">
+          <div style="display: flex; align-items: center; gap: 9px; flex-wrap: wrap;">
+            <span style="{{ classPill }}">{{ classLabel }}</span>
+            <span style="{{ approverPill }}">{{ approverLabel }}</span>
+            <span style="padding: 5px 11px; border-radius: 20px; background: rgba(255,255,255,0.75); box-shadow: inset 0 0 0 1px rgba(20,60,70,0.09); color: #4f6a72; font-size: 11.5px;">Requested by the citizen</span>
+          </div>
+          <h1 style="font-family: 'Jost', sans-serif; font-size: 30px; font-weight: 500; letter-spacing: -0.2px; margin: 0; line-height: 1.2;">{{ headline }}</h1>
+          <p style="margin: 0; font-size: 13.5px; line-height: 1.55; color: #4f6a72; max-width: 680px; text-wrap: pretty;">{{ intro }}</p>
+        </div>
+        <div style="padding: 15px 17px; border-radius: 16px; background: rgba(255,255,255,0.72); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.9), 0 10px 26px -14px rgba(16,45,52,0.22); min-width: 210px;">
+          <div style="font-size: 10px; letter-spacing: 0.9px; text-transform: uppercase; color: #4f676e; margin-bottom: 9px;">Identity record</div>
+          <div style="font-size: 14px;">Danika Orelle Vantis</div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; color: #4f6a72; margin-top: 5px;">7204-3318-9050</div>
+          <div style="font-size: 11.5px; color: #4f676e; margin-top: 5px;">Active · record version 4</div>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: minmax(0, 1fr) 348px; gap: 20px; align-items: start;">
+
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+
+          <section style="{{ classifyStyle }}">
+            <div style="display: flex; align-items: flex-start; gap: 14px;">
+              <span style="{{ classifyDot }}"></span>
+              <div>
+                <div style="font-size: 13.5px; font-weight: 600;">{{ classifyTitle }}</div>
+                <div style="font-size: 12.5px; color: #4f6a72; margin-top: 6px; line-height: 1.55;">{{ classifyBody }}</div>
+              </div>
+            </div>
+          </section>
+
+          <section style="border-radius: 20px; background: rgba(255,255,255,0.78); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.9), 0 16px 40px -22px rgba(16,45,52,0.26); overflow: hidden;">
+            <div style="display: flex; align-items: center; gap: 12px; padding: 17px 22px; border-bottom: 1px solid rgba(20,60,70,0.08);">
+              <div style="font-family: 'Jost', sans-serif; font-size: 16px; font-weight: 500; flex: 1;">What changes</div>
+              <span style="font-size: 11.5px; color: #4f676e;">Previous values are preserved, never overwritten</span>
+            </div>
+            <div style="display: grid; grid-template-columns: 176px minmax(0, 1fr) minmax(0, 1fr);">
+              <div style="padding: 13px 22px; border-bottom: 1px solid rgba(20,60,70,0.07);"></div>
+              <div style="padding: 13px 18px; border-bottom: 1px solid rgba(20,60,70,0.07); border-left: 1px solid rgba(20,60,70,0.06); font-size: 10px; letter-spacing: 0.9px; text-transform: uppercase; color: #4f676e;">Current value</div>
+              <div style="padding: 13px 18px; border-bottom: 1px solid rgba(20,60,70,0.07); border-left: 1px solid rgba(20,60,70,0.06); font-size: 10px; letter-spacing: 0.9px; text-transform: uppercase; color: #14615e;">Requested value</div>
+              <sc-for list="{{ changes }}" as="c" hint-placeholder-count="4">
+                <div style="{{ c.labelStyle }}">{{ c.label }}</div>
+                <div style="{{ c.beforeStyle }}">{{ c.before }}</div>
+                <div style="{{ c.afterStyle }}">{{ c.after }}</div>
+              </sc-for>
+            </div>
+            <div style="padding: 13px 22px; background: rgba(223,241,238,0.4); border-top: 1px solid rgba(20,60,70,0.06); font-size: 12px; color: #14615e; line-height: 1.5;">The NSN does not change. A legal name change never causes a new number to be issued.</div>
+          </section>
+
+          <section style="border-radius: 20px; background: rgba(255,255,255,0.78); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.9), 0 16px 40px -22px rgba(16,45,52,0.26); overflow: hidden;">
+            <div style="display: flex; align-items: center; gap: 12px; padding: 17px 22px; border-bottom: 1px solid rgba(20,60,70,0.08);">
+              <div style="font-family: 'Jost', sans-serif; font-size: 16px; font-weight: 500; flex: 1;">Evidence</div>
+              <span style="font-size: 11.5px; color: #4f676e;">{{ evidenceNote }}</span>
+            </div>
+            <div style="padding: 18px 22px; display: grid; grid-template-columns: 186px minmax(0, 1fr); gap: 20px;">
+              <div style="height: 158px; border-radius: 12px; background-color: #e7eef0; background-image: repeating-linear-gradient(135deg, rgba(20,60,70,0.055) 0 8px, transparent 8px 16px); display: flex; align-items: flex-end; padding: 10px; box-sizing: border-box;">
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #4f676e; background: rgba(255,255,255,0.85); padding: 3px 6px; border-radius: 5px;">document viewer</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 9px;">
+                <sc-for list="{{ evidence }}" as="d" hint-placeholder-count="3">
+                  <div style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 12px; background: rgba(255,255,255,0.72); box-shadow: inset 0 0 0 1px rgba(20,60,70,0.08); cursor: pointer;" style-hover="background: #fff;">
+                    <span style="width: 26px; height: 26px; border-radius: 8px; background: #e7eef0; flex: none;"></span>
+                    <div style="flex: 1; min-width: 0;">
+                      <div style="font-size: 12.5px;">{{ d.title }}</div>
+                      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: #5a7178; margin-top: 3px;">{{ d.meta }}</div>
+                    </div>
+                    <span style="{{ d.tagStyle }}">{{ d.tag }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </section>
+
+          <section style="border-radius: 20px; background: rgba(255,255,255,0.78); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.9), 0 16px 40px -22px rgba(16,45,52,0.26); overflow: hidden;">
+            <div style="padding: 17px 22px; border-bottom: 1px solid rgba(20,60,70,0.08); font-family: 'Jost', sans-serif; font-size: 16px; font-weight: 500;">Who is told, if this is approved</div>
+            <div style="padding: 18px 22px; display: flex; flex-direction: column; gap: 13px;">
+              <sc-for list="{{ downstream }}" as="s" hint-placeholder-count="4">
+                <div style="display: flex; align-items: flex-start; gap: 11px;">
+                  <span style="{{ s.dot }}"></span>
+                  <div>
+                    <div style="font-size: 13px;">{{ s.label }}</div>
+                    <div style="font-size: 11.5px; color: #4f676e; margin-top: 3px; line-height: 1.45;">{{ s.note }}</div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </section>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+
+          <sc-if value="{{ pending }}" hint-placeholder-val="{{ true }}">
+            <section style="border-radius: 20px; background: rgba(255,255,255,0.82); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.95), 0 16px 40px -22px rgba(16,45,52,0.28); padding: 19px; display: flex; flex-direction: column; gap: 13px;">
+              <div>
+                <div style="font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 500; margin-bottom: 5px;">Your review</div>
+                <div style="font-size: 11.5px; color: #4f676e; line-height: 1.5;">{{ reviewNote }}</div>
+              </div>
+
+              <div style="display: flex; flex-direction: column; gap: 8px;">
+                <div onClick="{{ pickAccept }}" style="{{ styleAccept }}" style-hover="border-color: rgba(31,138,134,0.5);">
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="{{ dotAccept }}"></span>
+                    <span style="font-size: 13.5px; font-weight: 500;">{{ acceptLabel }}</span>
+                  </div>
+                  <div style="font-size: 11.5px; color: #4f6a72; line-height: 1.45; padding-left: 26px;">{{ acceptNote }}</div>
+                </div>
+                <div onClick="{{ pickReturn }}" style="{{ styleReturn }}" style-hover="border-color: rgba(201,138,30,0.5);">
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="{{ dotReturn }}"></span>
+                    <span style="font-size: 13.5px; font-weight: 500;">Return for more information</span>
+                  </div>
+                  <div style="font-size: 11.5px; color: #4f6a72; line-height: 1.45; padding-left: 26px;">The citizen keeps the request and its reference.</div>
+                </div>
+                <div onClick="{{ pickReject }}" style="{{ styleReject }}" style-hover="border-color: rgba(176,69,69,0.5);">
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="{{ dotReject }}"></span>
+                    <span style="font-size: 13.5px; font-weight: 500; color: #8d3232;">Reject</span>
+                  </div>
+                  <div style="font-size: 11.5px; color: #4f6a72; line-height: 1.45; padding-left: 26px;">The citizen may appeal a rejection.</div>
+                </div>
+              </div>
+
+              <div style="display: flex; flex-direction: column; gap: 7px;">
+                <div style="display: flex; align-items: baseline; gap: 8px;">
+                  <label style="font-size: 12px; color: #4f6a72; font-weight: 500;">Reason for the change</label>
+                  <span style="font-size: 11px; color: #7a5312;">required</span>
+                </div>
+                <textarea onChange="{{ onReason }}" placeholder="Recorded permanently against this record version." style="width: 100%; box-sizing: border-box; min-height: 76px; resize: vertical; padding: 11px 12px; border-radius: 11px; border: 1px solid rgba(20,60,70,0.16); background: rgba(255,255,255,0.92); font-size: 12.5px; line-height: 1.5; color: #14232a; outline: none;" style-focus="border-color: #1f8a86; box-shadow: 0 0 0 3px rgba(31,138,134,0.12);"></textarea>
+              </div>
+
+              <div onClick="{{ submit }}" style="{{ submitStyle }}">{{ submitLabel }}</div>
+              <div style="font-size: 11px; color: #4f676e; line-height: 1.5;">Your identity, the previous value and this reason are retained in the change history for the life of the record.</div>
+            </section>
+          </sc-if>
+
+          <sc-if value="{{ done }}" hint-placeholder-val="{{ false }}">
+            <section style="border-radius: 20px; background: linear-gradient(155deg, rgba(226,241,232,0.9), rgba(255,255,255,0.85)); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.95), 0 16px 40px -22px rgba(16,45,52,0.28); padding: 21px; display: flex; flex-direction: column; gap: 12px;">
+              <div style="width: 36px; height: 36px; border-radius: 12px; background: #cfe7d8; display: flex; align-items: center; justify-content: center;"><div style="width: 12px; height: 12px; border-radius: 50%; background: #24685a;"></div></div>
+              <div style="font-family: 'Jost', sans-serif; font-size: 17px; font-weight: 500; line-height: 1.3;">{{ doneTitle }}</div>
+              <div style="font-size: 12.5px; color: #4f6a72; line-height: 1.55;">{{ doneBody }}</div>
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: #5a7178;">{{ doneMeta }}</div>
+              <div onClick="{{ reset }}" style="align-self: flex-start; padding: 9px 14px; border-radius: 10px; background: rgba(255,255,255,0.85); box-shadow: inset 0 0 0 1px rgba(20,60,70,0.12); font-size: 12.5px; cursor: pointer;" style-hover="background: #fff;">Back to case</div>
+            </section>
+          </sc-if>
+
+          <section style="border-radius: 20px; background: rgba(255,255,255,0.72); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.9), 0 16px 40px -22px rgba(16,45,52,0.22); padding: 19px;">
+            <div style="font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 500; margin-bottom: 15px;">Request history</div>
+            <sc-for list="{{ activity }}" as="a" hint-placeholder-count="5">
+              <div style="display: grid; grid-template-columns: 14px minmax(0, 1fr); gap: 12px; padding-bottom: 15px;">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                  <span style="width: 8px; height: 8px; border-radius: 50%; background: #a8bcc1; margin-top: 4px;"></span>
+                  <span style="flex: 1; width: 1px; background: rgba(20,60,70,0.12);"></span>
+                </div>
+                <div>
+                  <div style="font-size: 12.5px; line-height: 1.45;">{{ a.text }}</div>
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: #5a7178; margin-top: 3px;">{{ a.meta }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </section>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;changeType&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Material&quot;,&quot;Minor&quot;],&quot;default&quot;:&quot;Material&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;label&quot;:&quot;Type of change requested&quot;,&quot;section&quot;:&quot;Scenario&quot;},&quot;notifyConnectedSystems&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;label&quot;:&quot;Push approved updates to connected systems&quot;,&quot;section&quot;:&quot;Policy&quot;}}">
+class Component extends DCLogic {
+  state = { collapsed: false, choice: null, reason: "", done: false };
+
+  card(key, danger) {
+    const on = this.state.choice === key;
+    const edge = danger === "bad" ? "rgba(176,69,69,0.55)" : danger === "warn" ? "rgba(201,138,30,0.55)" : "rgba(31,138,134,0.55)";
+    const tint = danger === "bad" ? "rgba(244,230,230,0.6)" : danger === "warn" ? "rgba(251,238,218,0.6)" : "rgba(223,241,238,0.6)";
+    return [
+      "padding: 12px 13px",
+      "border-radius: 13px",
+      "cursor: pointer",
+      "display: flex",
+      "flex-direction: column",
+      "gap: 5px",
+      "border: 1.5px solid " + (on ? edge : "rgba(20,60,70,0.12)"),
+      "background: " + (on ? tint : "rgba(255,255,255,0.6)"),
+    ].join(";");
+  }
+
+  dot(key, danger) {
+    const on = this.state.choice === key;
+    const c = danger === "bad" ? "#b04545" : danger === "warn" ? "#c98a1e" : "#1f8a86";
+    return [
+      "width: 16px",
+      "height: 16px",
+      "border-radius: 50%",
+      "flex: none",
+      "box-sizing: border-box",
+      "border: " + (on ? "5px solid " + c : "1.5px solid rgba(20,60,70,0.28)"),
+      "background: " + (on ? "#fff" : "transparent"),
+    ].join(";");
+  }
+
+  pill(bg, fg) {
+    return "display: inline-flex; align-items: center; gap: 7px; padding: 5px 11px; border-radius: 20px; font-size: 11.5px; font-weight: 500; background: " + bg + "; color: " + fg;
+  }
+
+  row(label, before, after, changed) {
+    const base = "padding: 14px 18px; border-bottom: 1px solid rgba(20,60,70,0.06); border-left: 1px solid rgba(20,60,70,0.06); font-size: 13.5px; ";
+    return {
+      label,
+      before,
+      after,
+      labelStyle: "padding: 14px 22px; border-bottom: 1px solid rgba(20,60,70,0.06); font-size: 12px; color: #4f676e;" + (changed ? " background: rgba(251,238,218,0.35);" : ""),
+      beforeStyle: base + (changed ? "background: rgba(251,238,218,0.35); color: #4f6a72;" : "color: #4f6a72;"),
+      afterStyle: base + (changed ? "background: rgba(223,241,238,0.45); font-weight: 500;" : "color: #4f6a72;"),
+    };
+  }
+
+  renderVals() {
+    const material = (this.props.changeType ?? "Material") === "Material";
+    const notify = this.props.notifyConnectedSystems ?? true;
+    const { choice, reason, done } = this.state;
+    const ready = !!choice && reason.trim().length >= 15;
+
+    const dotColor = { ok: "#35946c", warn: "#c98a1e", bad: "#b04545", info: "rgba(20,60,70,0.35)" };
+
+    const materialChanges = [
+      this.row("Surname", "Vantis", "Vantis-Korel", true),
+      this.row("Previous legal names", "None recorded", "Vantis", true),
+      this.row("First and middle names", "Danika Orelle", "Danika Orelle", false),
+      this.row("NSN", "7204-3318-9050", "7204-3318-9050", false),
+      this.row("Record version", "4", "5", true),
+    ];
+
+    const minorChanges = [
+      this.row("Phone", "887 412 3390", "881 655 2074", true),
+      this.row("Residential address", "22 Ferrow Lane, Astrivo", "22 Ferrow Lane, Astrivo", false),
+      this.row("Legal name", "Danika Orelle Vantis", "Danika Orelle Vantis", false),
+      this.row("Record version", "4", "5", true),
+    ];
+
+    return {
+      railWidth: this.state.collapsed ? "76px" : "244px",
+      hideLabel: this.state.collapsed ? "display: none;" : "",
+      railRowExtra: this.state.collapsed ? "justify-content: center;" : "",
+      toggleRail: () => this.setState({ collapsed: !this.state.collapsed }),
+      caseRef: material ? "REQ-2026-79233" : "REQ-2026-79310",
+      classLabel: material ? "Material identity change" : "Minor update",
+      classPill: material ? this.pill("#fbeeda", "#7a5312") : this.pill("#dff1ee", "#14615e"),
+      approverLabel: material ? "Senior Approver required" : "No second approver needed",
+      approverPill: material ? this.pill("#f4e6e6", "#8d3232") : this.pill("#e2f1e8", "#24685a"),
+      headline: material ? "Surname correction" : "Phone number update",
+      intro: material
+        ? "Danika Orelle Vantis has requested a change of surname following marriage. You asked for supporting evidence on 08/12/2026 and a marriage certificate has now been supplied."
+        : "Danika Orelle Vantis has submitted a new phone number through citizen self-service. Contact details are a minor update: they complete after standard validation without an independent approver.",
+      classifyStyle: [
+        "border-radius: 18px",
+        "padding: 18px 20px",
+        "backdrop-filter: blur(16px)",
+        "-webkit-backdrop-filter: blur(16px)",
+        material
+          ? "background: linear-gradient(120deg, rgba(251,238,218,0.75), rgba(255,255,255,0.7)); box-shadow: inset 0 0 0 1px rgba(201,138,30,0.24)"
+          : "background: linear-gradient(120deg, rgba(226,241,232,0.7), rgba(255,255,255,0.7)); box-shadow: inset 0 0 0 1px rgba(53,148,108,0.22)",
+      ].join(";"),
+      classifyDot: "width: 10px; height: 10px; border-radius: 50%; flex: none; margin-top: 5px; background: " + (material ? "#c98a1e" : "#35946c"),
+      classifyTitle: material
+        ? "NovaID classified this as a material change"
+        : "NovaID classified this as a minor update",
+      classifyBody: material
+        ? "Legal name is part of the citizen's legal identity, so evidence is required, you review it, and a separate Senior Approver decides. You cannot complete this alone, and the citizen must be told the outcome."
+        : "Phone, email and address can be changed after standard authentication and validation. If the request had touched name, date of birth, parentage, citizenship or deceased status, it would have become a material change automatically.",
+      changes: material ? materialChanges : minorChanges,
+      evidenceNote: material ? "Court order, marriage certificate or gazette notice" : "No documentary evidence required",
+      evidence: (material
+        ? [
+            { title: "Marriage certificate", meta: "Novaria Civil Registry · 07/11/2026", tag: "Verified", ok: true },
+            { title: "Citizen's signed request", meta: "Submitted through self-service 08/12/2026", tag: "Verified", ok: true },
+            { title: "Existing identity photograph", meta: "Compared to the certificate holder", tag: "Consistent", ok: true },
+          ]
+        : [
+            { title: "One-time password confirmation", meta: "Sent to the number on file, confirmed 14:02", tag: "Verified", ok: true },
+            { title: "Citizen's authenticated session", meta: "Log in with NovaID · device recognised", tag: "Verified", ok: true },
+          ]
+      ).map((d) => ({
+        title: d.title,
+        meta: d.meta,
+        tag: d.tag,
+        tagStyle: "font-size: 11px; white-space: nowrap; color: #24685a",
+      })),
+      downstream: [
+        { label: "The citizen", note: material ? "Told the outcome either way — approval or rejection, with the reason." : "Confirmation sent to the new number and the old one.", state: "ok" },
+        { label: "The identity record", note: "Previous value retained as a previous legal name, with the version history.", state: "info" },
+        { label: notify ? "OneHealth" : "Connected systems", note: notify ? "Receives the approved update so its patient record stays consistent." : "Notification is switched off for this deployment — systems reconcile on next verification.", state: notify ? "ok" : "warn" },
+        { label: "The virtual identity card", note: material ? "Reissued with the new name. The card serial changes; the NSN does not." : "Unchanged — contact details do not appear on the card.", state: "info" },
+      ].map((s) => ({
+        label: s.label,
+        note: s.note,
+        dot: "width: 9px; height: 9px; border-radius: 50%; flex: none; margin-top: 5px; background: " + dotColor[s.state],
+      })),
+      pending: !done,
+      done,
+      reviewNote: material
+        ? "Your recommendation goes to A. Meshko, Senior Approver, North."
+        : "You can complete this yourself once validation passes.",
+      acceptLabel: material ? "Accept and send for approval" : "Approve the update",
+      acceptNote: material
+        ? "Evidence is sufficient and the requested value is correct."
+        : "Validation passed and the change applies immediately.",
+      styleAccept: this.card("accept", "ok"),
+      styleReturn: this.card("return", "warn"),
+      styleReject: this.card("reject", "bad"),
+      dotAccept: this.dot("accept", "ok"),
+      dotReturn: this.dot("return", "warn"),
+      dotReject: this.dot("reject", "bad"),
+      pickAccept: () => this.setState({ choice: "accept" }),
+      pickReturn: () => this.setState({ choice: "return" }),
+      pickReject: () => this.setState({ choice: "reject" }),
+      onReason: (e) => this.setState({ reason: e.target.value }),
+      submitStyle: [
+        "padding: 12px",
+        "border-radius: 11px",
+        "text-align: center",
+        "font-size: 13px",
+        "font-weight: 600",
+        ready
+          ? "cursor: pointer; color: #fff; background: linear-gradient(100deg, #1f8a86, #2f7d9b); box-shadow: 0 8px 20px -10px rgba(31,138,134,0.7)"
+          : "cursor: not-allowed; color: #90a7ad; background: rgba(20,60,70,0.07)",
+      ].join(";"),
+      submitLabel: choice === "return" ? "Return to the citizen" : choice === "reject" ? "Record rejection" : material ? "Send to Senior Approver" : "Apply the update",
+      submit: () => { if (ready) this.setState({ done: true }); },
+      reset: () => this.setState({ done: false }),
+      doneTitle: choice === "return" ? "Returned to the citizen"
+        : choice === "reject" ? "Rejection recorded"
+        : material ? "Sent for independent approval" : "Update applied",
+      doneBody: choice === "return"
+        ? "The citizen can supply what is missing and the request keeps its reference. They have been notified through their preferred channel."
+        : choice === "reject"
+          ? "The citizen has been told the outcome and the reason, and may appeal. The current identity record is unchanged."
+          : material
+            ? "A. Meshko, Senior Approver, North has the case. Nothing on the record changes until that approval completes."
+            : "The new phone number is live on the record. The previous value is retained in the change history.",
+      doneMeta: (material ? "REQ-2026-79233" : "REQ-2026-79310") + " · 08/13/2026 14:22 · I. Brandt",
+      activity: material
+        ? [
+            { text: "Correction request submitted through self-service", meta: "08/12/2026 09:41 · Danika O. Vantis" },
+            { text: "Classified as a material identity change", meta: "08/12/2026 09:41 · System" },
+            { text: "Evidence requested — marriage certificate or gazette notice", meta: "08/12/2026 14:18 · I. Brandt" },
+            { text: "Marriage certificate supplied", meta: "08/13/2026 08:52 · Danika O. Vantis" },
+            { text: "Case reopened for review", meta: "08/13/2026 14:06 · I. Brandt" },
+          ]
+        : [
+            { text: "Minor update submitted through self-service", meta: "08/13/2026 13:58 · Danika O. Vantis" },
+            { text: "Classified as a minor update", meta: "08/13/2026 13:58 · System" },
+            { text: "One-time password confirmed on the number on file", meta: "08/13/2026 14:02 · System" },
+            { text: "Queued for validation", meta: "08/13/2026 14:02 · System" },
+          ],
+    };
+  }
+}
+</script>
+</body>
+</html>

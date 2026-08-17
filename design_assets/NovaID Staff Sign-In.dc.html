@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin: 0; padding: 0; }
+  body { background: #eef4f4; -webkit-font-smoothing: antialiased; }
+  a { color: #1f8a86; text-decoration: none; }
+  a:hover { color: #14615e; text-decoration: underline; }
+  ::selection { background: #cfe9e5; }
+  input, select { font-family: inherit; }
+</style>
+</helmet>
+<div style="min-height: 100vh; display: flex; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #14232a;">
+
+  <div style="width: 46%; min-width: 420px; background: linear-gradient(165deg, #123035 0%, #10262c 62%, #14343a 100%); padding: 44px 46px; box-sizing: border-box; display: flex; flex-direction: column;">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <div style="width: 34px; height: 34px; border-radius: 11px; background: linear-gradient(140deg, #5ec9bd, #4a9ec9); display: flex; align-items: center; justify-content: center;">
+        <div style="width: 12px; height: 12px; border-radius: 50%; border: 2.5px solid rgba(255,255,255,0.95); box-sizing: border-box;"></div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 2px;">
+        <div style="font-family: 'Jost', sans-serif; font-size: 18px; font-weight: 500; letter-spacing: 0.2px; color: #f2fbfa;">NovaID</div>
+        <div style="font-size: 9.5px; letter-spacing: 1.2px; text-transform: uppercase; color: #6f9299;">NICRS Console</div>
+      </div>
+    </div>
+
+    <div style="margin-top: 64px; max-width: 420px;">
+      <h1 style="font-family: 'Jost', sans-serif; font-size: 34px; font-weight: 500; letter-spacing: -0.4px; line-height: 1.22; margin: 0; color: #f2fbfa;">Staff and institutional access</h1>
+      <p style="margin: 18px 0 0; font-size: 14px; line-height: 1.65; color: #9dbcc2; text-wrap: pretty;">One console for every NICRA role. Your permissions come from the account an administrator created for you — signing in never asks you to choose a role or a region.</p>
+    </div>
+
+    <div style="margin-top: 40px; display: flex; flex-direction: column; gap: 16px; max-width: 430px;">
+      <div style="display: flex; align-items: flex-start; gap: 12px;">
+        <span style="width: 8px; height: 8px; border-radius: 50%; background: #5ec9bd; flex: none; margin-top: 6px;"></span>
+        <div style="font-size: 12.5px; color: #a8c4c9; line-height: 1.6;">There is no sign-up. Accounts are provisioned by an administrator above you and activated by you.</div>
+      </div>
+      <div style="display: flex; align-items: flex-start; gap: 12px;">
+        <span style="width: 8px; height: 8px; border-radius: 50%; background: #5ec9bd; flex: none; margin-top: 6px;"></span>
+        <div style="font-size: 12.5px; color: #a8c4c9; line-height: 1.6;">Multi-factor authentication is required for every privileged user, without exception.</div>
+      </div>
+      <div style="display: flex; align-items: flex-start; gap: 12px;">
+        <span style="width: 8px; height: 8px; border-radius: 50%; background: #5ec9bd; flex: none; margin-top: 6px;"></span>
+        <div style="font-size: 12.5px; color: #a8c4c9; line-height: 1.6;">Successful and failed sign-ins are both recorded, with device and location where permitted.</div>
+      </div>
+      <div style="display: flex; align-items: flex-start; gap: 12px;">
+        <span style="width: 8px; height: 8px; border-radius: 50%; background: #c98a1e; flex: none; margin-top: 6px;"></span>
+        <div style="font-size: 12.5px; color: #a8c4c9; line-height: 1.6;">Accounts are never shared. Using another officer's credentials is a disciplinary and criminal matter.</div>
+      </div>
+    </div>
+
+    <div style="margin-top: auto; padding-top: 40px; display: flex; flex-direction: column; gap: 10px;">
+      <div style="font-size: 11.5px; color: #7d9ea4; line-height: 1.6; max-width: 400px;">Citizens do not sign in here. Citizen access is through Log in with NovaID on the public service.</div>
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: #6f9299;">NICRA · Novaria Identity and Civil Registration Authority</div>
+    </div>
+  </div>
+
+  <div style="flex: 1; min-width: 0; display: flex; align-items: center; justify-content: center; padding: 44px 32px; box-sizing: border-box; background-color: #eaf3f3; background-image: radial-gradient(620px 460px at 88% -6%, rgba(122,214,201,0.42), transparent 62%), radial-gradient(560px 480px at 8% 104%, rgba(168,160,232,0.36), transparent 60%);">
+    <div style="width: 100%; max-width: 424px; display: flex; flex-direction: column; gap: 15px;">
+
+      <sc-if value="{{ onCredentials }}" hint-placeholder-val="{{ true }}">
+        <section style="border-radius: 22px; background: rgba(255,255,255,0.82); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.95), 0 22px 50px -26px rgba(14,52,58,0.34); padding: 28px; display: flex; flex-direction: column; gap: 18px;">
+          <div style="display: flex; flex-direction: column; gap: 7px;">
+            <h2 style="font-family: 'Jost', sans-serif; font-size: 23px; font-weight: 500; margin: 0; line-height: 1.25;">Sign in</h2>
+            <p style="margin: 0; font-size: 13px; line-height: 1.6; color: #4f6a72;">Use the work address your account was created against.</p>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 13px;">
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+              <label style="font-size: 11.5px; color: #4f676e; font-weight: 500;">Work email</label>
+              <input onChange="{{ onEmail }}" value="{{ email }}" placeholder="mailbox@agency.gov.nv" style="padding: 11px 13px; border-radius: 11px; border: 1px solid rgba(20,60,70,0.16); background: rgba(255,255,255,0.92); font-size: 13px; color: #14232a; outline: none; box-sizing: border-box; width: 100%;" style-focus="border-color: #1f8a86; box-shadow: 0 0 0 3px rgba(31,138,134,0.12);" />
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+              <label style="font-size: 11.5px; color: #4f676e; font-weight: 500;">Password</label>
+              <input onChange="{{ onPass }}" type="password" placeholder="Your password" style="padding: 11px 13px; border-radius: 11px; border: 1px solid rgba(20,60,70,0.16); background: rgba(255,255,255,0.92); font-size: 13px; color: #14232a; outline: none; box-sizing: border-box; width: 100%;" style-focus="border-color: #1f8a86; box-shadow: 0 0 0 3px rgba(31,138,134,0.12);" />
+            </div>
+          </div>
+
+          <sc-if value="{{ hasNotice }}" hint-placeholder-val="{{ false }}">
+            <div style="{{ noticeStyle }}">
+              <div style="font-size: 12.5px; font-weight: 600; margin-bottom: 5px;">{{ noticeTitle }}</div>
+              <div style="font-size: 11.5px; line-height: 1.55;">{{ noticeBody }}</div>
+            </div>
+          </sc-if>
+
+          <div onClick="{{ submitCreds }}" style="{{ continueStyle }}">Continue</div>
+
+          <div style="display: flex; flex-direction: column; gap: 9px; padding-top: 4px;">
+            <div style="font-size: 12px; color: #1f8a86; font-weight: 500; cursor: pointer; text-align: center;">I have forgotten my password</div>
+            <div style="font-size: 11.5px; color: #4f676e; line-height: 1.55; text-align: center;">No account? Accounts are created by an administrator — contact your Centre or Regional Administrator.</div>
+          </div>
+        </section>
+      </sc-if>
+
+      <sc-if value="{{ onFactor }}" hint-placeholder-val="{{ false }}">
+        <section style="border-radius: 22px; background: rgba(255,255,255,0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.95), 0 22px 50px -26px rgba(14,52,58,0.34); padding: 28px; display: flex; flex-direction: column; gap: 18px;">
+          <div style="display: flex; flex-direction: column; gap: 7px;">
+            <h2 style="font-family: 'Jost', sans-serif; font-size: 23px; font-weight: 500; margin: 0; line-height: 1.25;">Second factor</h2>
+            <p style="margin: 0; font-size: 13px; line-height: 1.6; color: #4f6a72;">Enter the code from the authenticator you enrolled during activation.</p>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 7px;">
+            <label style="font-size: 11.5px; color: #4f676e; font-weight: 500;">Six-digit code</label>
+            <input onChange="{{ onOtp }}" value="{{ otp }}" inputmode="numeric" placeholder="••••••" style="padding: 13px 15px; border-radius: 12px; border: 1px solid rgba(20,60,70,0.16); background: rgba(255,255,255,0.95); font-family: 'IBM Plex Mono', monospace; font-size: 19px; letter-spacing: 6px; color: #14232a; outline: none; box-sizing: border-box; width: 100%;" style-focus="border-color: #1f8a86; box-shadow: 0 0 0 3px rgba(31,138,134,0.12);" />
+            <div style="font-size: 11.5px; color: #4f676e;">Or touch your NICRA-issued security key.</div>
+          </div>
+
+          <div onClick="{{ submitOtp }}" style="{{ verifyStyle }}">Verify and sign in</div>
+          <div onClick="{{ back }}" style="font-size: 12px; color: #4f6a72; cursor: pointer; text-align: center;">Back</div>
+        </section>
+      </sc-if>
+
+      <sc-if value="{{ onSignedIn }}" hint-placeholder-val="{{ false }}">
+        <section style="border-radius: 22px; background: linear-gradient(155deg, rgba(226,241,232,0.88), rgba(255,255,255,0.86)); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.95), 0 22px 50px -26px rgba(14,52,58,0.34); padding: 28px; display: flex; flex-direction: column; gap: 16px;">
+          <div style="width: 38px; height: 38px; border-radius: 12px; background: #cfe7d8; display: flex; align-items: center; justify-content: center;"><div style="width: 13px; height: 13px; border-radius: 50%; background: #24685a;"></div></div>
+          <div style="font-family: 'Jost', sans-serif; font-size: 21px; font-weight: 500; line-height: 1.3;">Signed in</div>
+          <div style="border-radius: 15px; background: rgba(255,255,255,0.78); box-shadow: inset 0 0 0 1px rgba(20,60,70,0.08); overflow: hidden;">
+            <div style="display: flex; align-items: center; gap: 12px; padding: 12px 15px;"><span style="font-size: 12px; color: #4f676e; flex: 1;">Name</span><span style="font-size: 13px;">{{ personName }}</span></div>
+            <div style="display: flex; align-items: center; gap: 12px; padding: 12px 15px; border-top: 1px solid rgba(20,60,70,0.06);"><span style="font-size: 12px; color: #4f676e; flex: 1;">Role</span><span style="font-size: 13px;">{{ personRole }}</span></div>
+            <div style="display: flex; align-items: center; gap: 12px; padding: 12px 15px; border-top: 1px solid rgba(20,60,70,0.06);"><span style="font-size: 12px; color: #4f676e; flex: 1;">Scope</span><span style="font-size: 13px;">{{ personScope }}</span></div>
+            <div style="display: flex; align-items: center; gap: 12px; padding: 12px 15px; border-top: 1px solid rgba(20,60,70,0.06);"><span style="font-size: 12px; color: #4f676e; flex: 1;">Previous sign-in</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px;">08/12/2026 16:41</span></div>
+          </div>
+          <div style="font-size: 12px; color: #4f6a72; line-height: 1.55;">You land on the console this role owns — {{ landing }}. Nothing outside your scope is reachable, whether or not it appears in a link.</div>
+          <div onClick="{{ reset }}" style="align-self: flex-start; padding: 10px 15px; border-radius: 11px; background: rgba(255,255,255,0.9); box-shadow: inset 0 0 0 1px rgba(20,60,70,0.12); font-size: 12.5px; cursor: pointer;" style-hover="background: #fff;">Sign out</div>
+        </section>
+      </sc-if>
+
+      <sc-if value="{{ showBootstrap }}" hint-placeholder-val="{{ false }}">
+        <section style="border-radius: 18px; background: rgba(255,255,255,0.6); box-shadow: inset 0 0 0 1px rgba(20,60,70,0.1); padding: 18px; display: flex; flex-direction: column; gap: 10px;">
+          <div style="display: flex; align-items: center; gap: 9px;">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: rgba(20,60,70,0.3);"></span>
+            <div style="font-size: 13px; font-weight: 600;">One-time administrator bootstrap</div>
+          </div>
+          <div style="font-size: 11.5px; color: #4f6a72; line-height: 1.6;">The first National Administrator was created once by NICRA IT through a sealed setup process, outside this screen. That process is now disabled and cannot be run again without a separate, authorised break-glass procedure.</div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: #5a7178;">Bootstrap completed 04/02/2025 · recorded as a security event</div>
+        </section>
+      </sc-if>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;accountState&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Active&quot;,&quot;Pending activation&quot;,&quot;Suspended&quot;,&quot;Locked after failed attempts&quot;],&quot;default&quot;:&quot;Active&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;label&quot;:&quot;Account state&quot;,&quot;section&quot;:&quot;Scenario&quot;},&quot;showBootstrapNote&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;label&quot;:&quot;Show the bootstrap note&quot;,&quot;section&quot;:&quot;Scenario&quot;}}">
+class Component extends DCLogic {
+  state = { step: "credentials", email: "solanov@kandova.gov.nv", pass: "", otp: "", attempts: 0, tried: false };
+
+  people = {
+    "solanov@kandova.gov.nv": { name: "V. Solano", role: "Verification Officer", scope: "Kandova queue", landing: "the review queue" },
+    "danek@kandova.gov.nv": { name: "K. Dane", role: "Registration Officer", scope: "Varanta Registration Centre", landing: "registrations at your centre" },
+    "bartoks@kandova.gov.nv": { name: "S. Bartok", role: "Centre Administrator", scope: "Varanta Registration Centre", landing: "the centre overview" },
+    "kovela@nicra.gov.nv": { name: "A. Kovel", role: "National Administrator", scope: "Nationwide", landing: "the national overview" },
+    "mirelc@nicra.gov.nv": { name: "C. Mirel", role: "Compliance Officer", scope: "Compliance oversight", landing: "the audit log" },
+  };
+
+  renderVals() {
+    const accountState = this.props.accountState ?? "Active";
+    const showBootstrap = this.props.showBootstrapNote ?? true;
+    const { step, email, pass, otp, attempts, tried } = this.state;
+
+    const person = this.people[email.trim().toLowerCase()] || {
+      name: "Unrecognised account", role: "—", scope: "—", landing: "no console",
+    };
+    const known = !!this.people[email.trim().toLowerCase()];
+    const credsFilled = known && pass.length >= 6;
+    const otpOk = otp.replace(/\D/g, "").length >= 6;
+
+    const notices = {
+      "Pending activation": {
+        title: "This account has not been activated",
+        body: "The invite sent to this address has not been completed. Set your password and enrol a second factor through the activation link before signing in.",
+        tone: "warn",
+      },
+      Suspended: {
+        title: "Access suspended",
+        body: "This account is suspended, so sign-in is blocked. Historical actions remain in the audit log. Contact your administrator.",
+        tone: "bad",
+      },
+      "Locked after failed attempts": {
+        title: "Temporarily locked",
+        body: "Too many failed attempts. Sign-in is locked for 15 minutes and the attempts have been logged as a security event.",
+        tone: "bad",
+      },
+    };
+
+    const stateNotice = notices[accountState];
+    const wrongPass = tried && known && !credsFilled;
+    const unknownAccount = tried && !known;
+
+    let notice = null;
+    if (stateNotice) notice = stateNotice;
+    else if (unknownAccount) notice = {
+      title: "We cannot sign you in",
+      body: "No active account matches that address and password. NovaID does not say which of the two was wrong.",
+      tone: "bad",
+    };
+    else if (wrongPass) notice = {
+      title: "We cannot sign you in",
+      body: "No active account matches that address and password. " + (3 - Math.min(3, attempts)) + " attempts remain before a temporary lock.",
+      tone: "bad",
+    };
+
+    const canContinue = accountState === "Active" && credsFilled;
+
+    return {
+      onCredentials: step === "credentials",
+      onFactor: step === "factor",
+      onSignedIn: step === "in",
+      email,
+      otp,
+      onEmail: (e) => this.setState({ email: e.target.value, tried: false }),
+      onPass: (e) => this.setState({ pass: e.target.value, tried: false }),
+      onOtp: (e) => this.setState({ otp: e.target.value.replace(/\D/g, "").slice(0, 6) }),
+      hasNotice: !!notice,
+      noticeTitle: notice ? notice.title : "",
+      noticeBody: notice ? notice.body : "",
+      noticeStyle: [
+        "padding: 13px 15px",
+        "border-radius: 12px",
+        "line-height: 1.55",
+        notice && notice.tone === "warn"
+          ? "background: rgba(251,238,218,0.75); color: #7a5312"
+          : "background: rgba(244,230,230,0.7); color: #8d3232",
+      ].join(";"),
+      continueStyle: [
+        "padding: 13px",
+        "border-radius: 12px",
+        "text-align: center",
+        "font-size: 13.5px",
+        "font-weight: 600",
+        canContinue
+          ? "cursor: pointer; color: #fff; background: linear-gradient(100deg, #1f8a86, #2f7d9b); box-shadow: 0 12px 26px -12px rgba(31,138,134,0.8)"
+          : "cursor: pointer; color: #90a7ad; background: rgba(20,60,70,0.07)",
+      ].join(";"),
+      submitCreds: () => {
+        if (canContinue) this.setState({ step: "factor", tried: false });
+        else this.setState({ tried: true, attempts: attempts + 1 });
+      },
+      verifyStyle: [
+        "padding: 13px",
+        "border-radius: 12px",
+        "text-align: center",
+        "font-size: 13.5px",
+        "font-weight: 600",
+        otpOk
+          ? "cursor: pointer; color: #fff; background: linear-gradient(100deg, #1f8a86, #2f7d9b); box-shadow: 0 12px 26px -12px rgba(31,138,134,0.8)"
+          : "cursor: not-allowed; color: #90a7ad; background: rgba(20,60,70,0.07)",
+      ].join(";"),
+      submitOtp: () => { if (otpOk) this.setState({ step: "in" }); },
+      back: () => this.setState({ step: "credentials", otp: "" }),
+      personName: person.name,
+      personRole: person.role,
+      personScope: person.scope,
+      landing: person.landing,
+      reset: () => this.setState({ step: "credentials", pass: "", otp: "", attempts: 0, tried: false }),
+      showBootstrap,
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin: 0; padding: 0; }
+  body { background: #eef4f4; -webkit-font-smoothing: antialiased; }
+  a { color: #1f8a86; text-decoration: none; }
+  a:hover { color: #14615e; text-decoration: underline; }
+  ::selection { background: #cfe9e5; }
+  input, select, textarea { font-family: inherit; }
+</style>
+</helmet>
+<div style="min-height: 100vh; min-width: 1280px; display: flex; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #14232a; background: linear-gradient(135deg, #e9f4f1 0%, #f2f5fb 46%, #f7f1f7 100%);">
+
+  <aside style="width: {{ railWidth }}; flex: 0 0 {{ railWidth }}; background: linear-gradient(180deg, #123035 0%, #10262c 100%); display: flex; flex-direction: column; padding: 26px 16px 18px; box-sizing: border-box;">
+    <div onClick="{{ toggleRail }}" style="display: flex; justify-content: flex-end; margin-bottom: 10px; {{ railRowExtra }}">
+      <div style="width: 30px; height: 30px; border-radius: 9px; background: rgba(255,255,255,0.06); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3.5px; cursor: pointer;" style-hover="background: rgba(255,255,255,0.15);">
+        <div style="width: 13px; height: 1.5px; border-radius: 2px; background: #9dbcc2;"></div>
+        <div style="width: 13px; height: 1.5px; border-radius: 2px; background: #9dbcc2;"></div>
+        <div style="width: 13px; height: 1.5px; border-radius: 2px; background: #9dbcc2;"></div>
+      </div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 11px; padding: 0 8px 24px; {{ railRowExtra }}">
+      <div style="width: 32px; height: 32px; border-radius: 10px; background: linear-gradient(140deg, #5ec9bd, #4a9ec9); display: flex; align-items: center; justify-content: center;">
+        <div style="width: 11px; height: 11px; border-radius: 50%; border: 2.5px solid rgba(255,255,255,0.95); box-sizing: border-box;"></div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 1px; {{ hideLabel }}">
+        <div style="font-family: 'Jost', sans-serif; font-size: 17px; font-weight: 500; letter-spacing: 0.2px; color: #f2fbfa;">NovaID</div>
+        <div style="font-size: 9.5px; letter-spacing: 1.1px; text-transform: uppercase; color: #6f9299;">NICRS Console</div>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 3px;">
+      <div style="font-size: 9.5px; letter-spacing: 1.1px; text-transform: uppercase; color: #55787f; padding: 0 10px 9px; {{ hideLabel }}">Operations</div>
+      <div style="display: flex; align-items: center; gap: 11px; padding: 9px 10px; border-radius: 10px; color: #b6cdd1; font-size: 13.5px; {{ railRowExtra }}" style-hover="background: rgba(255,255,255,0.06); color: #e6f3f2;">
+        <div style="width: 16px; height: 16px; border-radius: 5px; background: rgba(255,255,255,0.13); display: flex; align-items: center; justify-content: center;"><div style="width: 6px; height: 6px; border-radius: 2px; background: currentColor; opacity: 0.7;"></div></div><span style="{{ hideLabel }} font-size: 13.5px;">Dashboard</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 11px; padding: 10px; border-radius: 10px; background: linear-gradient(100deg, rgba(94,201,189,0.22), rgba(94,201,189,0.08)); box-shadow: inset 0 0 0 1px rgba(140,226,215,0.28); color: #f0fbfa; font-size: 13.5px; font-weight: 500; {{ railRowExtra }}">
+        <div style="width: 16px; height: 16px; border-radius: 4px; background: #5ec9bd; display: flex; align-items: center; justify-content: center;"><div style="width: 5px; height: 5px; border-radius: 50%; background: #10262c;"></div></div>
+        <span style="flex: 1; {{ hideLabel }}">Registrations</span>
+        <span style="{{ hideLabel }} font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; padding: 2px 6px; border-radius: 20px; background: #5ec9bd; color: #0d2226;">7</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 11px; padding: 9px 10px; border-radius: 10px; color: #b6cdd1; font-size: 13.5px; {{ railRowExtra }}" style-hover="background: rgba(255,255,255,0.06); color: #e6f3f2;">
+        <div style="width: 16px; height: 16px; border-radius: 5px; background: rgba(255,255,255,0.13); display: flex; align-items: center; justify-content: center;"><div style="width: 6px; height: 6px; border-radius: 2px; background: currentColor; opacity: 0.7;"></div></div><span style="{{ hideLabel }} font-size: 13.5px;">Notifications</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 11px; padding: 9px 10px; border-radius: 10px; color: #b6cdd1; font-size: 13.5px; {{ railRowExtra }}" style-hover="background: rgba(255,255,255,0.06); color: #e6f3f2;">
+        <div style="width: 16px; height: 16px; border-radius: 5px; background: rgba(255,255,255,0.13); display: flex; align-items: center; justify-content: center;"><div style="width: 6px; height: 6px; border-radius: 2px; background: currentColor; opacity: 0.7;"></div></div><span style="{{ hideLabel }} font-size: 13.5px;">Corrections</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 11px; padding: 9px 10px; border-radius: 10px; color: #b6cdd1; font-size: 13.5px; {{ railRowExtra }}" style-hover="background: rgba(255,255,255,0.06); color: #e6f3f2;">
+        <div style="width: 16px; height: 16px; border-radius: 5px; background: rgba(255,255,255,0.13); display: flex; align-items: center; justify-content: center;"><div style="width: 6px; height: 6px; border-radius: 2px; background: currentColor; opacity: 0.7;"></div></div><span style="{{ hideLabel }} font-size: 13.5px;">Exceptions</span>
+      </div>
+      <div style="font-size: 9.5px; letter-spacing: 1.1px; text-transform: uppercase; color: #55787f; padding: 18px 10px 9px; {{ hideLabel }}">Centre</div>
+      <div style="display: flex; align-items: center; gap: 11px; padding: 9px 10px; border-radius: 10px; color: #b6cdd1; font-size: 13.5px; {{ railRowExtra }}" style-hover="background: rgba(255,255,255,0.06); color: #e6f3f2;">
+        <div style="width: 16px; height: 16px; border-radius: 5px; background: rgba(255,255,255,0.13); display: flex; align-items: center; justify-content: center;"><div style="width: 6px; height: 6px; border-radius: 2px; background: currentColor; opacity: 0.7;"></div></div><span style="{{ hideLabel }} font-size: 13.5px;">My activity</span>
+      </div>
+    </div>
+
+    <div style="margin-top: auto; padding: 14px 12px; border-radius: 14px; background: rgba(255,255,255,0.055); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.07); display: flex; gap: 11px; align-items: center;">
+      <div style="width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(140deg, #7c8fd6, #5ec9bd); display: flex; align-items: center; justify-content: center; font-family: 'Jost', sans-serif; font-size: 13px; color: #0d2226; font-weight: 500;">KD</div>
+      <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0; {{ hideLabel }}">
+        <div style="font-size: 12.5px; color: #e9f5f4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">K. Dane</div>
+        <div style="font-size: 10.5px; color: #7d9ea4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Registration Officer</div>
+      </div>
+    </div>
+  </aside>
+
+  <main style="flex: 1; min-width: 0; display: flex; flex-direction: column;">
+
+    <header style="display: flex; align-items: center; gap: 20px; padding: 18px 32px; background: rgba(255,255,255,0.55); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255,255,255,0.8);">
+      <div style="display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: #4f6a72;">
+        <span>Registrations</span>
+        <span style="color: #a8bcc1;">/</span>
+        <span>Varanta Registration Centre</span>
+        <span style="color: #a8bcc1;">/</span>
+        <span style="font-family: 'IBM Plex Mono', monospace; color: #14232a;">APP-2026-118641</span>
+      </div>
+      <div style="flex: 1;"></div>
+      <div style="{{ connStyle }}">
+        <span style="{{ connDot }}"></span>{{ connLabel }}
+      </div>
+      <div style="display: flex; align-items: center; gap: 7px; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: #4f6a72;">08/13/2026 14:22</div>
+    </header>
+
+    <div style="flex: 1; padding: 26px 32px 44px; display: flex; flex-direction: column; gap: 20px;">
+
+      <div style="display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap;">
+        <div style="display: flex; flex-direction: column; gap: 10px; flex: 1; min-width: 340px;">
+          <div style="display: flex; align-items: center; gap: 9px; flex-wrap: wrap;">
+            <span style="display: inline-flex; align-items: center; gap: 7px; padding: 5px 11px; border-radius: 20px; background: #dff1ee; color: #14615e; font-size: 11.5px; font-weight: 500;">
+              <span style="width: 6px; height: 6px; border-radius: 50%; background: #1f8a86;"></span>OneHealth notification
+            </span>
+            <span style="{{ statutoryPill }}">{{ statutoryLabel }}</span>
+            <span style="padding: 5px 11px; border-radius: 20px; background: rgba(255,255,255,0.75); box-shadow: inset 0 0 0 1px rgba(20,60,70,0.09); color: #4f6a72; font-size: 11.5px;">Draft — not submitted</span>
+          </div>
+          <h1 style="font-family: 'Jost', sans-serif; font-size: 30px; font-weight: 500; letter-spacing: -0.2px; margin: 0; line-height: 1.2;">Birth registration</h1>
+          <p style="margin: 0; font-size: 13.5px; line-height: 1.55; color: #4f6a72; max-width: 660px; text-wrap: pretty;">Details arrived from Varanta General Hospital through OneHealth. Confirm the parent information, capture contact details and evidence, then submit for verification. An NSN is generated only after final approval.</p>
+        </div>
+        <div style="padding: 15px 17px; border-radius: 16px; background: rgba(255,255,255,0.72); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.9), 0 10px 26px -14px rgba(16,45,52,0.22); min-width: 200px;">
+          <div style="font-size: 10px; letter-spacing: 0.9px; text-transform: uppercase; color: #4f676e; margin-bottom: 9px;">Notification reference</div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px;">BN-2026-449173</div>
+          <div style="font-size: 11.5px; color: #4f6a72; margin-top: 5px; line-height: 1.45;">Received 08/01/2026 09:42<br />Officer M. Ferelli, Birth Notification</div>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 0; padding: 4px 6px; border-radius: 14px; background: rgba(255,255,255,0.6); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.85);">
+        <div style="display: flex; align-items: baseline; gap: 9px; padding: 11px 18px;">
+          <span style="font-size: 11.5px; color: #4f676e;">Created today</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 500;">6</span>
+        </div>
+        <div style="width: 1px; align-self: stretch; background: rgba(20,60,70,0.1);"></div>
+        <div style="display: flex; align-items: baseline; gap: 9px; padding: 11px 18px;">
+          <span style="font-size: 11.5px; color: #4f676e;">Awaiting your evidence review</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 500; color: #7a5312;">2</span>
+        </div>
+        <div style="width: 1px; align-self: stretch; background: rgba(20,60,70,0.1);"></div>
+        <div style="display: flex; align-items: baseline; gap: 9px; padding: 11px 18px;">
+          <span style="font-size: 11.5px; color: #4f676e;">Returned to you this month</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 500;">13</span>
+          <span style="font-size: 11.5px; color: #4f676e;">of 214</span>
+        </div>
+        <div style="width: 1px; align-self: stretch; background: rgba(20,60,70,0.1);"></div>
+        <div style="display: flex; align-items: baseline; gap: 9px; padding: 11px 18px;">
+          <span style="font-size: 11.5px; color: #4f676e;">Your average to approval</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 500;">2.9 days</span>
+        </div>
+        <div style="flex: 1;"></div>
+        <div style="padding: 9px 14px; margin-right: 6px; border-radius: 10px; background: rgba(31,138,134,0.08); color: #14615e; font-size: 12px; font-weight: 500; cursor: pointer; white-space: nowrap;" style-hover="background: rgba(31,138,134,0.15);">My applications</div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: minmax(0, 1fr) 348px; gap: 20px; align-items: start;">
+
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+
+          <section style="border-radius: 20px; background: rgba(255,255,255,0.78); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.9), 0 16px 40px -22px rgba(16,45,52,0.26); overflow: hidden;">
+            <div style="display: flex; align-items: center; gap: 12px; padding: 17px 22px; border-bottom: 1px solid rgba(20,60,70,0.08);">
+              <span style="width: 22px; height: 22px; border-radius: 7px; background: #dff1ee; color: #14615e; font-family: 'IBM Plex Mono', monospace; font-size: 11px; display: flex; align-items: center; justify-content: center;">1</span>
+              <div style="font-family: 'Jost', sans-serif; font-size: 16px; font-weight: 500; flex: 1;">From the birth notification</div>
+              <span style="font-size: 11.5px; color: #4f6a72;">Read-only · corrections go back to the facility</span>
+            </div>
+            <div style="padding: 18px 22px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px;">
+              <div><div style="font-size: 11px; color: #4f676e;">Child's first name</div><div style="font-size: 13.5px; margin-top: 4px;">Not yet provided</div></div>
+              <div><div style="font-size: 11px; color: #4f676e;">Surname</div><div style="font-size: 13.5px; margin-top: 4px;">Sorevic</div></div>
+              <div><div style="font-size: 11px; color: #4f676e;">Sex recorded at birth</div><div style="font-size: 13.5px; margin-top: 4px;">Male</div></div>
+              <div><div style="font-size: 11px; color: #4f676e;">Date and time of birth</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; margin-top: 4px;">2026-08-01 04:18</div></div>
+              <div><div style="font-size: 11px; color: #4f676e;">Place of birth</div><div style="font-size: 13.5px; margin-top: 4px;">Varanta General Hospital</div></div>
+              <div><div style="font-size: 11px; color: #4f676e;">Birth type</div><div style="font-size: 13.5px; margin-top: 4px;">Twin · order 2 of 2</div></div>
+              <div><div style="font-size: 11px; color: #4f676e;">Attending professional</div><div style="font-size: 13.5px; margin-top: 4px;">Dr. H. Volkan</div></div>
+              <div><div style="font-size: 11px; color: #4f676e;">Facility authorisation</div><div style="font-size: 13.5px; margin-top: 4px; color: #24685a;">Verified</div></div>
+              <div><div style="font-size: 11px; color: #4f676e;">Birth record reference</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; margin-top: 4px;">VGH-BR-20826</div></div>
+            </div>
+            <div style="padding: 13px 22px; background: rgba(251,238,218,0.5); border-top: 1px solid rgba(20,60,70,0.06); font-size: 12px; color: #7a5312; line-height: 1.5;">Twin sibling APP-2026-118640 is registered separately. Duplicate screening treats both as distinct births on the same record reference.</div>
+          </section>
+
+          <section style="border-radius: 20px; background: rgba(255,255,255,0.78); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.9), 0 16px 40px -22px rgba(16,45,52,0.26); overflow: hidden;">
+            <div style="display: flex; align-items: center; gap: 12px; padding: 17px 22px; border-bottom: 1px solid rgba(20,60,70,0.08);">
+              <span style="width: 22px; height: 22px; border-radius: 7px; background: #dff1ee; color: #14615e; font-family: 'IBM Plex Mono', monospace; font-size: 11px; display: flex; align-items: center; justify-content: center;">2</span>
+              <div style="font-family: 'Jost', sans-serif; font-size: 16px; font-weight: 500; flex: 1;">Child's name and parents</div>
+            </div>
+            <div style="padding: 18px 22px; display: flex; flex-direction: column; gap: 17px;">
+              <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px;">
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                  <label style="font-size: 11.5px; color: #4f676e; font-weight: 500;">First name <span style="color: #a9701a;">required</span></label>
+                  <input value="Teodor" style="padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(20,60,70,0.16); background: rgba(255,255,255,0.92); font-size: 13px; color: #14232a; outline: none; box-sizing: border-box; width: 100%;" style-focus="border-color: #1f8a86; box-shadow: 0 0 0 3px rgba(31,138,134,0.12);" />
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                  <label style="font-size: 11.5px; color: #4f676e; font-weight: 500;">Middle name</label>
+                  <input value="" placeholder="Optional" style="padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(20,60,70,0.16); background: rgba(255,255,255,0.92); font-size: 13px; color: #14232a; outline: none; box-sizing: border-box; width: 100%;" style-focus="border-color: #1f8a86; box-shadow: 0 0 0 3px rgba(31,138,134,0.12);" />
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                  <label style="font-size: 11.5px; color: #4f676e; font-weight: 500;">Surname</label>
+                  <input value="Sorevic" style="padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(20,60,70,0.16); background: rgba(255,255,255,0.92); font-size: 13px; color: #14232a; outline: none; box-sizing: border-box; width: 100%;" style-focus="border-color: #1f8a86; box-shadow: 0 0 0 3px rgba(31,138,134,0.12);" />
+                </div>
+              </div>
+
+              <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px;">
+                <div style="padding: 15px; border-radius: 14px; background: rgba(223,241,238,0.42); box-shadow: inset 0 0 0 1px rgba(31,138,134,0.16); display: flex; flex-direction: column; gap: 9px;">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 11.5px; letter-spacing: 0.7px; text-transform: uppercase; color: #14615e; font-weight: 500;">Mother</span>
+                    <span style="padding: 3px 8px; border-radius: 20px; background: rgba(47,125,85,0.16); color: #24685a; font-size: 10.5px; font-weight: 500;">NSN verified</span>
+                  </div>
+                  <div style="font-size: 13.5px;">Ivanna Sorevic</div>
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #4f676e;">4820-7731-9044</div>
+                  <div style="font-size: 11.5px; color: #4f676e; line-height: 1.45;">Matched against her active identity record. Relationship recorded from the notification.</div>
+                </div>
+                <div style="padding: 15px; border-radius: 14px; background: rgba(251,238,218,0.5); box-shadow: inset 0 0 0 1px rgba(201,138,30,0.22); display: flex; flex-direction: column; gap: 9px;">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 11.5px; letter-spacing: 0.7px; text-transform: uppercase; color: #7a5312; font-weight: 500;">Father</span>
+                    <span style="padding: 3px 8px; border-radius: 20px; background: rgba(201,138,30,0.2); color: #7a5312; font-size: 10.5px; font-weight: 500;">Not recorded</span>
+                  </div>
+                  <div style="font-size: 11.5px; color: #4f676e; line-height: 1.45;">Record why the information is unavailable. Unknown and not applicable are different values (Sec. 7.7).</div>
+                  <select onChange="{{ onReason }}" style="padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(20,60,70,0.18); background: rgba(255,255,255,0.95); font-size: 12.5px; color: #14232a; outline: none; width: 100%; box-sizing: border-box;" style-focus="border-color: #1f8a86;">
+                    <option value="">Select a reason…</option>
+                    <option value="unknown">Unknown to the mother</option>
+                    <option value="withheld">Declined to provide</option>
+                    <option value="deceased">Deceased before registration</option>
+                    <option value="na">Not applicable</option>
+                  </select>
+                </div>
+              </div>
+
+              <div style="display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 12px; background: rgba(255,255,255,0.6); box-shadow: inset 0 0 0 1px rgba(20,60,70,0.08);">
+                <span style="font-size: 12.5px; color: #4f6a72; flex: 1;">Add a legal guardian instead of, or alongside, a parent</span>
+                <span style="font-size: 12.5px; color: #14615e; font-weight: 500; cursor: pointer;">Add guardian</span>
+              </div>
+            </div>
+          </section>
+
+          <section style="border-radius: 20px; background: rgba(255,255,255,0.78); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.9), 0 16px 40px -22px rgba(16,45,52,0.26); overflow: hidden;">
+            <div style="display: flex; align-items: center; gap: 12px; padding: 17px 22px; border-bottom: 1px solid rgba(20,60,70,0.08);">
+              <span style="width: 22px; height: 22px; border-radius: 7px; background: #dff1ee; color: #14615e; font-family: 'IBM Plex Mono', monospace; font-size: 11px; display: flex; align-items: center; justify-content: center;">3</span>
+              <div style="font-family: 'Jost', sans-serif; font-size: 16px; font-weight: 500; flex: 1;">Residence and contact</div>
+            </div>
+            <div style="padding: 18px 22px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px;">
+              <div style="display: flex; flex-direction: column; gap: 6px;">
+                <label style="font-size: 11.5px; color: #4f676e; font-weight: 500;">State</label>
+                <select style="padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(20,60,70,0.16); background: rgba(255,255,255,0.92); font-size: 13px; color: #14232a; outline: none; width: 100%; box-sizing: border-box;" style-focus="border-color: #1f8a86;">
+                  <option>Kandova State</option>
+                  <option>Arinana State</option>
+                  <option>Kolvira State</option>
+                  <option>Novaria Capital Territory</option>
+                </select>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 6px;">
+                <label style="font-size: 11.5px; color: #4f676e; font-weight: 500;">Local Government Area</label>
+                <select style="padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(20,60,70,0.16); background: rgba(255,255,255,0.92); font-size: 13px; color: #14232a; outline: none; width: 100%; box-sizing: border-box;" style-focus="border-color: #1f8a86;">
+                  <option>Varanta (KD-02)</option>
+                  <option>Kandova (KD-01)</option>
+                  <option>Tavren (KD-03)</option>
+                  <option>Birova (KD-04)</option>
+                </select>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 6px;">
+                <label style="font-size: 11.5px; color: #4f676e; font-weight: 500;">Preferred notification</label>
+                <select style="padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(20,60,70,0.16); background: rgba(255,255,255,0.92); font-size: 13px; color: #14232a; outline: none; width: 100%; box-sizing: border-box;" style-focus="border-color: #1f8a86;">
+                  <option>SMS</option>
+                  <option>Email</option>
+                  <option>In-platform only</option>
+                </select>
+              </div>
+              <div style="grid-column: span 2; display: flex; flex-direction: column; gap: 6px;">
+                <label style="font-size: 11.5px; color: #4f676e; font-weight: 500;">Residential address</label>
+                <input value="14 Belmar Rise, Varanta" style="padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(20,60,70,0.16); background: rgba(255,255,255,0.92); font-size: 13px; color: #14232a; outline: none; box-sizing: border-box; width: 100%;" style-focus="border-color: #1f8a86; box-shadow: 0 0 0 3px rgba(31,138,134,0.12);" />
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 6px;">
+                <label style="font-size: 11.5px; color: #4f676e; font-weight: 500;">Guardian phone</label>
+                <input value="881 204 7719" style="padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(20,60,70,0.16); background: rgba(255,255,255,0.92); font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #14232a; outline: none; box-sizing: border-box; width: 100%;" style-focus="border-color: #1f8a86; box-shadow: 0 0 0 3px rgba(31,138,134,0.12);" />
+              </div>
+            </div>
+          </section>
+
+          <section style="border-radius: 20px; background: rgba(255,255,255,0.78); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.9), 0 16px 40px -22px rgba(16,45,52,0.26); overflow: hidden;">
+            <div style="display: flex; align-items: center; gap: 12px; padding: 17px 22px; border-bottom: 1px solid rgba(20,60,70,0.08);">
+              <span style="width: 22px; height: 22px; border-radius: 7px; background: #dff1ee; color: #14615e; font-family: 'IBM Plex Mono', monospace; font-size: 11px; display: flex; align-items: center; justify-content: center;">4</span>
+              <div style="font-family: 'Jost', sans-serif; font-size: 16px; font-weight: 500; flex: 1;">Evidence and photograph</div>
+              <span style="font-size: 11.5px; color: #4f6a72;">{{ evidenceNote }}</span>
+            </div>
+            <div style="padding: 18px 22px; display: grid; grid-template-columns: minmax(0, 1fr) 176px; gap: 20px;">
+              <div style="display: flex; flex-direction: column; gap: 9px;">
+                <div style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 12px; background: rgba(255,255,255,0.72); box-shadow: inset 0 0 0 1px rgba(20,60,70,0.08);">
+                  <span style="width: 26px; height: 26px; border-radius: 8px; background: #e7eef0; flex: none;"></span>
+                  <div style="flex: 1; min-width: 0;">
+                    <div style="font-size: 12.5px;">Hospital birth record</div>
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: #4f676e; margin-top: 3px;">VGH-BR-20826.pdf · from OneHealth</div>
+                  </div>
+                  <span style="font-size: 11px; color: #24685a;">Attached</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 12px; background: rgba(255,255,255,0.72); box-shadow: inset 0 0 0 1px rgba(20,60,70,0.08);">
+                  <span style="width: 26px; height: 26px; border-radius: 8px; background: #e7eef0; flex: none;"></span>
+                  <div style="flex: 1; min-width: 0;">
+                    <div style="font-size: 12.5px;">Mother's identity confirmation</div>
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: #4f676e; margin-top: 3px;">Verified against NSN — no upload required</div>
+                  </div>
+                  <span style="font-size: 11px; color: #24685a;">Verified</span>
+                </div>
+                <sc-if value="{{ isLate }}" hint-placeholder-val="{{ false }}">
+                  <div style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 12px; background: rgba(251,238,218,0.55); box-shadow: inset 0 0 0 1px rgba(201,138,30,0.22);">
+                    <span style="width: 26px; height: 26px; border-radius: 8px; background: rgba(201,138,30,0.18); flex: none;"></span>
+                    <div style="flex: 1; min-width: 0;">
+                      <div style="font-size: 12.5px;">Corroborating document required</div>
+                      <div style="font-size: 11px; color: #7a5312; margin-top: 3px;">School enrolment, religious record, or sworn affidavit of age</div>
+                    </div>
+                    <span style="font-size: 11.5px; color: #7a5312; font-weight: 500; cursor: pointer;">Upload</span>
+                  </div>
+                </sc-if>
+                <div style="display: flex; align-items: center; justify-content: center; gap: 9px; padding: 13px; border-radius: 12px; background: rgba(31,138,134,0.07); border: 1px dashed rgba(31,138,134,0.35); font-size: 12.5px; color: #14615e; font-weight: 500; cursor: pointer;" style-hover="background: rgba(31,138,134,0.13);">Attach supporting evidence</div>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 9px;">
+                <div style="height: 148px; border-radius: 12px; background-color: #e7eef0; background-image: repeating-linear-gradient(135deg, rgba(20,60,70,0.055) 0 8px, transparent 8px 16px); display: flex; align-items: flex-end; padding: 10px; box-sizing: border-box;">
+                  <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #4f676e; background: rgba(255,255,255,0.85); padding: 3px 6px; border-radius: 5px;">child photograph</span>
+                </div>
+                <div style="padding: 10px; border-radius: 10px; text-align: center; background: rgba(255,255,255,0.75); box-shadow: inset 0 0 0 1px rgba(20,60,70,0.1); font-size: 12px; font-weight: 500; cursor: pointer;" style-hover="background: #fff;">Capture photo</div>
+                <div style="font-size: 10.5px; color: #4f676e; line-height: 1.5;">Optional at birth. Mandatory update at age five, then 12 and 18 (Sec. 7.8).</div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+
+          <section style="border-radius: 20px; background: rgba(255,255,255,0.8); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.92), 0 16px 40px -22px rgba(16,45,52,0.26); padding: 19px;">
+            <div style="font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 500; margin-bottom: 14px;">System checks</div>
+            <div style="display: flex; flex-direction: column; gap: 11px;">
+              <div style="display: flex; align-items: flex-start; gap: 10px;">
+                <span style="width: 15px; height: 15px; border-radius: 50%; background: rgba(47,125,85,0.18); display: flex; align-items: center; justify-content: center; flex: none; margin-top: 1px;"><span style="width: 5px; height: 5px; border-radius: 50%; background: #24685a;"></span></span>
+                <div><div style="font-size: 12.5px;">Duplicate screening</div><div style="font-size: 11px; color: #4f676e; margin-top: 2px;">No possible match found</div></div>
+              </div>
+              <div style="display: flex; align-items: flex-start; gap: 10px;">
+                <span style="width: 15px; height: 15px; border-radius: 50%; background: rgba(47,125,85,0.18); display: flex; align-items: center; justify-content: center; flex: none; margin-top: 1px;"><span style="width: 5px; height: 5px; border-radius: 50%; background: #24685a;"></span></span>
+                <div><div style="font-size: 12.5px;">Mother's NSN validated</div><div style="font-size: 11px; color: #4f676e; margin-top: 2px;">Active record, relationship consistent</div></div>
+              </div>
+              <div style="display: flex; align-items: flex-start; gap: 10px;">
+                <span style="width: 15px; height: 15px; border-radius: 50%; background: rgba(47,125,85,0.18); display: flex; align-items: center; justify-content: center; flex: none; margin-top: 1px;"><span style="width: 5px; height: 5px; border-radius: 50%; background: #24685a;"></span></span>
+                <div><div style="font-size: 12.5px;">Facility and officer authorised</div><div style="font-size: 11px; color: #4f676e; margin-top: 2px;">Varanta General, connected facility</div></div>
+              </div>
+              <div style="display: flex; align-items: flex-start; gap: 10px;">
+                <span style="width: 15px; height: 15px; border-radius: 50%; background: rgba(201,138,30,0.22); display: flex; align-items: center; justify-content: center; flex: none; margin-top: 1px;"><span style="width: 5px; height: 5px; border-radius: 50%; background: #7a5312;"></span></span>
+                <div><div style="font-size: 12.5px;">{{ fatherCheck }}</div><div style="font-size: 11px; color: #7a5312; margin-top: 2px;">{{ fatherCheckNote }}</div></div>
+              </div>
+            </div>
+          </section>
+
+          <section style="border-radius: 20px; background: rgba(255,255,255,0.72); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.9), 0 16px 40px -22px rgba(16,45,52,0.22); padding: 19px;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 13px;">
+              <div style="font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 500; flex: 1;">Connectivity</div>
+              <div onClick="{{ toggleOffline }}" style="{{ switchStyle }}"><span style="{{ knobStyle }}"></span></div>
+            </div>
+            <div style="font-size: 12px; color: #4f6a72; line-height: 1.55;">{{ offlineCopy }}</div>
+            <div style="margin-top: 12px; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: #5a7178;">{{ offlineMeta }}</div>
+          </section>
+
+          <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
+            <section style="border-radius: 20px; background: rgba(255,255,255,0.82); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.95), 0 16px 40px -22px rgba(16,45,52,0.28); padding: 19px; display: flex; flex-direction: column; gap: 13px;">
+              <div style="font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 500;">Submit</div>
+              <div onClick="{{ toggleConfirm }}" style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer;">
+                <span style="{{ checkStyle }}"></span>
+                <span style="font-size: 12px; color: #4f6a72; line-height: 1.5;">I have reviewed the evidence presented and confirm the information matches it.</span>
+              </div>
+              <div style="padding: 11px 13px; border-radius: 11px; background: rgba(31,138,134,0.07); font-size: 11.5px; color: #14615e; line-height: 1.5;">You cannot approve an application you created. This goes to a Verification Officer, and an NSN is issued only after final approval.</div>
+              <div onClick="{{ submit }}" style="{{ submitStyle }}">{{ submitLabel }}</div>
+              <div style="font-size: 11.5px; color: #4f6a72; text-align: center;">Save draft</div>
+            </section>
+          </sc-if>
+
+          <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+            <section style="border-radius: 20px; background: linear-gradient(155deg, rgba(226,241,232,0.9), rgba(255,255,255,0.85)); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.95), 0 16px 40px -22px rgba(16,45,52,0.28); padding: 21px; display: flex; flex-direction: column; gap: 12px;">
+              <div style="width: 36px; height: 36px; border-radius: 12px; background: #cfe7d8; display: flex; align-items: center; justify-content: center;"><div style="width: 12px; height: 12px; border-radius: 50%; background: #24685a;"></div></div>
+              <div style="font-family: 'Jost', sans-serif; font-size: 17px; font-weight: 500; line-height: 1.3;">{{ doneTitle }}</div>
+              <div style="font-size: 12.5px; color: #4f6a72; line-height: 1.55;">{{ doneBody }}</div>
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: #5a7178;">{{ doneMeta }}</div>
+              <div onClick="{{ reset }}" style="align-self: flex-start; padding: 9px 14px; border-radius: 10px; background: rgba(255,255,255,0.85); box-shadow: inset 0 0 0 1px rgba(20,60,70,0.12); font-size: 12.5px; cursor: pointer;" style-hover="background: #fff;">Back to form</div>
+            </section>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;lateRegistration&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;label&quot;:&quot;Late registration (past 60 days)&quot;,&quot;section&quot;:&quot;Scenario&quot;}}">
+class Component extends DCLogic {
+  state = { collapsed: false, reason: "", confirmed: false, offline: false, submitted: false };
+
+  renderVals() {
+    const late = this.props.lateRegistration ?? false;
+    const { reason, confirmed, offline, submitted } = this.state;
+    const ready = !!reason && confirmed;
+
+    const pill = (bg, fg, dot) =>
+      "display: inline-flex; align-items: center; gap: 7px; padding: 5px 11px; border-radius: 20px; font-size: 11.5px; font-weight: 500; background: " +
+      bg + "; color: " + fg;
+
+    return {
+      railWidth: this.state.collapsed ? "76px" : "244px",
+      hideLabel: this.state.collapsed ? "display: none;" : "",
+      railRowExtra: this.state.collapsed ? "justify-content: center;" : "",
+      toggleRail: () => this.setState({ collapsed: !this.state.collapsed }),
+      statutoryPill: late
+        ? pill("#f4e6e6", "#8d3232")
+        : pill("#e2f1e8", "#24685a"),
+      statutoryLabel: late
+        ? "Late registration — day 74 of 60"
+        : "Within statutory period — day 12 of 60",
+      evidenceNote: late ? "Additional evidence required" : "Standard evidence set",
+      isLate: late,
+      fatherCheck: reason ? "Father's information — reason recorded" : "Father's information missing",
+      fatherCheckNote: reason
+        ? "Exception recorded; application proceeds to standard review"
+        : "Record a reason before submitting (Sec. 7.7)",
+      connStyle:
+        "display: flex; align-items: center; gap: 8px; padding: 7px 13px; border-radius: 20px; font-size: 12px; font-weight: 500; " +
+        (offline
+          ? "background: rgba(201,138,30,0.16); color: #7a5312"
+          : "background: rgba(47,125,85,0.14); color: #24685a"),
+      connDot:
+        "width: 7px; height: 7px; border-radius: 50%; background: " + (offline ? "#a9701a" : "#35946c"),
+      connLabel: offline ? "Working offline" : "Online",
+      switchStyle:
+        "width: 40px; height: 22px; border-radius: 20px; padding: 2px; box-sizing: border-box; cursor: pointer; display: flex; transition: background 0.18s; justify-content: " +
+        (offline ? "flex-end" : "flex-start") +
+        "; background: " + (offline ? "#c98a1e" : "rgba(20,60,70,0.18)"),
+      knobStyle:
+        "width: 18px; height: 18px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(16,45,52,0.3)",
+      offlineCopy: offline
+        ? "Registrations are saved as an encrypted package on this approved device. Approval, NSN generation and duplicate resolution cannot happen offline."
+        : "Connected to NovaID. Submissions are validated centrally and screened for duplicates in real time.",
+      offlineMeta: offline
+        ? "Temporary reference OFF-KD02-33871 · device VRT-TAB-04"
+        : "Last sync 08/13/2026 14:22 · device VRT-TAB-04",
+      checkStyle: [
+        "width: 17px",
+        "height: 17px",
+        "border-radius: 5px",
+        "flex: none",
+        "margin-top: 1px",
+        "box-sizing: border-box",
+        confirmed
+          ? "background: #1f8a86; box-shadow: inset 0 0 0 4px #fff, inset 0 0 0 5px #1f8a86"
+          : "background: transparent; border: 1.5px solid rgba(20,60,70,0.3)",
+      ].join(";"),
+      submitStyle: [
+        "padding: 12px",
+        "border-radius: 11px",
+        "text-align: center",
+        "font-size: 13px",
+        "font-weight: 600",
+        ready
+          ? "cursor: pointer; color: #fff; background: linear-gradient(100deg, #1f8a86, #2f7d9b); box-shadow: 0 8px 20px -10px rgba(31,138,134,0.7)"
+          : "cursor: not-allowed; color: #90a7ad; background: rgba(20,60,70,0.07)",
+      ].join(";"),
+      submitLabel: offline ? "Save encrypted package" : "Submit for verification",
+      notSubmitted: !submitted,
+      submitted,
+      doneTitle: offline ? "Saved on this device" : "Sent for verification",
+      doneBody: offline
+        ? "The encrypted package uploads automatically when connectivity returns. It keeps its temporary reference so it cannot be submitted twice."
+        : (late
+            ? "A Verification Officer will review the evidence, then a Senior Approver must approve the late registration before an NSN is issued."
+            : "A Verification Officer will review this application. An NSN is generated only after final approval."),
+      doneMeta: offline
+        ? "OFF-KD02-33871 · queued 08/13/2026 14:22"
+        : "APP-2026-118641 · submitted 08/13/2026 14:22 · K. Dane",
+      onReason: (e) => this.setState({ reason: e.target.value }),
+      toggleConfirm: () => this.setState({ confirmed: !confirmed }),
+      toggleOffline: () => this.setState({ offline: !offline }),
+      submit: () => { if (ready) this.setState({ submitted: true }); },
+      reset: () => this.setState({ submitted: false }),
+    };
+  }
+}
+</script>
+</body>
+</html>

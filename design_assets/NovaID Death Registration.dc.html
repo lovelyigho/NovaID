@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin: 0; padding: 0; }
+  body { background: #eef4f4; -webkit-font-smoothing: antialiased; }
+  a { color: #1f8a86; text-decoration: none; }
+  a:hover { color: #14615e; text-decoration: underline; }
+  ::selection { background: #cfe9e5; }
+  input, select, textarea { font-family: inherit; }
+</style>
+</helmet>
+<div style="min-height: 100vh; min-width: 1280px; display: flex; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #14232a; background: linear-gradient(135deg, #e9f4f1 0%, #f2f5fb 46%, #f7f1f7 100%);">
+
+  <aside style="width: {{ railWidth }}; flex: 0 0 {{ railWidth }}; background: linear-gradient(180deg, #123035 0%, #10262c 100%); display: flex; flex-direction: column; padding: 26px 16px 18px; box-sizing: border-box;">
+    <div onClick="{{ toggleRail }}" style="display: flex; justify-content: flex-end; margin-bottom: 10px; {{ railRowExtra }}">
+      <div style="width: 30px; height: 30px; border-radius: 9px; background: rgba(255,255,255,0.06); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3.5px; cursor: pointer;" style-hover="background: rgba(255,255,255,0.15);">
+        <div style="width: 13px; height: 1.5px; border-radius: 2px; background: #9dbcc2;"></div>
+        <div style="width: 13px; height: 1.5px; border-radius: 2px; background: #9dbcc2;"></div>
+        <div style="width: 13px; height: 1.5px; border-radius: 2px; background: #9dbcc2;"></div>
+      </div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 11px; padding: 0 8px 24px; {{ railRowExtra }}">
+      <div style="width: 32px; height: 32px; border-radius: 10px; background: linear-gradient(140deg, #5ec9bd, #4a9ec9); display: flex; align-items: center; justify-content: center;">
+        <div style="width: 11px; height: 11px; border-radius: 50%; border: 2.5px solid rgba(255,255,255,0.95); box-sizing: border-box;"></div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 1px; {{ hideLabel }}">
+        <div style="font-family: 'Jost', sans-serif; font-size: 17px; font-weight: 500; letter-spacing: 0.2px; color: #f2fbfa;">NovaID</div>
+        <div style="font-size: 9.5px; letter-spacing: 1.1px; text-transform: uppercase; color: #6f9299;">NICRS Console</div>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 3px;">
+      <div style="font-size: 9.5px; letter-spacing: 1.1px; text-transform: uppercase; color: #55787f; padding: 0 10px 9px; {{ hideLabel }}">Operations</div>
+      <div style="display: flex; align-items: center; gap: 11px; padding: 9px 10px; border-radius: 10px; color: #b6cdd1; font-size: 13.5px; {{ railRowExtra }}" style-hover="background: rgba(255,255,255,0.06); color: #e6f3f2;">
+        <div style="width: 16px; height: 16px; border-radius: 5px; background: rgba(255,255,255,0.13); display: flex; align-items: center; justify-content: center;"><div style="width: 6px; height: 6px; border-radius: 2px; background: currentColor; opacity: 0.7;"></div></div><span style="{{ hideLabel }} font-size: 13.5px;">Dashboard</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 11px; padding: 9px 10px; border-radius: 10px; color: #b6cdd1; font-size: 13.5px; {{ railRowExtra }}" style-hover="background: rgba(255,255,255,0.06); color: #e6f3f2;">
+        <div style="width: 16px; height: 16px; border-radius: 5px; background: rgba(255,255,255,0.13); display: flex; align-items: center; justify-content: center;"><div style="width: 6px; height: 6px; border-radius: 2px; background: currentColor; opacity: 0.7;"></div></div><span style="{{ hideLabel }} font-size: 13.5px;">Registrations</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 10px; background: linear-gradient(100deg, rgba(94,201,189,0.22), rgba(94,201,189,0.08)); box-shadow: inset 0 0 0 1px rgba(140,226,215,0.28); color: #f0fbfa; font-size: 13.5px; font-weight: 500; {{ railRowExtra }}">
+        <div style="width: 16px; height: 16px; border-radius: 4px; background: #5ec9bd; display: flex; align-items: center; justify-content: center;"><div style="width: 5px; height: 5px; border-radius: 50%; background: #10262c;"></div></div>
+        <span style="flex: 1; {{ hideLabel }}">Death registration</span>
+        <span style="{{ hideLabel }} font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; padding: 2px 6px; border-radius: 20px; background: #5ec9bd; color: #0d2226;">9</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 11px; padding: 9px 10px; border-radius: 10px; color: #b6cdd1; font-size: 13.5px; {{ railRowExtra }}" style-hover="background: rgba(255,255,255,0.06); color: #e6f3f2;">
+        <div style="width: 16px; height: 16px; border-radius: 5px; background: rgba(255,255,255,0.13); display: flex; align-items: center; justify-content: center;"><div style="width: 6px; height: 6px; border-radius: 2px; background: currentColor; opacity: 0.7;"></div></div><span style="{{ hideLabel }} font-size: 13.5px;">Corrections</span>
+      </div>
+      <div style="font-size: 9.5px; letter-spacing: 1.1px; text-transform: uppercase; color: #55787f; padding: 18px 10px 9px; {{ hideLabel }}">Critical</div>
+      <div style="display: flex; align-items: center; gap: 11px; padding: 9px 10px; border-radius: 10px; color: #b6cdd1; font-size: 13.5px; {{ railRowExtra }}" style-hover="background: rgba(255,255,255,0.06); color: #e6f3f2;">
+        <div style="width: 16px; height: 16px; border-radius: 5px; background: rgba(176,69,69,0.3); display: flex; align-items: center; justify-content: center;"><div style="width: 6px; height: 6px; border-radius: 2px; background: currentColor; opacity: 0.8;"></div></div><span style="{{ hideLabel }} font-size: 13.5px;">Reversal cases</span>
+        <span style="{{ hideLabel }} font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; padding: 2px 6px; border-radius: 20px; background: rgba(176,69,69,0.4); color: #ffeeee;">1</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 11px; padding: 9px 10px; border-radius: 10px; color: #b6cdd1; font-size: 13.5px; {{ railRowExtra }}" style-hover="background: rgba(255,255,255,0.06); color: #e6f3f2;">
+        <div style="width: 16px; height: 16px; border-radius: 5px; background: rgba(255,255,255,0.13); display: flex; align-items: center; justify-content: center;"><div style="width: 6px; height: 6px; border-radius: 2px; background: currentColor; opacity: 0.7;"></div></div><span style="{{ hideLabel }} font-size: 13.5px;">Audit log</span>
+      </div>
+    </div>
+
+    <div style="margin-top: auto; padding: 14px 12px; border-radius: 14px; background: rgba(255,255,255,0.055); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.07); display: flex; gap: 11px; align-items: center;">
+      <div style="width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(140deg, #7c8fd6, #5ec9bd); display: flex; align-items: center; justify-content: center; font-family: 'Jost', sans-serif; font-size: 13px; color: #0d2226; font-weight: 500;">AM</div>
+      <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0; {{ hideLabel }}">
+        <div style="font-size: 12.5px; color: #e9f5f4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">A. Meshko</div>
+        <div style="font-size: 10.5px; color: #7d9ea4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Senior Approver, North</div>
+      </div>
+    </div>
+  </aside>
+
+  <main style="flex: 1; min-width: 0; display: flex; flex-direction: column;">
+
+    <header style="display: flex; align-items: center; gap: 20px; padding: 18px 32px; background: rgba(255,255,255,0.55); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255,255,255,0.8);">
+      <div style="display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: #4f6a72;">
+        <span>Death registration</span>
+        <span style="color: #a8bcc1;">/</span>
+        <span style="font-family: 'IBM Plex Mono', monospace; color: #14232a;">{{ caseRef }}</span>
+      </div>
+      <div style="flex: 1;"></div>
+      <div style="display: flex; gap: 3px; padding: 3px; border-radius: 11px; background: rgba(255,255,255,0.7); box-shadow: inset 0 0 0 1px rgba(20,60,70,0.08);">
+        <div onClick="{{ modeRegister }}" style="{{ registerTab }}">Register a death</div>
+        <div onClick="{{ modeReverse }}" style="{{ reverseTab }}">Urgent reversal</div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 7px; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: #4f6a72;">
+        <div style="width: 6px; height: 6px; border-radius: 50%; background: #35946c;"></div>08/13/2026 14:22
+      </div>
+    </header>
+
+    <div style="flex: 1; padding: 26px 32px 44px; display: flex; flex-direction: column; gap: 20px;">
+
+      <sc-if value="{{ isReversal }}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; align-items: flex-start; gap: 15px; padding: 17px 20px; border-radius: 16px; background: linear-gradient(120deg, rgba(244,230,230,0.92), rgba(255,255,255,0.72)); box-shadow: inset 0 0 0 1px rgba(176,69,69,0.3);">
+          <span style="width: 10px; height: 10px; border-radius: 50%; background: #b04545; flex: none; margin-top: 4px;"></span>
+          <div style="flex: 1;">
+            <div style="font-size: 14px; font-weight: 600; color: #8d3232;">Critical incident — a living citizen is recorded as deceased</div>
+            <div style="font-size: 12.5px; color: #4f6a72; margin-top: 5px; line-height: 1.55;">An incorrect death registration is not a routine correction. Verification services return a deceased status until this is reversed, which can block the citizen from every connected government service. Treat as urgent.</div>
+          </div>
+        </div>
+      </sc-if>
+
+      <div style="display: flex; align-items: flex-start; flex-wrap: wrap; gap: 24px;">
+        <div style="display: flex; flex-direction: column; gap: 10px; flex: 1; min-width: 340px;">
+          <div style="display: flex; align-items: center; gap: 9px; flex-wrap: wrap;">
+            <span style="{{ sourcePill }}">{{ sourceLabel }}</span>
+            <span style="{{ statusPill }}">{{ statusLabel }}</span>
+            <span style="padding: 5px 11px; border-radius: 20px; background: rgba(255,255,255,0.75); box-shadow: inset 0 0 0 1px rgba(20,60,70,0.09); color: #4f6a72; font-size: 11.5px;">{{ scopeLabel }}</span>
+          </div>
+          <h1 style="font-family: 'Jost', sans-serif; font-size: 30px; font-weight: 500; letter-spacing: -0.2px; margin: 0; line-height: 1.2;">{{ headline }}</h1>
+          <p style="margin: 0; font-size: 13.5px; line-height: 1.55; color: #4f6a72; max-width: 680px; text-wrap: pretty;">{{ intro }}</p>
+        </div>
+        <div style="padding: 15px 17px; border-radius: 16px; background: rgba(255,255,255,0.72); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.9), 0 10px 26px -14px rgba(16,45,52,0.22); min-width: 210px;">
+          <div style="font-size: 10px; letter-spacing: 0.9px; text-transform: uppercase; color: #4f676e; margin-bottom: 9px;">Identity affected</div>
+          <div style="font-size: 14px;">{{ personName }}</div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; color: #4f6a72; margin-top: 5px;">{{ personNsn }}</div>
+          <div style="font-size: 11.5px; color: #4f676e; margin-top: 5px;">{{ personMeta }}</div>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: minmax(0, 1fr) 348px; gap: 20px; align-items: start;">
+
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+
+          <section style="border-radius: 20px; background: rgba(255,255,255,0.78); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.9), 0 16px 40px -22px rgba(16,45,52,0.26); overflow: hidden;">
+            <div style="display: flex; align-items: center; gap: 12px; padding: 17px 22px; border-bottom: 1px solid rgba(20,60,70,0.08);">
+              <span style="width: 22px; height: 22px; border-radius: 7px; background: #dff1ee; color: #14615e; font-family: 'IBM Plex Mono', monospace; font-size: 11px; display: flex; align-items: center; justify-content: center;">1</span>
+              <div style="font-family: 'Jost', sans-serif; font-size: 16px; font-weight: 500; flex: 1;">{{ section1 }}</div>
+            </div>
+            <div style="padding: 18px 22px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px;">
+              <sc-for list="{{ facts }}" as="x" hint-placeholder-count="9">
+                <div>
+                  <div style="font-size: 11px; color: #4f676e;">{{ x.label }}</div>
+                  <div style="{{ x.valueStyle }}">{{ x.value }}</div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="{{ noteStyle }}">{{ sectionNote }}</div>
+          </section>
+
+          <section style="border-radius: 20px; background: rgba(255,255,255,0.78); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.9), 0 16px 40px -22px rgba(16,45,52,0.26); overflow: hidden;">
+            <div style="display: flex; align-items: center; gap: 12px; padding: 17px 22px; border-bottom: 1px solid rgba(20,60,70,0.08);">
+              <span style="width: 22px; height: 22px; border-radius: 7px; background: #dff1ee; color: #14615e; font-family: 'IBM Plex Mono', monospace; font-size: 11px; display: flex; align-items: center; justify-content: center;">2</span>
+              <div style="font-family: 'Jost', sans-serif; font-size: 16px; font-weight: 500; flex: 1;">Evidence</div>
+              <span style="font-size: 11.5px; color: #4f676e;">{{ evidenceNote }}</span>
+            </div>
+            <div style="padding: 18px 22px; display: flex; flex-direction: column; gap: 9px;">
+              <sc-for list="{{ evidence }}" as="d" hint-placeholder-count="3">
+                <div style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 12px; background: rgba(255,255,255,0.72); box-shadow: inset 0 0 0 1px rgba(20,60,70,0.08);">
+                  <span style="width: 26px; height: 26px; border-radius: 8px; background: #e7eef0; flex: none;"></span>
+                  <div style="flex: 1; min-width: 0;">
+                    <div style="font-size: 12.5px;">{{ d.title }}</div>
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: #5a7178; margin-top: 3px;">{{ d.meta }}</div>
+                  </div>
+                  <span style="{{ d.tagStyle }}">{{ d.tag }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </section>
+
+          <section style="border-radius: 20px; background: rgba(255,255,255,0.78); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.9), 0 16px 40px -22px rgba(16,45,52,0.26); overflow: hidden;">
+            <div style="display: flex; align-items: center; gap: 12px; padding: 17px 22px; border-bottom: 1px solid rgba(20,60,70,0.08);">
+              <span style="width: 22px; height: 22px; border-radius: 7px; background: #dff1ee; color: #14615e; font-family: 'IBM Plex Mono', monospace; font-size: 11px; display: flex; align-items: center; justify-content: center;">3</span>
+              <div style="font-family: 'Jost', sans-serif; font-size: 16px; font-weight: 500; flex: 1;">{{ section3 }}</div>
+            </div>
+            <div style="padding: 18px 22px; display: flex; flex-direction: column; gap: 13px;">
+              <sc-for list="{{ effects }}" as="e" hint-placeholder-count="4">
+                <div style="display: flex; align-items: flex-start; gap: 11px;">
+                  <span style="{{ e.dot }}"></span>
+                  <div>
+                    <div style="font-size: 13px;">{{ e.label }}</div>
+                    <div style="font-size: 11.5px; color: #4f676e; margin-top: 3px; line-height: 1.45;">{{ e.note }}</div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </section>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+
+          <sc-if value="{{ pending }}" hint-placeholder-val="{{ true }}">
+            <section style="{{ decisionStyle }}">
+              <div style="font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 500;">{{ decisionTitle }}</div>
+              <div style="font-size: 11.5px; color: #4f6a72; line-height: 1.55;">{{ decisionNote }}</div>
+
+              <div style="display: flex; flex-direction: column; gap: 7px;">
+                <div style="display: flex; align-items: baseline; gap: 8px;">
+                  <label style="font-size: 12px; color: #4f6a72; font-weight: 500;">{{ rationaleLabel }}</label>
+                  <span style="font-size: 11px; color: #7a5312;">required</span>
+                </div>
+                <textarea onChange="{{ onRationale }}" placeholder="{{ rationalePlaceholder }}" style="width: 100%; box-sizing: border-box; min-height: 76px; resize: vertical; padding: 11px 12px; border-radius: 11px; border: 1px solid rgba(20,60,70,0.16); background: rgba(255,255,255,0.92); font-size: 12.5px; line-height: 1.5; color: #14232a; outline: none;" style-focus="border-color: #1f8a86; box-shadow: 0 0 0 3px rgba(31,138,134,0.12);"></textarea>
+              </div>
+
+              <div onClick="{{ toggleConfirm }}" style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer;">
+                <span style="{{ checkStyle }}"></span>
+                <span style="font-size: 12px; color: #4f6a72; line-height: 1.5;">{{ confirmCopy }}</span>
+              </div>
+
+              <div onClick="{{ submit }}" style="{{ submitStyle }}">{{ submitLabel }}</div>
+              <div style="font-size: 11px; color: #4f676e; line-height: 1.5;">{{ footnote }}</div>
+            </section>
+          </sc-if>
+
+          <sc-if value="{{ done }}" hint-placeholder-val="{{ false }}">
+            <section style="border-radius: 20px; background: linear-gradient(155deg, rgba(226,241,232,0.9), rgba(255,255,255,0.85)); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.95), 0 16px 40px -22px rgba(16,45,52,0.28); padding: 21px; display: flex; flex-direction: column; gap: 12px;">
+              <div style="width: 36px; height: 36px; border-radius: 12px; background: #cfe7d8; display: flex; align-items: center; justify-content: center;"><div style="width: 12px; height: 12px; border-radius: 50%; background: #24685a;"></div></div>
+              <div style="font-family: 'Jost', sans-serif; font-size: 17px; font-weight: 500; line-height: 1.3;">{{ doneTitle }}</div>
+              <div style="font-size: 12.5px; color: #4f6a72; line-height: 1.55;">{{ doneBody }}</div>
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: #5a7178;">{{ doneMeta }}</div>
+              <div onClick="{{ reset }}" style="align-self: flex-start; padding: 9px 14px; border-radius: 10px; background: rgba(255,255,255,0.85); box-shadow: inset 0 0 0 1px rgba(20,60,70,0.12); font-size: 12.5px; cursor: pointer;" style-hover="background: #fff;">Back to case</div>
+            </section>
+          </sc-if>
+
+          <section style="border-radius: 20px; background: rgba(255,255,255,0.72); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.9), 0 16px 40px -22px rgba(16,45,52,0.22); padding: 19px;">
+            <div style="font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 500; margin-bottom: 15px;">Case activity</div>
+            <sc-for list="{{ activity }}" as="a" hint-placeholder-count="4">
+              <div style="display: grid; grid-template-columns: 14px minmax(0, 1fr); gap: 12px; padding-bottom: 15px;">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                  <span style="width: 8px; height: 8px; border-radius: 50%; background: #a8bcc1; margin-top: 4px;"></span>
+                  <span style="flex: 1; width: 1px; background: rgba(20,60,70,0.12);"></span>
+                </div>
+                <div>
+                  <div style="font-size: 12.5px; line-height: 1.45;">{{ a.text }}</div>
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: #5a7178; margin-top: 3px;">{{ a.meta }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </section>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;requireSecondApprover&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;label&quot;:&quot;Require a separate approver&quot;,&quot;section&quot;:&quot;Policy&quot;}}">
+class Component extends DCLogic {
+  state = { collapsed: false, mode: "register", rationale: "", confirmed: false, done: false };
+
+  tab(key) {
+    const on = this.state.mode === key;
+    const danger = key === "reverse";
+    return [
+      "padding: 7px 13px",
+      "border-radius: 9px",
+      "font-size: 12px",
+      "cursor: pointer",
+      "white-space: nowrap",
+      "font-weight: " + (on ? "600" : "400"),
+      "color: " + (on ? (danger ? "#8d3232" : "#14232a") : "#4f6a72"),
+      "background: " + (on ? "#fff" : "transparent"),
+      "box-shadow: " + (on ? "0 2px 6px -2px rgba(16,45,52,0.22)" : "none"),
+    ].join(";");
+  }
+
+  pill(bg, fg) {
+    return "display: inline-flex; align-items: center; gap: 7px; padding: 5px 11px; border-radius: 20px; font-size: 11.5px; font-weight: 500; background: " + bg + "; color: " + fg;
+  }
+
+  fact(label, value, mono) {
+    return {
+      label,
+      value,
+      valueStyle: "margin-top: 4px; font-size: " + (mono ? "13px" : "13.5px") + (mono ? "; font-family: 'IBM Plex Mono', monospace" : ""),
+    };
+  }
+
+  renderVals() {
+    const requireTwo = this.props.requireSecondApprover ?? true;
+    const { mode, rationale, confirmed, done } = this.state;
+    const rev = mode === "reverse";
+    const ready = rationale.trim().length >= 20 && confirmed;
+
+    const registerFacts = [
+      this.fact("Date of death", "2026-08-09", true),
+      this.fact("Time of death", "22:40", true),
+      this.fact("Place of death", "Kandova Central Hospital"),
+      this.fact("Certifying professional", "Dr. L. Arany"),
+      this.fact("Notifying source", "OneHealth — connected facility"),
+      this.fact("Notification received", "08/10/2026 07:12", true),
+      this.fact("Notifier relationship", "Attending physician"),
+      this.fact("Identity match", "NSN verified against active record"),
+      this.fact("Conflicting information", "None detected"),
+    ];
+
+    const reverseFacts = [
+      this.fact("Recorded date of death", "2026-07-14", true),
+      this.fact("Recorded place", "Ostravo General Hospital"),
+      this.fact("Registered on", "07/17/2026", true),
+      this.fact("Registered by", "Officer P. Neruda"),
+      this.fact("Approved by", "A. Meshko, Senior Approver"),
+      this.fact("Reported by", "The citizen, in person"),
+      this.fact("Report received", "08/13/2026 11:05", true),
+      this.fact("Verified in person at", "Varanta Registration Centre"),
+      this.fact("Suspected cause", "Notification matched to the wrong NSN"),
+    ];
+
+    const registerEffects = [
+      { label: "Identity status changes to deceased", note: "The NSN and the full identity record are preserved, never deleted.", state: "warn" },
+      { label: "Connected systems receive the status update", note: "OneHealth and other approved institutions are notified.", state: "info" },
+      { label: "Subsequent use of the identity triggers an alert", note: "Any verification attempt after this point is flagged.", state: "warn" },
+      { label: "Prohibited use is blocked", note: "The identity cannot be used to obtain services or credentials.", state: "ok" },
+    ];
+
+    const reverseEffects = [
+      { label: "Deceased status is removed immediately", note: "Verification services stop returning a deceased result.", state: "ok" },
+      { label: "The original entry is preserved in history", note: "The error is not erased — it is recorded as reversed, with who approved both.", state: "info" },
+      { label: "Connected systems are corrected", note: "Every institution notified of the death receives the reversal.", state: "ok" },
+      { label: "A critical incident review opens", note: "How the wrong NSN was matched must be investigated, not just fixed.", state: "bad" },
+    ];
+
+    const dotColor = { ok: "#35946c", warn: "#c98a1e", bad: "#b04545", info: "rgba(20,60,70,0.35)" };
+    const map = (arr) => arr.map((e) => ({
+      label: e.label,
+      note: e.note,
+      dot: "width: 9px; height: 9px; border-radius: 50%; flex: none; margin-top: 5px; background: " + dotColor[e.state],
+    }));
+
+    return {
+      railWidth: this.state.collapsed ? "76px" : "244px",
+      hideLabel: this.state.collapsed ? "display: none;" : "",
+      railRowExtra: this.state.collapsed ? "justify-content: center;" : "",
+      toggleRail: () => this.setState({ collapsed: !this.state.collapsed }),
+      registerTab: this.tab("register"),
+      reverseTab: this.tab("reverse"),
+      modeRegister: () => this.setState({ mode: "register", rationale: "", confirmed: false, done: false }),
+      modeReverse: () => this.setState({ mode: "reverse", rationale: "", confirmed: false, done: false }),
+      isReversal: rev,
+      caseRef: rev ? "DTH-2026-00318-R" : "DTH-2026-00412",
+      sourceLabel: rev ? "Reported by the citizen" : "OneHealth notification",
+      sourcePill: rev ? this.pill("#f4e6e6", "#8d3232") : this.pill("#dff1ee", "#14615e"),
+      statusLabel: rev ? "Urgent reversal" : "Awaiting your approval",
+      statusPill: rev ? this.pill("#f4e6e6", "#8d3232") : this.pill("#fbeeda", "#7a5312"),
+      scopeLabel: rev ? "Critical incident · Sec. 7.15" : "Senior approval required",
+      headline: rev ? "Reverse an incorrect death registration" : "Death registration",
+      intro: rev
+        ? "Danika Orelle Vantis was recorded as deceased on 07/17/2026 and has attended a Registration Centre in person to report the error. Her identity was almost certainly matched to the wrong NSN during notification."
+        : "A death notification arrived from Kandova Central Hospital through OneHealth. The identity has been validated and no conflicting information was found. Approving this changes the citizen's identity status.",
+      personName: rev ? "Danika Orelle Vantis" : "Petar Miloski",
+      personNsn: rev ? "7204-3318-9050" : "5183-9024-6610",
+      personMeta: rev ? "Status: recorded deceased — disputed" : "Active citizen · born 1948-02-11",
+      section1: rev ? "The disputed registration" : "Notification details",
+      facts: rev ? reverseFacts : registerFacts,
+      sectionNote: rev
+        ? "A death notification for a different patient at Ostravo General carries a Legacy Patient Reference one digit apart from this citizen's. That is the likely origin of the error."
+        : "The notifying facility, the certifying professional and the notifier's relationship to the deceased are all recorded and authorised.",
+      noteStyle: "padding: 13px 22px; border-top: 1px solid rgba(20,60,70,0.06); font-size: 12px; line-height: 1.5; " +
+        (rev ? "background: rgba(244,230,230,0.5); color: #8d3232" : "background: rgba(251,238,218,0.5); color: #7a5312"),
+      evidenceNote: rev ? "Proof of life takes precedence" : "Standard evidence set",
+      evidence: (rev
+        ? [
+            { title: "In-person identity verification", meta: "Biometric match 0.97 · Varanta Centre, 08/13/2026", tag: "Confirmed", ok: true },
+            { title: "Citizen's signed statement", meta: "Witnessed by Centre Administrator", tag: "Confirmed", ok: true },
+            { title: "Original death notification", meta: "Retained for the incident review", tag: "Under review", ok: false },
+          ]
+        : [
+            { title: "Medical certificate of cause of death", meta: "KCH-DC-11840 · Dr. L. Arany", tag: "Verified", ok: true },
+            { title: "Facility death record", meta: "Submitted through OneHealth", tag: "Verified", ok: true },
+            { title: "Identity confirmation", meta: "Matched to NSN 5183-9024-6610", tag: "Verified", ok: true },
+          ]
+      ).map((d) => ({
+        title: d.title,
+        meta: d.meta,
+        tag: d.tag,
+        tagStyle: "font-size: 11px; white-space: nowrap; color: " + (d.ok ? "#24685a" : "#8d3232"),
+      })),
+      section3: rev ? "What reversal does" : "What approval does",
+      effects: map(rev ? reverseEffects : registerEffects),
+      pending: !done,
+      done,
+      decisionStyle: [
+        "border-radius: 20px",
+        "backdrop-filter: blur(18px)",
+        "-webkit-backdrop-filter: blur(18px)",
+        "padding: 19px",
+        "display: flex",
+        "flex-direction: column",
+        "gap: 13px",
+        rev
+          ? "background: linear-gradient(155deg, rgba(255,255,255,0.88), rgba(248,235,235,0.7)); box-shadow: inset 0 0 0 1px rgba(176,69,69,0.24), 0 16px 40px -22px rgba(16,45,52,0.28)"
+          : "background: rgba(255,255,255,0.82); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.95), 0 16px 40px -22px rgba(16,45,52,0.28)",
+      ].join(";"),
+      decisionTitle: rev ? "Authorise reversal" : "Your approval",
+      decisionNote: rev
+        ? "Reversal is immediate on your authority. The incident review runs afterwards and does not delay restoring the citizen's status."
+        : requireTwo
+          ? "You are the approving officer. The Verification Officer who reviewed this cannot also approve it."
+          : "Single-approver mode is enabled for this deployment.",
+      rationaleLabel: rev ? "Basis for reversal" : "Basis for approval",
+      rationalePlaceholder: rev
+        ? "Record the proof of life relied on and the suspected cause of the error."
+        : "Record the evidence relied on and any conflict you considered.",
+      onRationale: (e) => this.setState({ rationale: e.target.value }),
+      confirmCopy: rev
+        ? "I have verified this citizen is alive and understand this opens a critical incident review."
+        : "I have reviewed the evidence and confirm the identity and the death details match it.",
+      checkStyle: [
+        "width: 17px",
+        "height: 17px",
+        "border-radius: 5px",
+        "flex: none",
+        "margin-top: 1px",
+        "box-sizing: border-box",
+        confirmed
+          ? (rev
+              ? "background: #b04545; box-shadow: inset 0 0 0 4px #fff, inset 0 0 0 5px #b04545"
+              : "background: #1f8a86; box-shadow: inset 0 0 0 4px #fff, inset 0 0 0 5px #1f8a86")
+          : "background: transparent; border: 1.5px solid rgba(20,60,70,0.3)",
+      ].join(";"),
+      submitStyle: [
+        "padding: 12px",
+        "border-radius: 11px",
+        "text-align: center",
+        "font-size: 13px",
+        "font-weight: 600",
+        ready
+          ? (rev
+              ? "cursor: pointer; color: #fff; background: linear-gradient(100deg, #8d3232, #b04545); box-shadow: 0 8px 20px -10px rgba(141,50,50,0.7)"
+              : "cursor: pointer; color: #fff; background: linear-gradient(100deg, #1f8a86, #2f7d9b); box-shadow: 0 8px 20px -10px rgba(31,138,134,0.7)")
+          : "cursor: not-allowed; color: #90a7ad; background: rgba(20,60,70,0.07)",
+      ].join(";"),
+      submitLabel: rev ? "Reverse now — restores active status" : "Approve death registration",
+      footnote: rev
+        ? "The reversal, this rationale, and both the original and reversing officers are retained permanently."
+        : "The previous status, this rationale and your identity are recorded in the audit log.",
+      submit: () => { if (ready) this.setState({ done: true }); },
+      reset: () => this.setState({ done: false }),
+      doneTitle: rev ? "Active status restored" : "Death registration approved",
+      doneBody: rev
+        ? "Verification services no longer return a deceased result for this NSN. Every institution notified of the death has been sent the reversal, and a critical incident review is open with Compliance."
+        : "The identity status is now deceased. The NSN and record are preserved, connected systems have been notified, and any subsequent use of this identity will raise an alert.",
+      doneMeta: (rev ? "DTH-2026-00318-R · reversed" : "DTH-2026-00412 · approved") + " 08/13/2026 14:22 · A. Meshko",
+      activity: rev
+        ? [
+            { text: "Death registration approved", meta: "07/17/2026 10:22 · A. Meshko" },
+            { text: "Citizen reported the error in person at Varanta Centre", meta: "08/13/2026 11:05 · S. Bartok" },
+            { text: "In-person biometric verification returned 0.97", meta: "08/13/2026 11:31 · S. Bartok" },
+            { text: "Case escalated as a critical incident", meta: "08/13/2026 11:44 · System" },
+          ]
+        : [
+            { text: "Death notification received from Kandova Central Hospital", meta: "08/10/2026 07:12 · OneHealth" },
+            { text: "Identity validated against active record", meta: "08/10/2026 07:12 · System" },
+            { text: "Evidence reviewed, no conflicts found", meta: "08/12/2026 16:20 · V. Solano" },
+            { text: "Routed for senior approval", meta: "08/12/2026 16:21 · System" },
+          ],
+    };
+  }
+}
+</script>
+</body>
+</html>

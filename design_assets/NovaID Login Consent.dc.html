@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin: 0; padding: 0; }
+  body { background: #e8f2f2; -webkit-font-smoothing: antialiased; }
+  a { color: #1f8a86; text-decoration: none; }
+  a:hover { color: #14615e; text-decoration: underline; }
+  ::selection { background: #cfe9e5; }
+</style>
+</helmet>
+<div style="min-height: 100vh; box-sizing: border-box; display: flex; align-items: center; justify-content: center; padding: 44px 24px; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #14232a; background-color: #eaf3f3; background-image: radial-gradient(720px 520px at 12% -8%, rgba(122,214,201,0.52), transparent 62%), radial-gradient(680px 540px at 92% 6%, rgba(168,160,232,0.44), transparent 60%), radial-gradient(880px 680px at 58% 106%, rgba(146,196,232,0.42), transparent 60%);">
+
+  <div style="width: 100%; max-width: 468px; display: flex; flex-direction: column; gap: 16px;">
+
+    <div style="display: flex; align-items: center; justify-content: center; gap: 11px;">
+      <div style="width: 30px; height: 30px; border-radius: 10px; background: linear-gradient(140deg, #4fc0b4, #4a9ec9); display: flex; align-items: center; justify-content: center;">
+        <div style="width: 10px; height: 10px; border-radius: 50%; border: 2.5px solid rgba(255,255,255,0.95); box-sizing: border-box;"></div>
+      </div>
+      <div style="font-family: 'Jost', sans-serif; font-size: 17px; font-weight: 500; letter-spacing: 0.2px;">NovaID</div>
+    </div>
+
+    <sc-if value="{{ blocked }}" hint-placeholder-val="{{ false }}">
+      <section style="border-radius: 22px; padding: 28px; background: linear-gradient(155deg, rgba(255,255,255,0.78), rgba(248,235,235,0.6)); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.95), 0 24px 54px -26px rgba(14,52,58,0.42); display: flex; flex-direction: column; gap: 15px;">
+        <div style="width: 40px; height: 40px; border-radius: 13px; background: rgba(176,69,69,0.16); display: flex; align-items: center; justify-content: center;">
+          <div style="width: 4px; height: 15px; background: #8d3232; border-radius: 2px;"></div>
+        </div>
+        <div style="font-family: 'Jost', sans-serif; font-size: 21px; font-weight: 500; line-height: 1.3;">This service is not approved</div>
+        <p style="margin: 0; font-size: 13.5px; line-height: 1.6; color: #4f6a72; text-wrap: pretty;">Vitalis Clinic Portal is not on NICRA's approved list, so it cannot use Log in with NovaID. No part of your identity was shared, and the attempt has been recorded.</p>
+        <div style="padding: 12px 14px; border-radius: 12px; background: rgba(255,255,255,0.7); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #4f6a72; line-height: 1.6;">Blocked before any attribute was returned<br />08/13/2026 14:31 · logged</div>
+        <div style="padding: 12px; border-radius: 12px; text-align: center; font-size: 13px; font-weight: 500; color: #14232a; background: rgba(255,255,255,0.8); box-shadow: inset 0 0 0 1px rgba(18,55,64,0.12); cursor: pointer;" style-hover="background: #fff;">Return to safety</div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ onConsent }}" hint-placeholder-val="{{ true }}">
+      <section style="border-radius: 22px; background: linear-gradient(160deg, rgba(255,255,255,0.76), rgba(228,243,240,0.56)); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.95), 0 24px 54px -26px rgba(14,52,58,0.42); overflow: hidden;">
+
+        <div style="padding: 26px 26px 20px; display: flex; flex-direction: column; gap: 15px;">
+          <div style="display: flex; align-items: center; gap: 13px;">
+            <div style="width: 46px; height: 46px; flex: none; border-radius: 14px; background-color: #dbe9ec; background-image: repeating-linear-gradient(135deg, rgba(18,55,64,0.07) 0 6px, transparent 6px 12px); display: flex; align-items: flex-end; justify-content: center; padding-bottom: 4px;">
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 7.5px; color: #4f6a72;">logo</span>
+            </div>
+            <div style="min-width: 0;">
+              <div style="font-family: 'Jost', sans-serif; font-size: 17px; font-weight: 500;">OneHealth</div>
+              <div style="display: flex; align-items: center; gap: 6px; margin-top: 4px;">
+                <span style="width: 6px; height: 6px; border-radius: 50%; background: #35946c;"></span>
+                <span style="font-size: 11.5px; color: #24685a;">Approved by NICRA · Novaria Health Authority</span>
+              </div>
+            </div>
+          </div>
+
+          <h1 style="font-family: 'Jost', sans-serif; font-size: 23px; font-weight: 500; line-height: 1.3; margin: 0; letter-spacing: -0.2px;">OneHealth wants to verify your identity</h1>
+          <p style="margin: 0; font-size: 13.5px; line-height: 1.6; color: #4f6a72; text-wrap: pretty;">You are signing in as <strong style="font-weight: 600; color: #14232a;">Danika Orelle Vantis</strong>. Approving this does not create a separate account and does not give OneHealth access to your NovaID credentials.</p>
+        </div>
+
+        <div style="padding: 0 26px 20px;">
+          <div style="border-radius: 15px; background: rgba(255,255,255,0.7); box-shadow: inset 0 0 0 1px rgba(18,55,64,0.07); overflow: hidden;">
+            <div style="padding: 14px 16px 11px; font-size: 11px; letter-spacing: 0.9px; text-transform: uppercase; color: #4f6a72;">OneHealth will receive</div>
+            <div style="display: flex; flex-direction: column;">
+              <div style="display: flex; align-items: center; gap: 11px; padding: 11px 16px; border-top: 1px solid rgba(18,55,64,0.06);">
+                <span style="width: 17px; height: 17px; border-radius: 50%; background: rgba(53,148,108,0.18); display: flex; align-items: center; justify-content: center; flex: none;"><span style="width: 6px; height: 6px; border-radius: 50%; background: #24685a;"></span></span>
+                <span style="font-size: 13px; flex: 1;">Full legal name</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 11px; padding: 11px 16px; border-top: 1px solid rgba(18,55,64,0.06);">
+                <span style="width: 17px; height: 17px; border-radius: 50%; background: rgba(53,148,108,0.18); display: flex; align-items: center; justify-content: center; flex: none;"><span style="width: 6px; height: 6px; border-radius: 50%; background: #24685a;"></span></span>
+                <span style="font-size: 13px; flex: 1;">Date of birth</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 11px; padding: 11px 16px; border-top: 1px solid rgba(18,55,64,0.06);">
+                <span style="width: 17px; height: 17px; border-radius: 50%; background: rgba(53,148,108,0.18); display: flex; align-items: center; justify-content: center; flex: none;"><span style="width: 6px; height: 6px; border-radius: 50%; background: #24685a;"></span></span>
+                <span style="font-size: 13px; flex: 1;">A confirmation that your NSN is active</span>
+              </div>
+            </div>
+            <div style="padding: 13px 16px; border-top: 1px solid rgba(18,55,64,0.06); background: rgba(240,246,246,0.6);">
+              <div style="font-size: 11px; letter-spacing: 0.9px; text-transform: uppercase; color: #4f6a72; margin-bottom: 9px;">Never shared</div>
+              <div style="font-size: 12.5px; color: #4f6a72; line-height: 1.7;">Your NovaID password, PIN or biometrics · your NSN digits · your address or contact details · records held by any other institution</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="padding: 0 26px 24px; display: flex; flex-direction: column; gap: 10px;">
+          <div onClick="{{ goAuth }}" style="padding: 13px; border-radius: 13px; text-align: center; font-size: 13.5px; font-weight: 600; color: #fff; background: linear-gradient(100deg, #1f8a86, #2f7d9b); box-shadow: 0 12px 26px -12px rgba(31,138,134,0.85); cursor: pointer;">Continue to verify it's you</div>
+          <div style="padding: 12px; border-radius: 13px; text-align: center; font-size: 13px; font-weight: 500; color: #14232a; background: rgba(255,255,255,0.7); box-shadow: inset 0 0 0 1px rgba(18,55,64,0.11); cursor: pointer;" style-hover="background: #fff;">Cancel and return to OneHealth</div>
+          <div style="font-size: 11.5px; color: #5a7178; text-align: center; line-height: 1.55; margin-top: 3px;">This request is recorded in your access history, whether you approve it or not.</div>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ onAuth }}" hint-placeholder-val="{{ false }}">
+      <section style="border-radius: 22px; background: linear-gradient(160deg, rgba(255,255,255,0.78), rgba(232,240,250,0.58)); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.95), 0 24px 54px -26px rgba(14,52,58,0.42); padding: 26px; display: flex; flex-direction: column; gap: 18px;">
+        <div style="display: flex; flex-direction: column; gap: 7px;">
+          <h1 style="font-family: 'Jost', sans-serif; font-size: 21px; font-weight: 500; margin: 0; line-height: 1.3;">Verify it's you</h1>
+          <p style="margin: 0; font-size: 13px; line-height: 1.6; color: #4f6a72;">Choose how you want to confirm your identity for this sign-in.</p>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 9px;">
+          <div onClick="{{ pickPin }}" style="{{ stylePin }}" style-hover="border-color: rgba(31,138,134,0.5);">
+            <span style="{{ dotPin }}"></span>
+            <div style="min-width: 0;">
+              <div style="font-size: 13.5px; font-weight: 500;">NovaID PIN</div>
+              <div style="font-size: 11.5px; color: #5a7178; margin-top: 3px;">Six digits you set during activation</div>
+            </div>
+          </div>
+          <div onClick="{{ pickOtp }}" style="{{ styleOtp }}" style-hover="border-color: rgba(31,138,134,0.5);">
+            <span style="{{ dotOtp }}"></span>
+            <div style="min-width: 0;">
+              <div style="font-size: 13.5px; font-weight: 500;">One-time password</div>
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: #5a7178; margin-top: 3px;">Sent to 887 ••• ••90</div>
+            </div>
+          </div>
+          <div onClick="{{ pickDevice }}" style="{{ styleDevice }}" style-hover="border-color: rgba(31,138,134,0.5);">
+            <span style="{{ dotDevice }}"></span>
+            <div style="min-width: 0;">
+              <div style="font-size: 13.5px; font-weight: 500;">This device</div>
+              <div style="font-size: 11.5px; color: #5a7178; margin-top: 3px;">Fingerprint or face check on your own device</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 9px;">
+          <label style="font-size: 12px; color: #4f6a72; font-weight: 500;">{{ codeLabel }}</label>
+          <input onChange="{{ onCode }}" value="{{ code }}" inputmode="numeric" placeholder="••••••" style="width: 100%; box-sizing: border-box; padding: 13px 15px; border-radius: 12px; border: 1px solid rgba(18,55,64,0.16); background: rgba(255,255,255,0.9); font-family: 'IBM Plex Mono', monospace; font-size: 18px; letter-spacing: 5px; color: #14232a; outline: none;" style-focus="border-color: #1f8a86; box-shadow: 0 0 0 3px rgba(31,138,134,0.13);" />
+          <div style="font-size: 11.5px; color: #5a7178;">{{ codeHint }}</div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <div onClick="{{ confirm }}" style="{{ styleConfirm }}">Confirm and sign in</div>
+          <div onClick="{{ back }}" style="padding: 12px; border-radius: 13px; text-align: center; font-size: 13px; font-weight: 500; color: #14232a; background: rgba(255,255,255,0.7); box-shadow: inset 0 0 0 1px rgba(18,55,64,0.11); cursor: pointer;" style-hover="background: #fff;">Back</div>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ onDone }}" hint-placeholder-val="{{ false }}">
+      <section style="border-radius: 22px; background: linear-gradient(155deg, rgba(226,241,232,0.82), rgba(255,255,255,0.72)); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.95), 0 24px 54px -26px rgba(14,52,58,0.42); padding: 28px; display: flex; flex-direction: column; gap: 15px;">
+        <div style="width: 40px; height: 40px; border-radius: 13px; background: rgba(53,148,108,0.2); display: flex; align-items: center; justify-content: center;">
+          <div style="width: 13px; height: 13px; border-radius: 50%; background: #24685a;"></div>
+        </div>
+        <div style="font-family: 'Jost', sans-serif; font-size: 21px; font-weight: 500; line-height: 1.3;">Signed in to OneHealth</div>
+        <p style="margin: 0; font-size: 13.5px; line-height: 1.6; color: #4f6a72; text-wrap: pretty;">Returning you to OneHealth now. It received your name, date of birth and confirmation that your NSN is active — nothing else.</p>
+        <div style="padding: 12px 14px; border-radius: 12px; background: rgba(255,255,255,0.75); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #4f6a72; line-height: 1.6;">Authenticated 08/13/2026 14:31<br />Recorded in your access history</div>
+        <div onClick="{{ reset }}" style="align-self: flex-start; padding: 11px 15px; border-radius: 11px; background: rgba(255,255,255,0.8); box-shadow: inset 0 0 0 1px rgba(18,55,64,0.12); font-size: 12.5px; cursor: pointer;" style-hover="background: #fff;">Start again</div>
+      </section>
+    </sc-if>
+
+    <div style="text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: #5a7178;">NICRA · Novaria Identity and Civil Registration Authority</div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;unapprovedService&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;label&quot;:&quot;Requesting service is not approved&quot;,&quot;section&quot;:&quot;Scenario&quot;}}">
+class Component extends DCLogic {
+  state = { step: "consent", method: "pin", code: "" };
+
+  option(key) {
+    const on = this.state.method === key;
+    return [
+      "display: flex",
+      "align-items: center",
+      "gap: 12px",
+      "padding: 13px 14px",
+      "border-radius: 13px",
+      "cursor: pointer",
+      "border: 1.5px solid " + (on ? "rgba(31,138,134,0.55)" : "rgba(18,55,64,0.12)"),
+      "background: " + (on ? "rgba(223,241,238,0.7)" : "rgba(255,255,255,0.62)"),
+    ].join(";");
+  }
+
+  dot(key) {
+    const on = this.state.method === key;
+    return [
+      "width: 16px",
+      "height: 16px",
+      "border-radius: 50%",
+      "flex: none",
+      "box-sizing: border-box",
+      "border: " + (on ? "5px solid #1f8a86" : "1.5px solid rgba(18,55,64,0.28)"),
+      "background: " + (on ? "#fff" : "transparent"),
+    ].join(";");
+  }
+
+  renderVals() {
+    const blocked = this.props.unapprovedService ?? false;
+    const { step, method, code } = this.state;
+    const need = method === "device" ? 0 : 6;
+    const ready = code.replace(/\D/g, "").length >= need;
+
+    const labels = {
+      pin: ["Enter your six-digit PIN", "Never share your PIN with anyone, including NICRA staff."],
+      otp: ["Enter the code sent to your phone", "The code expires in five minutes."],
+      device: ["Confirm on this device", "No code needed — your device performs the check locally."],
+    };
+
+    return {
+      blocked,
+      onConsent: !blocked && step === "consent",
+      onAuth: !blocked && step === "auth",
+      onDone: !blocked && step === "done",
+      code,
+      codeLabel: labels[method][0],
+      codeHint: labels[method][1],
+      stylePin: this.option("pin"),
+      styleOtp: this.option("otp"),
+      styleDevice: this.option("device"),
+      dotPin: this.dot("pin"),
+      dotOtp: this.dot("otp"),
+      dotDevice: this.dot("device"),
+      styleConfirm: [
+        "padding: 13px",
+        "border-radius: 13px",
+        "text-align: center",
+        "font-size: 13.5px",
+        "font-weight: 600",
+        ready
+          ? "cursor: pointer; color: #fff; background: linear-gradient(100deg, #1f8a86, #2f7d9b); box-shadow: 0 12px 26px -12px rgba(31,138,134,0.85)"
+          : "cursor: not-allowed; color: #90a7ad; background: rgba(18,55,64,0.07)",
+      ].join(";"),
+      goAuth: () => this.setState({ step: "auth" }),
+      back: () => this.setState({ step: "consent" }),
+      pickPin: () => this.setState({ method: "pin", code: "" }),
+      pickOtp: () => this.setState({ method: "otp", code: "" }),
+      pickDevice: () => this.setState({ method: "device", code: "" }),
+      onCode: (e) => this.setState({ code: e.target.value.replace(/\D/g, "").slice(0, 6) }),
+      confirm: () => { if (ready) this.setState({ step: "done" }); },
+      reset: () => this.setState({ step: "consent", code: "" }),
+    };
+  }
+}
+</script>
+</body>
+</html>

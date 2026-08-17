@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin: 0; padding: 0; }
+  body { background: #e8f2f2; -webkit-font-smoothing: antialiased; }
+  a { color: #1f8a86; text-decoration: none; }
+  a:hover { color: #14615e; text-decoration: underline; }
+  ::selection { background: #cfe9e5; }
+</style>
+</helmet>
+<div style="min-height: 100vh; box-sizing: border-box; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #14232a; background-color: #eaf3f3; background-image: radial-gradient(760px 520px at 8% -6%, rgba(122,214,201,0.5), transparent 62%), radial-gradient(700px 560px at 96% 4%, rgba(168,160,232,0.42), transparent 60%), radial-gradient(900px 700px at 62% 108%, rgba(146,196,232,0.4), transparent 60%);">
+
+  <header style="display: flex; align-items: center; gap: 18px; padding: 18px 40px; background: rgba(255,255,255,0.42); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.65);">
+    <div style="display: flex; align-items: center; gap: 11px;">
+      <div style="width: 30px; height: 30px; border-radius: 10px; background: linear-gradient(140deg, #4fc0b4, #4a9ec9); display: flex; align-items: center; justify-content: center;">
+        <div style="width: 10px; height: 10px; border-radius: 50%; border: 2.5px solid rgba(255,255,255,0.95); box-sizing: border-box;"></div>
+      </div>
+      <div style="font-family: 'Jost', sans-serif; font-size: 17px; font-weight: 500; letter-spacing: 0.2px;">NovaID</div>
+    </div>
+    <div style="flex: 1;"></div>
+    <div style="display: flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 20px; background: rgba(255,255,255,0.6); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.85); font-size: 12.5px; color: #4f6a72;">
+      <span style="width: 7px; height: 7px; border-radius: 50%; background: #35946c;"></span>Secure session
+    </div>
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <div style="width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(140deg, #8f8ad9, #4fc0b4); display: flex; align-items: center; justify-content: center; font-family: 'Jost', sans-serif; font-size: 13px; font-weight: 500; color: #0d2226;">DV</div>
+      <div style="font-size: 13px;">Danika Vantis</div>
+    </div>
+  </header>
+
+  <div style="max-width: 1140px; margin: 0 auto; padding: 36px 40px 64px; display: flex; flex-direction: column; gap: 26px;">
+
+    <div style="display: flex; flex-direction: column; gap: 7px;">
+      <h1 style="font-family: 'Jost', sans-serif; font-size: 30px; font-weight: 500; letter-spacing: -0.2px; margin: 0;">Good afternoon, Danika</h1>
+      <p style="margin: 0; font-size: 14px; color: #4a6169;">Your identity record is active. Last accessed 08/11/2026 from Astrivo, Kolvira State.</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: minmax(0, 400px) minmax(0, 1fr); gap: 22px; align-items: start;">
+
+      <div style="display: flex; flex-direction: column; gap: 13px;">
+        <sc-if value="{{ cardFront }}" hint-placeholder-val="{{ true }}">
+          <div style="position: relative; border-radius: 22px; padding: 22px; background: linear-gradient(155deg, rgba(255,255,255,0.72), rgba(226,243,240,0.5)); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.95), 0 22px 50px -24px rgba(14,52,58,0.4); overflow: hidden;">
+            <div style="position: absolute; top: -60px; right: -50px; width: 190px; height: 190px; border-radius: 50%; background: radial-gradient(circle, rgba(122,214,201,0.5), transparent 68%);"></div>
+            <div style="position: relative; display: flex; flex-direction: column; gap: 18px;">
+              <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;">
+                <div>
+                  <div style="font-size: 10px; letter-spacing: 1.3px; text-transform: uppercase; color: #4f6a72;">Republic of Novaria</div>
+                  <div style="font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 500; margin-top: 3px;">Virtual Identity Card</div>
+                </div>
+                <div style="width: 26px; height: 26px; border-radius: 9px; background: linear-gradient(140deg, #4fc0b4, #4a9ec9); display: flex; align-items: center; justify-content: center;">
+                  <div style="width: 9px; height: 9px; border-radius: 50%; border: 2.5px solid rgba(255,255,255,0.95); box-sizing: border-box;"></div>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 16px;">
+                <div style="width: 84px; height: 104px; flex: none; border-radius: 12px; background-color: #dee9eb; background-image: repeating-linear-gradient(135deg, rgba(18,55,64,0.06) 0 7px, transparent 7px 14px); display: flex; align-items: flex-end; justify-content: center; padding-bottom: 7px;">
+                  <span style="font-family: 'IBM Plex Mono', monospace; font-size: 8px; color: #4a6169;">photo</span>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 11px; min-width: 0;">
+                  <div>
+                    <div style="font-size: 10.5px; letter-spacing: 0.9px; text-transform: uppercase; color: #4f676e;">Full name</div>
+                    <div style="font-size: 15px; font-weight: 500; margin-top: 2px; line-height: 1.3;">Danika Orelle Vantis</div>
+                  </div>
+                  <div>
+                    <div style="font-size: 10.5px; letter-spacing: 0.9px; text-transform: uppercase; color: #4f676e;">{{ numberLabel }}</div>
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 17px; font-weight: 500; letter-spacing: 0.6px; margin-top: 3px;">{{ number }}</div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; padding-top: 15px; border-top: 1px solid rgba(18,55,64,0.1);">
+                <div>
+                  <div style="font-size: 10.5px; letter-spacing: 0.8px; text-transform: uppercase; color: #4f676e;">Date of birth</div>
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; margin-top: 3px;">1994-07-22</div>
+                </div>
+                <div>
+                  <div style="font-size: 10.5px; letter-spacing: 0.8px; text-transform: uppercase; color: #4f676e;">Sex</div>
+                  <div style="font-size: 12px; margin-top: 3px;">Female</div>
+                </div>
+                <div>
+                  <div style="font-size: 10.5px; letter-spacing: 0.8px; text-transform: uppercase; color: #4f676e;">Status</div>
+                  <div style="font-size: 12px; margin-top: 3px; color: #24685a;">{{ statusLabel }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ cardBack }}" hint-placeholder-val="{{ false }}">
+          <div style="border-radius: 22px; padding: 22px; background: linear-gradient(155deg, rgba(237,240,252,0.7), rgba(255,255,255,0.62)); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.95), 0 22px 50px -24px rgba(14,52,58,0.4); display: flex; flex-direction: column; gap: 17px;">
+            <div style="font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 500;">Verification</div>
+            <div style="display: flex; gap: 16px; align-items: center;">
+              <div style="width: 92px; height: 92px; flex: none; border-radius: 12px; background-color: #e2e8f2; background-image: repeating-linear-gradient(90deg, rgba(18,55,64,0.09) 0 4px, transparent 4px 8px), repeating-linear-gradient(0deg, rgba(18,55,64,0.09) 0 4px, transparent 4px 8px); display: flex; align-items: flex-end; justify-content: center; padding-bottom: 6px;">
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 8px; color: #4a6169;">scan code</span>
+              </div>
+              <div style="font-size: 12px; color: #4a6169; line-height: 1.55;">An authorised officer can verify this card without receiving any information beyond what their purpose permits.</div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 9px; padding-top: 15px; border-top: 1px solid rgba(18,55,64,0.1);">
+              <div style="display: flex; justify-content: space-between; font-size: 11.5px;"><span style="color: #4f676e;">Card serial</span><span style="font-family: 'IBM Plex Mono', monospace;">NV-VC-88214-0397</span></div>
+              <div style="display: flex; justify-content: space-between; font-size: 11.5px;"><span style="color: #4f676e;">Issued</span><span style="font-family: 'IBM Plex Mono', monospace;">03/12/2025 · NICRA</span></div>
+              <div style="display: flex; justify-content: space-between; font-size: 11.5px;"><span style="color: #4f676e;">Photo update due</span><span style="font-family: 'IBM Plex Mono', monospace;">2035</span></div>
+            </div>
+            <div style="font-size: 10.5px; color: #4f676e; line-height: 1.5;">This card is not a physical credential. Losing access to it never changes your number.</div>
+          </div>
+        </sc-if>
+
+        <div style="display: flex; gap: 9px;">
+          <div onClick="{{ flip }}" style="flex: 1; padding: 11px; border-radius: 12px; text-align: center; font-size: 12.5px; font-weight: 500; color: #14232a; background: rgba(255,255,255,0.66); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.9); cursor: pointer;" style-hover="background: rgba(255,255,255,0.9);">{{ flipLabel }}</div>
+          <div onClick="{{ toggleNumber }}" style="flex: 1; padding: 11px; border-radius: 12px; text-align: center; font-size: 12.5px; font-weight: 500; color: #14232a; background: rgba(255,255,255,0.66); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.9); cursor: pointer;" style-hover="background: rgba(255,255,255,0.9);">{{ revealLabel }}</div>
+          <div onClick="{{ print }}" style="flex: 1; padding: 11px; border-radius: 12px; text-align: center; font-size: 12.5px; font-weight: 600; color: #ffffff; background: linear-gradient(100deg, #1f8a86, #2f7d9b); box-shadow: 0 10px 22px -12px rgba(31,138,134,0.8); cursor: pointer;">Print card</div>
+        </div>
+        <sc-if value="{{ printed }}" hint-placeholder-val="{{ false }}">
+          <div style="padding: 11px 13px; border-radius: 12px; background: rgba(226,241,232,0.8); font-size: 11.5px; color: #1f5c44; line-height: 1.5;">Print sheet prepared. Every card print is recorded in your access history.</div>
+        </sc-if>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 22px;">
+
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px;">
+          <div style="padding: 17px; border-radius: 18px; background: linear-gradient(150deg, rgba(255,255,255,0.72), rgba(224,242,238,0.55)); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.92), 0 14px 34px -20px rgba(14,52,58,0.3); cursor: pointer; display: flex; flex-direction: column; gap: 9px;" style-hover="box-shadow: inset 0 0 0 1px rgba(255,255,255,1), 0 18px 40px -18px rgba(14,52,58,0.36);">
+            <div style="width: 30px; height: 30px; border-radius: 10px; background: rgba(79,192,180,0.24); display: flex; align-items: center; justify-content: center;"><div style="width: 10px; height: 10px; border-radius: 3px; border: 2px solid #14706c; box-sizing: border-box;"></div></div>
+            <div style="font-size: 13.5px; font-weight: 500;">Update contact details</div>
+            <div style="font-size: 11.5px; color: #5a7178; line-height: 1.45;">Phone, email or address. Takes effect after validation.</div>
+          </div>
+          <div style="padding: 17px; border-radius: 18px; background: linear-gradient(150deg, rgba(255,255,255,0.72), rgba(233,231,247,0.55)); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.92), 0 14px 34px -20px rgba(14,52,58,0.3); cursor: pointer; display: flex; flex-direction: column; gap: 9px;" style-hover="box-shadow: inset 0 0 0 1px rgba(255,255,255,1), 0 18px 40px -18px rgba(14,52,58,0.36);">
+            <div style="width: 30px; height: 30px; border-radius: 10px; background: rgba(143,138,217,0.24); display: flex; align-items: center; justify-content: center;"><div style="width: 10px; height: 10px; border-radius: 50%; border: 2px solid #5b56a8; box-sizing: border-box;"></div></div>
+            <div style="font-size: 13.5px; font-weight: 500;">Request a correction</div>
+            <div style="font-size: 11.5px; color: #5a7178; line-height: 1.45;">For name, date of birth or parentage. Evidence required.</div>
+          </div>
+          <div style="padding: 17px; border-radius: 18px; background: linear-gradient(150deg, rgba(255,255,255,0.72), rgba(230,240,248,0.55)); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.92), 0 14px 34px -20px rgba(14,52,58,0.3); cursor: pointer; display: flex; flex-direction: column; gap: 9px;" style-hover="box-shadow: inset 0 0 0 1px rgba(255,255,255,1), 0 18px 40px -18px rgba(14,52,58,0.36);">
+            <div style="width: 30px; height: 30px; border-radius: 10px; background: rgba(74,158,201,0.22); display: flex; align-items: center; justify-content: center;"><div style="width: 11px; height: 2px; background: #2b6d90;"></div></div>
+            <div style="font-size: 13.5px; font-weight: 500;">Track a request</div>
+            <div style="font-size: 11.5px; color: #5a7178; line-height: 1.45;">See where a submission has reached.</div>
+          </div>
+          <div style="padding: 17px; border-radius: 18px; background: linear-gradient(150deg, rgba(255,255,255,0.72), rgba(248,232,232,0.5)); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.92), 0 14px 34px -20px rgba(14,52,58,0.3); cursor: pointer; display: flex; flex-direction: column; gap: 9px;" style-hover="box-shadow: inset 0 0 0 1px rgba(255,255,255,1), 0 18px 40px -18px rgba(14,52,58,0.36);">
+            <div style="width: 30px; height: 30px; border-radius: 10px; background: rgba(176,69,69,0.16); display: flex; align-items: center; justify-content: center;"><div style="width: 3px; height: 11px; background: #8d3232;"></div></div>
+            <div style="font-size: 13.5px; font-weight: 500;">Report identity misuse</div>
+            <div style="font-size: 11.5px; color: #5a7178; line-height: 1.45;">If you believe someone has used your identity.</div>
+          </div>
+        </div>
+
+        <section style="border-radius: 20px; background: rgba(255,255,255,0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.92), 0 18px 44px -24px rgba(14,52,58,0.32); overflow: hidden;">
+          <div style="display: flex; gap: 4px; padding: 14px 18px 0;">
+            <div onClick="{{ tabInfo }}" style="{{ tabInfoStyle }}">My information</div>
+            <div onClick="{{ tabReq }}" style="{{ tabReqStyle }}">Requests</div>
+            <div onClick="{{ tabAccess }}" style="{{ tabAccessStyle }}">Access history</div>
+          </div>
+          <div style="height: 1px; background: rgba(18,55,64,0.08);"></div>
+
+          <sc-if value="{{ onInfo }}" hint-placeholder-val="{{ true }}">
+            <div style="padding: 20px 22px;">
+              <div style="padding: 11px 13px; border-radius: 11px; background: rgba(79,192,180,0.11); font-size: 11.5px; color: #1c5c59; line-height: 1.5; margin-bottom: 18px;">Fields marked with a lock are part of your legal identity. They can only be changed through a correction request with supporting evidence.</div>
+              <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px 0; background: rgba(18,55,64,0.07);">
+                <div style="background: rgba(255,255,255,0.72); padding: 13px 15px; display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+                  <div><div style="font-size: 11px; color: #4f676e;">Legal name</div><div style="font-size: 13.5px; margin-top: 3px;">Danika Orelle Vantis</div></div>
+                  <span style="width: 15px; height: 15px; border-radius: 4px; background: rgba(18,55,64,0.12); flex: none;"></span>
+                </div>
+                <div style="background: rgba(255,255,255,0.72); padding: 13px 15px; display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+                  <div><div style="font-size: 11px; color: #4f676e;">Date of birth</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; margin-top: 3px;">1994-07-22</div></div>
+                  <span style="width: 15px; height: 15px; border-radius: 4px; background: rgba(18,55,64,0.12); flex: none;"></span>
+                </div>
+                <div style="background: rgba(255,255,255,0.72); padding: 13px 15px; display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+                  <div><div style="font-size: 11px; color: #4f676e;">Place of birth</div><div style="font-size: 13.5px; margin-top: 3px;">Astrivo, Kolvira State</div></div>
+                  <span style="width: 15px; height: 15px; border-radius: 4px; background: rgba(18,55,64,0.12); flex: none;"></span>
+                </div>
+                <div style="background: rgba(255,255,255,0.72); padding: 13px 15px; display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+                  <div><div style="font-size: 11px; color: #4f676e;">Citizenship</div><div style="font-size: 13.5px; margin-top: 3px;">{{ citizenshipLabel }}</div></div>
+                  <span style="width: 15px; height: 15px; border-radius: 4px; background: rgba(18,55,64,0.12); flex: none;"></span>
+                </div>
+                <div style="background: rgba(255,255,255,0.72); padding: 13px 15px; display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+                  <div><div style="font-size: 11px; color: #4f676e;">Phone</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; margin-top: 3px;">887 412 3390</div></div>
+                  <span style="font-size: 11.5px; color: #1f8a86; font-weight: 500; cursor: pointer;">Update</span>
+                </div>
+                <div style="background: rgba(255,255,255,0.72); padding: 13px 15px; display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+                  <div style="min-width: 0;"><div style="font-size: 11px; color: #4f676e;">Email</div><div style="font-size: 13.5px; margin-top: 3px; overflow: hidden; text-overflow: ellipsis;">danika.vantis@zizimail.ca</div></div>
+                  <span style="font-size: 11.5px; color: #1f8a86; font-weight: 500; cursor: pointer;">Update</span>
+                </div>
+                <div style="background: rgba(255,255,255,0.72); padding: 13px 15px; display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+                  <div><div style="font-size: 11px; color: #4f676e;">Residential address</div><div style="font-size: 13.5px; margin-top: 3px;">22 Ferrow Lane, Astrivo</div></div>
+                  <span style="font-size: 11.5px; color: #1f8a86; font-weight: 500; cursor: pointer;">Update</span>
+                </div>
+                <div style="background: rgba(255,255,255,0.72); padding: 13px 15px; display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+                  <div><div style="font-size: 11px; color: #4f676e;">Preferred notifications</div><div style="font-size: 13.5px; margin-top: 3px;">SMS</div></div>
+                  <span style="font-size: 11.5px; color: #1f8a86; font-weight: 500; cursor: pointer;">Update</span>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ onReq }}" hint-placeholder-val="{{ false }}">
+            <div style="padding: 20px 22px; display: flex; flex-direction: column; gap: 11px;">
+              <div style="padding: 15px; border-radius: 14px; background: rgba(255,255,255,0.74); box-shadow: inset 0 0 0 1px rgba(18,55,64,0.07); display: flex; align-items: center; gap: 14px;">
+                <div style="flex: 1; min-width: 0;">
+                  <div style="font-size: 13.5px; font-weight: 500;">Address change</div>
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #4f676e; margin-top: 4px;">REQ-2026-77410 · submitted 08/09/2026</div>
+                </div>
+                <span style="padding: 5px 11px; border-radius: 20px; background: rgba(53,148,108,0.15); color: #24685a; font-size: 11.5px; font-weight: 500;">Approved</span>
+              </div>
+              <div style="padding: 15px; border-radius: 14px; background: rgba(255,255,255,0.74); box-shadow: inset 0 0 0 1px rgba(18,55,64,0.07); display: flex; align-items: center; gap: 14px;">
+                <div style="flex: 1; min-width: 0;">
+                  <div style="font-size: 13.5px; font-weight: 500;">Surname correction</div>
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #4f676e; margin-top: 4px;">REQ-2026-79233 · submitted 08/12/2026</div>
+                  <div style="font-size: 11.5px; color: #7a5312; margin-top: 7px; line-height: 1.45;">A Verification Officer has asked for a marriage certificate or gazette notice.</div>
+                </div>
+                <span style="padding: 5px 11px; border-radius: 20px; background: rgba(201,138,30,0.18); color: #7a5312; font-size: 11.5px; font-weight: 500; white-space: nowrap;">Evidence needed</span>
+              </div>
+              <div style="padding: 15px; border-radius: 14px; background: rgba(255,255,255,0.74); box-shadow: inset 0 0 0 1px rgba(18,55,64,0.07); display: flex; align-items: center; gap: 14px;">
+                <div style="flex: 1; min-width: 0;">
+                  <div style="font-size: 13.5px; font-weight: 500;">Photograph update</div>
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #4f676e; margin-top: 4px;">REQ-2026-71880 · submitted 07/28/2026</div>
+                </div>
+                <span style="padding: 5px 11px; border-radius: 20px; background: rgba(74,158,201,0.18); color: #23617f; font-size: 11.5px; font-weight: 500;">In review</span>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ onAccess }}" hint-placeholder-val="{{ false }}">
+            <div style="padding: 20px 22px; display: flex; flex-direction: column; gap: 0;">
+              <div style="font-size: 11.5px; color: #5a7178; line-height: 1.5; margin-bottom: 16px;">Institutions that verified your identity. You see the purpose, not the information they received.</div>
+              <sc-for list="{{ access }}" as="row" hint-placeholder-count="4">
+                <div style="display: flex; align-items: center; gap: 14px; padding: 13px 0; border-bottom: 1px solid rgba(18,55,64,0.07);">
+                  <div style="width: 32px; height: 32px; border-radius: 10px; background: rgba(18,55,64,0.07); flex: none;"></div>
+                  <div style="flex: 1; min-width: 0;">
+                    <div style="font-size: 13px;">{{ row.org }}</div>
+                    <div style="font-size: 11.5px; color: #4f676e; margin-top: 3px;">{{ row.purpose }}</div>
+                  </div>
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #4f676e; white-space: nowrap;">{{ row.when }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </section>
+      </div>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 14px; padding: 16px 20px; border-radius: 16px; background: rgba(255,255,255,0.5); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.8);">
+      <div style="font-size: 11.5px; color: #5a7178; line-height: 1.55; flex: 1;">NovaID is operated by the Novaria Identity and Civil Registration Authority. Your number is never reissued, and no connected service receives information beyond its approved purpose.</div>
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: #5a7178; white-space: nowrap;">NICRA · nova.id</div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;residentMode&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;label&quot;:&quot;Resident (NRN) instead of citizen (NSN)&quot;,&quot;section&quot;:&quot;Identity&quot;},&quot;showAccessHistory&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;label&quot;:&quot;Show access history to citizen&quot;,&quot;section&quot;:&quot;Privacy&quot;}}">
+class Component extends DCLogic {
+  state = { face: "front", revealed: false, tab: "info", printed: false };
+
+  tab(key, label) {
+    const on = this.state.tab === key;
+    return [
+      "padding: 10px 15px",
+      "border-radius: 11px 11px 0 0",
+      "font-size: 13px",
+      "cursor: pointer",
+      "font-weight: " + (on ? "600" : "400"),
+      "color: " + (on ? "#14232a" : "#5a7178"),
+      "background: " + (on ? "rgba(255,255,255,0.85)" : "transparent"),
+      "box-shadow: " + (on ? "inset 0 1.5px 0 0 #1f8a86" : "none"),
+    ].join(";");
+  }
+
+  renderVals() {
+    const resident = this.props.residentMode ?? false;
+    const showAccess = this.props.showAccessHistory ?? true;
+    const { face, revealed, tab, printed } = this.state;
+    const num = resident ? "6180-2947-3310" : "7204-3318-9050";
+
+    const access = [
+      { org: "OneHealth — Astrivo General Hospital", purpose: "Patient identity verification", when: "08/11/2026" },
+      { org: "Novaria Health Authority", purpose: "Enrolment eligibility check", when: "07/30/2026" },
+      { org: "NICRA — Kolvira Registration Centre", purpose: "Correction request review", when: "07/28/2026" },
+      { org: "Police Services", purpose: "Lawful identity verification", when: "06/14/2026" },
+    ];
+
+    return {
+      cardFront: face === "front",
+      cardBack: face === "back",
+      flipLabel: face === "front" ? "Show back" : "Show front",
+      numberLabel: resident ? "Novaria Resident Number" : "Novaria Social Number",
+      number: revealed ? num : "••••-••••-" + num.slice(-4),
+      revealLabel: revealed ? "Hide number" : "Reveal number",
+      statusLabel: resident ? "Lawful resident" : "Active citizen",
+      citizenshipLabel: resident ? "Lawful resident (NRN holder)" : "Citizen by birth",
+      onInfo: tab === "info",
+      onReq: tab === "requests",
+      onAccess: tab === "access",
+      tabInfoStyle: this.tab("info"),
+      tabReqStyle: this.tab("requests"),
+      tabAccessStyle: this.tab("access"),
+      access: showAccess ? access : [],
+      printed,
+      flip: () => this.setState({ face: face === "front" ? "back" : "front" }),
+      toggleNumber: () => this.setState({ revealed: !revealed }),
+      print: () => this.setState({ printed: true }),
+      tabInfo: () => this.setState({ tab: "info" }),
+      tabReq: () => this.setState({ tab: "requests" }),
+      tabAccess: () => this.setState({ tab: "access" }),
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin: 0; padding: 0; }
+  body { background: #eef4f4; -webkit-font-smoothing: antialiased; }
+  a { color: #1f8a86; text-decoration: none; }
+  a:hover { color: #14615e; text-decoration: underline; }
+  ::selection { background: #cfe9e5; }
+  input, select { font-family: inherit; }
+</style>
+</helmet>
+<div style="min-height: 100vh; min-width: 1600px; display: flex; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #14232a; background: linear-gradient(135deg, #e9f4f1 0%, #f2f5fb 46%, #f7f1f7 100%);">
+
+  <aside style="width: {{ railWidth }}; flex: 0 0 {{ railWidth }}; background: linear-gradient(180deg, #123035 0%, #10262c 100%); display: flex; flex-direction: column; padding: 26px 16px 18px; box-sizing: border-box;">
+    <div onClick="{{ toggleRail }}" style="display: flex; justify-content: flex-end; margin-bottom: 10px; {{ railRowExtra }}">
+      <div style="width: 30px; height: 30px; border-radius: 9px; background: rgba(255,255,255,0.06); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3.5px; cursor: pointer;" style-hover="background: rgba(255,255,255,0.15);">
+        <div style="width: 13px; height: 1.5px; border-radius: 2px; background: #9dbcc2;"></div>
+        <div style="width: 13px; height: 1.5px; border-radius: 2px; background: #9dbcc2;"></div>
+        <div style="width: 13px; height: 1.5px; border-radius: 2px; background: #9dbcc2;"></div>
+      </div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 11px; padding: 0 8px 24px; {{ railRowExtra }}">
+      <div style="width: 32px; height: 32px; border-radius: 10px; background: linear-gradient(140deg, #5ec9bd, #4a9ec9); display: flex; align-items: center; justify-content: center;">
+        <div style="width: 11px; height: 11px; border-radius: 50%; border: 2.5px solid rgba(255,255,255,0.95); box-sizing: border-box;"></div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 1px; {{ hideLabel }}">
+        <div style="font-family: 'Jost', sans-serif; font-size: 17px; font-weight: 500; letter-spacing: 0.2px; color: #f2fbfa;">NovaID</div>
+        <div style="font-size: 9.5px; letter-spacing: 1.1px; text-transform: uppercase; color: #6f9299;">NICRS Console</div>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 3px;">
+      <div style="font-size: 9.5px; letter-spacing: 1.1px; text-transform: uppercase; color: #55787f; padding: 0 10px 9px; {{ hideLabel }}">Assurance</div>
+      <div style="display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 10px; background: linear-gradient(100deg, rgba(94,201,189,0.22), rgba(94,201,189,0.08)); box-shadow: inset 0 0 0 1px rgba(140,226,215,0.28); color: #f0fbfa; font-size: 13.5px; font-weight: 500; {{ railRowExtra }}">
+        <div style="width: 16px; height: 16px; border-radius: 4px; background: #5ec9bd; display: flex; align-items: center; justify-content: center;"><div style="width: 5px; height: 5px; border-radius: 50%; background: #10262c;"></div></div>
+        <span style="flex: 1; {{ hideLabel }}">Audit log</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 11px; padding: 9px 10px; border-radius: 10px; color: #b6cdd1; font-size: 13.5px; {{ railRowExtra }}" style-hover="background: rgba(255,255,255,0.06); color: #e6f3f2;">
+        <div style="width: 16px; height: 16px; border-radius: 5px; background: rgba(255,255,255,0.13); display: flex; align-items: center; justify-content: center;"><div style="width: 6px; height: 6px; border-radius: 2px; background: currentColor; opacity: 0.7;"></div></div><span style="{{ hideLabel }} font-size: 13.5px;">Security exceptions</span>
+        <span style="{{ hideLabel }} font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; padding: 2px 6px; border-radius: 20px; background: rgba(176,69,69,0.35); color: #ffeeee;">17</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 11px; padding: 9px 10px; border-radius: 10px; color: #b6cdd1; font-size: 13.5px; {{ railRowExtra }}" style-hover="background: rgba(255,255,255,0.06); color: #e6f3f2;">
+        <div style="width: 16px; height: 16px; border-radius: 5px; background: rgba(255,255,255,0.13); display: flex; align-items: center; justify-content: center;"><div style="width: 6px; height: 6px; border-radius: 2px; background: currentColor; opacity: 0.7;"></div></div><span style="{{ hideLabel }} font-size: 13.5px;">Access reviews</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 11px; padding: 9px 10px; border-radius: 10px; color: #b6cdd1; font-size: 13.5px; {{ railRowExtra }}" style-hover="background: rgba(255,255,255,0.06); color: #e6f3f2;">
+        <div style="width: 16px; height: 16px; border-radius: 5px; background: rgba(255,255,255,0.13); display: flex; align-items: center; justify-content: center;"><div style="width: 6px; height: 6px; border-radius: 2px; background: currentColor; opacity: 0.7;"></div></div><span style="{{ hideLabel }} font-size: 13.5px;">Reports</span>
+      </div>
+      <div style="font-size: 9.5px; letter-spacing: 1.1px; text-transform: uppercase; color: #55787f; padding: 18px 10px 9px; {{ hideLabel }}">Reference</div>
+      <div style="display: flex; align-items: center; gap: 11px; padding: 9px 10px; border-radius: 10px; color: #b6cdd1; font-size: 13.5px; {{ railRowExtra }}" style-hover="background: rgba(255,255,255,0.06); color: #e6f3f2;">
+        <div style="width: 16px; height: 16px; border-radius: 5px; background: rgba(255,255,255,0.13); display: flex; align-items: center; justify-content: center;"><div style="width: 6px; height: 6px; border-radius: 2px; background: currentColor; opacity: 0.7;"></div></div><span style="{{ hideLabel }} font-size: 13.5px;">Event catalogue</span>
+      </div>
+    </div>
+
+    <div style="margin-top: auto; padding: 14px 12px; border-radius: 14px; background: rgba(255,255,255,0.055); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.07); display: flex; gap: 11px; align-items: center; {{ railRowExtra }}">
+      <div style="width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(140deg, #7c8fd6, #5ec9bd); display: flex; align-items: center; justify-content: center; font-family: 'Jost', sans-serif; font-size: 13px; color: #0d2226; font-weight: 500;">{{ meInitials }}</div>
+      <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0; {{ hideLabel }}">
+        <div style="font-size: 12.5px; color: #e9f5f4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ meName }}</div>
+        <div style="font-size: 10.5px; color: #7d9ea4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ meRole }}</div>
+      </div>
+    </div>
+  </aside>
+
+  <main style="flex: 1; min-width: 0; display: flex; flex-direction: column;">
+
+    <header style="display: flex; align-items: center; gap: 20px; padding: 18px 32px; background: rgba(255,255,255,0.55); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255,255,255,0.8);">
+      <div style="display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: #4f6a72;">
+        <span>Assurance</span>
+        <span style="color: #a8bcc1;">/</span>
+        <span style="color: #14232a;">Audit log</span>
+      </div>
+      <div style="flex: 1;"></div>
+      <div style="{{ readOnlyPill }}"><span style="{{ readOnlyDot }}"></span>{{ readOnlyLabel }}</div>
+      <div style="display: flex; align-items: center; gap: 7px; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: #4f6a72;">
+        <div style="width: 6px; height: 6px; border-radius: 50%; background: #35946c;"></div>08/13/2026 14:22
+      </div>
+    </header>
+
+    <div style="flex: 1; padding: 26px 32px 44px; display: flex; flex-direction: column; gap: 18px;">
+
+      <div style="display: flex; align-items: flex-start; flex-wrap: wrap; gap: 24px;">
+        <div style="display: flex; flex-direction: column; gap: 9px; flex: 1; min-width: 340px;">
+          <h1 style="font-family: 'Jost', sans-serif; font-size: 30px; font-weight: 500; letter-spacing: -0.2px; margin: 0; line-height: 1.2;">Audit log</h1>
+          <p style="margin: 0; font-size: 13.5px; line-height: 1.55; color: #4f6a72; max-width: 720px; text-wrap: pretty;">Every event carries the user, their role, the institution, the action, the approved purpose, the record affected and the outcome. Records cannot be edited or deleted here, including by you.</p>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <div style="padding: 13px 16px; border-radius: 14px; background: rgba(255,255,255,0.72); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.9), 0 10px 26px -14px rgba(16,45,52,0.2); min-width: 132px;">
+            <div style="font-size: 10px; letter-spacing: 0.9px; text-transform: uppercase; color: #4f676e; margin-bottom: 7px;">Events today</div>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 15px;">184,207</div>
+          </div>
+          <div style="padding: 13px 16px; border-radius: 14px; background: rgba(255,255,255,0.72); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.9), 0 10px 26px -14px rgba(16,45,52,0.2); min-width: 132px;">
+            <div style="font-size: 10px; letter-spacing: 0.9px; text-transform: uppercase; color: #4f676e; margin-bottom: 7px;">Retention</div>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 15px;">Permanent</div>
+          </div>
+        </div>
+      </div>
+
+      <section style="border-radius: 18px; background: rgba(255,255,255,0.72); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.9); padding: 16px 18px; display: flex; align-items: flex-end; gap: 14px; flex-wrap: wrap;">
+        <div style="display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 200px;">
+          <label style="font-size: 11px; color: #4f676e; font-weight: 500;">Search by NSN, user, reference or record</label>
+          <input placeholder="e.g. 7204-3318-9050 or V. Solano" style="padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(20,60,70,0.16); background: rgba(255,255,255,0.92); font-size: 13px; color: #14232a; outline: none; box-sizing: border-box; width: 100%;" style-focus="border-color: #1f8a86; box-shadow: 0 0 0 3px rgba(31,138,134,0.12);" />
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px; min-width: 168px;">
+          <label style="font-size: 11px; color: #4f676e; font-weight: 500;">Event category</label>
+          <select onChange="{{ onCategory }}" style="padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(20,60,70,0.16); background: rgba(255,255,255,0.92); font-size: 13px; color: #14232a; outline: none; width: 100%; box-sizing: border-box;" style-focus="border-color: #1f8a86;">
+            <option value="all">All categories</option>
+            <option value="auth">Authentication</option>
+            <option value="search">Searches and verification</option>
+            <option value="record">Record changes</option>
+            <option value="decision">Approvals and decisions</option>
+            <option value="access">Access and configuration</option>
+            <option value="security">Security exceptions</option>
+          </select>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px; min-width: 148px;">
+          <label style="font-size: 11px; color: #4f676e; font-weight: 500;">Outcome</label>
+          <select onChange="{{ onOutcome }}" style="padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(20,60,70,0.16); background: rgba(255,255,255,0.92); font-size: 13px; color: #14232a; outline: none; width: 100%; box-sizing: border-box;" style-focus="border-color: #1f8a86;">
+            <option value="all">Any outcome</option>
+            <option value="ok">Succeeded</option>
+            <option value="blocked">Blocked or failed</option>
+          </select>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px; min-width: 148px;">
+          <label style="font-size: 11px; color: #4f676e; font-weight: 500;">Period</label>
+          <select style="padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(20,60,70,0.16); background: rgba(255,255,255,0.92); font-size: 13px; color: #14232a; outline: none; width: 100%; box-sizing: border-box;" style-focus="border-color: #1f8a86;">
+            <option>Today</option>
+            <option>Last 7 days</option>
+            <option>Last 30 days</option>
+            <option>Custom range</option>
+          </select>
+        </div>
+        <div onClick="{{ doExport }}" style="{{ exportStyle }}">{{ exportLabel }}</div>
+      </section>
+
+      <div style="display: grid; grid-template-columns: minmax(0, 1fr) 372px; gap: 20px; align-items: start;">
+
+        <section style="border-radius: 20px; background: rgba(255,255,255,0.78); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.9), 0 16px 40px -22px rgba(16,45,52,0.26); overflow: hidden;">
+          <div style="display: flex; align-items: center; gap: 12px; padding: 18px 22px 14px;">
+            <div style="font-family: 'Jost', sans-serif; font-size: 16px; font-weight: 500; flex: 1;">{{ resultCount }}</div>
+            <div style="font-size: 11.5px; color: #4f676e;">Select an event for its full record</div>
+          </div>
+          <div style="display: grid; grid-template-columns: 92px minmax(0, 1.9fr) minmax(0, 1.25fr) minmax(0, 1fr) 104px; font-size: 11px; letter-spacing: 0.6px; text-transform: uppercase; color: #4f676e; padding: 0 22px 10px;">
+            <div>Time</div>
+            <div>Action</div>
+            <div>User</div>
+            <div>Record</div>
+            <div style="text-align: right;">Outcome</div>
+          </div>
+          <sc-for list="{{ events }}" as="e" hint-placeholder-count="10">
+            <div onClick="{{ e.select }}" style="{{ e.rowStyle }}">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: #4f676e;">{{ e.time }}</div>
+              <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
+                <span style="{{ e.dot }}"></span>
+                <span style="font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ e.action }}</span>
+              </div>
+              <div style="font-size: 12.5px; color: #4f6a72; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ e.user }}</div>
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: #4f676e; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ e.record }}</div>
+              <div style="{{ e.outcomeStyle }}">{{ e.outcome }}</div>
+            </div>
+          </sc-for>
+          <div style="padding: 14px 22px; border-top: 1px solid rgba(20,60,70,0.07); font-size: 11.5px; color: #4f676e; line-height: 1.5;">{{ tableFooter }}</div>
+        </section>
+
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+
+          <section style="border-radius: 20px; background: rgba(255,255,255,0.82); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.95), 0 16px 40px -22px rgba(16,45,52,0.28); padding: 20px;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
+              <span style="{{ detailDot }}"></span>
+              <div style="font-family: 'Jost', sans-serif; font-size: 16px; font-weight: 500; flex: 1;">{{ detailAction }}</div>
+            </div>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #5a7178; margin-bottom: 17px;">{{ detailRef }}</div>
+            <div style="display: flex; flex-direction: column; gap: 0;">
+              <sc-for list="{{ detail }}" as="d" hint-placeholder-count="9">
+                <div style="display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-top: 1px solid rgba(20,60,70,0.07);">
+                  <div style="font-size: 11.5px; color: #4f676e; width: 116px; flex: none;">{{ d.label }}</div>
+                  <div style="{{ d.valueStyle }}">{{ d.value }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </section>
+
+          <sc-if value="{{ hasBefore }}" hint-placeholder-val="{{ false }}">
+            <section style="border-radius: 20px; background: rgba(255,255,255,0.78); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.9), 0 16px 40px -22px rgba(16,45,52,0.22); padding: 20px;">
+              <div style="font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 500; margin-bottom: 14px;">Value change</div>
+              <div style="display: flex; flex-direction: column; gap: 11px;">
+                <div>
+                  <div style="font-size: 10.5px; letter-spacing: 0.8px; text-transform: uppercase; color: #4f676e; margin-bottom: 5px;">Previous</div>
+                  <div style="padding: 10px 12px; border-radius: 10px; background: rgba(251,238,218,0.5); font-size: 12.5px;">{{ beforeValue }}</div>
+                </div>
+                <div>
+                  <div style="font-size: 10.5px; letter-spacing: 0.8px; text-transform: uppercase; color: #14615e; margin-bottom: 5px;">Updated</div>
+                  <div style="padding: 10px 12px; border-radius: 10px; background: rgba(223,241,238,0.6); font-size: 12.5px; font-weight: 500;">{{ afterValue }}</div>
+                </div>
+              </div>
+              <div style="margin-top: 14px; font-size: 11.5px; color: #4f676e; line-height: 1.5;">Both values are retained permanently. An audit entry is never rewritten when a record changes again.</div>
+            </section>
+          </sc-if>
+
+          <sc-if value="{{ exported }}" hint-placeholder-val="{{ false }}">
+            <section style="border-radius: 20px; background: rgba(226,241,232,0.82); box-shadow: inset 0 0 0 1px rgba(53,148,108,0.24); padding: 18px;">
+              <div style="font-size: 12.5px; font-weight: 600; color: #24685a; margin-bottom: 6px;">Export recorded</div>
+              <div style="font-size: 11.5px; color: #4f6a72; line-height: 1.55;">Exporting audit records is itself an audited event. Your name, the filter you used and the row count are now in the log.</div>
+            </section>
+          </sc-if>
+
+          <section style="border-radius: 20px; background: rgba(255,255,255,0.7); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.9), 0 16px 40px -22px rgba(16,45,52,0.2); padding: 19px;">
+            <div style="font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 500; margin-bottom: 13px;">What this log will not do</div>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+              <div style="display: flex; align-items: flex-start; gap: 10px;">
+                <span style="width: 9px; height: 9px; border-radius: 50%; background: #b04545; flex: none; margin-top: 4px;"></span>
+                <div style="font-size: 12px; color: #4f6a72; line-height: 1.5;">No user, at any level, can edit or delete an audit record.</div>
+              </div>
+              <div style="display: flex; align-items: flex-start; gap: 10px;">
+                <span style="width: 9px; height: 9px; border-radius: 50%; background: #b04545; flex: none; margin-top: 4px;"></span>
+                <div style="font-size: 12px; color: #4f6a72; line-height: 1.5;">Biometric templates never appear here, only the fact that a match was requested.</div>
+              </div>
+              <div style="display: flex; align-items: flex-start; gap: 10px;">
+                <span style="width: 9px; height: 9px; border-radius: 50%; background: #c98a1e; flex: none; margin-top: 4px;"></span>
+                <div style="font-size: 12px; color: #4f6a72; line-height: 1.5;">Suspending a user removes their access, never their history.</div>
+              </div>
+              <div style="display: flex; align-items: flex-start; gap: 10px;">
+                <span style="width: 9px; height: 9px; border-radius: 50%; background: #35946c; flex: none; margin-top: 4px;"></span>
+                <div style="font-size: 12px; color: #4f6a72; line-height: 1.5;">Reading a record is an event. Viewing is never invisible.</div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;viewerRole&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Compliance Officer&quot;,&quot;Auditor&quot;],&quot;default&quot;:&quot;Compliance Officer&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;label&quot;:&quot;Viewing as&quot;,&quot;section&quot;:&quot;Scope&quot;}}">
+class Component extends DCLogic {
+  state = { collapsed: false, category: "all", outcome: "all", sel: 0, exported: false };
+
+  all = [
+    {
+      cat: "security", time: "14:19:04", action: "Search blocked — no approved purpose", user: "T. Okonro · Police Services",
+      record: "—", outcome: "Blocked", tone: "bad", ref: "AUD-2026-88410277",
+      purpose: "None provided", institution: "Police Services", role: "Government Verification User",
+      device: "Workstation POL-KD-118 · Kandova", detail: "Three attempts in four minutes. Referred to Compliance automatically.",
+    },
+    {
+      cat: "search", time: "14:18:41", action: "Identity verification returned Match", user: "J. Iranm · Novaria Health Authority",
+      record: "••••-••••-9050", outcome: "Match", tone: "ok", ref: "AUD-2026-88410261",
+      purpose: "Patient identity verification", institution: "Novaria Health Authority", role: "Government Verification User",
+      device: "OneHealth integration · credential CRD-NHA-2026-04", detail: "Name, date of birth and NSN status released. No other attribute returned.",
+    },
+    {
+      cat: "record", time: "14:16:58", action: "Sensitive fields revealed on a duplicate case", user: "T. Ravel · NICRA",
+      record: "DR-2026-04417", outcome: "Succeeded", tone: "warn", ref: "AUD-2026-88410198",
+      purpose: "Duplicate investigation", institution: "NICRA", role: "Duplicate Review Officer",
+      device: "Workstation NIC-KD-042 · Kandova", detail: "NSN and phone unmasked for two records under comparison.",
+    },
+    {
+      cat: "decision", time: "14:12:20", action: "Death registration approved", user: "A. Meshko · NICRA",
+      record: "DTH-2026-00412", outcome: "Succeeded", tone: "ok", ref: "AUD-2026-88410044",
+      purpose: "Death registration approval", institution: "NICRA", role: "Senior Approver",
+      device: "Workstation NIC-NR-007 · North region",
+      detail: "Identity status changed to deceased. NSN and record preserved.",
+      before: "Identity status: Active", after: "Identity status: Deceased",
+    },
+    {
+      cat: "record", time: "14:04:11", action: "Material change approved — surname", user: "A. Meshko · NICRA",
+      record: "REQ-2026-79233", outcome: "Succeeded", tone: "ok", ref: "AUD-2026-88409881",
+      purpose: "Identity correction", institution: "NICRA", role: "Senior Approver",
+      device: "Workstation NIC-NR-007 · North region",
+      detail: "Reviewed by I. Brandt, approved independently. Citizen notified by SMS.",
+      before: "Surname: Vantis", after: "Surname: Vantis-Korel",
+    },
+    {
+      cat: "auth", time: "13:58:37", action: "Sign-in succeeded with second factor", user: "V. Solano · NICRA",
+      record: "USR-2026-00814", outcome: "Succeeded", tone: "ok", ref: "AUD-2026-88409702",
+      purpose: "—", institution: "NICRA", role: "Verification Officer",
+      device: "Workstation NIC-KD-019 · Kandova", detail: "Authenticator application. Previous sign-in 08/12/2026 16:41.",
+    },
+    {
+      cat: "access", time: "13:44:02", action: "Institution credential revoked", user: "A. Kovel · NICRA",
+      record: "CRD-OMH-2025-01", outcome: "Succeeded", tone: "warn", ref: "AUD-2026-88409388",
+      purpose: "Credential compromise response", institution: "NICRA", role: "National Administrator",
+      device: "Workstation NIC-NCT-001 · Capital Territory",
+      detail: "Ostravo Municipal Housing. All requests now fail closed.",
+      before: "Credential status: Active", after: "Credential status: Revoked",
+    },
+    {
+      cat: "auth", time: "13:31:55", action: "Sign-in failed — password incorrect", user: "L. Sarnov · NICRA",
+      record: "USR-2026-04102", outcome: "Failed", tone: "bad", ref: "AUD-2026-88409104",
+      purpose: "—", institution: "NICRA", role: "Verification Officer",
+      device: "Workstation NIC-KD-033 · Kandova", detail: "Second failure in this session. One attempt remains before a temporary lock.",
+    },
+    {
+      cat: "search", time: "13:22:18", action: "Biometric match requested", user: "T. Ravel · NICRA",
+      record: "APP-2026-118204", outcome: "Succeeded", tone: "ok", ref: "AUD-2026-88408877",
+      purpose: "Duplicate investigation", institution: "NICRA", role: "Duplicate Review Officer",
+      device: "Workstation NIC-KD-042 · Kandova", detail: "Facial comparison against one candidate record. Templates not returned or displayed.",
+    },
+    {
+      cat: "decision", time: "13:09:40", action: "Registration approved — NSN issued", user: "V. Solano · NICRA",
+      record: "APP-2026-118641", outcome: "Succeeded", tone: "ok", ref: "AUD-2026-88408512",
+      purpose: "Birth registration approval", institution: "NICRA", role: "Verification Officer",
+      device: "Workstation NIC-KD-019 · Kandova",
+      detail: "Created by K. Dane, approved by a different officer. OneHealth notified.",
+      before: "NSN: not issued", after: "NSN: issued, 12 digits, check digit valid",
+    },
+    {
+      cat: "access", time: "12:51:07", action: "Emergency access invoked", user: "D. Oster · NICRA",
+      record: "SYS-2026-00219", outcome: "Succeeded", tone: "warn", ref: "AUD-2026-88408033",
+      purpose: "Restoring a failed synchronisation queue", institution: "NICRA", role: "System Support Administrator",
+      device: "Operations console · Capital Territory",
+      detail: "Time-limited to 60 minutes. No readable identity records accessed. Pending Compliance review.",
+    },
+    {
+      cat: "security", time: "12:38:22", action: "Unrelated-citizen search pattern flagged", user: "R. Anavel · Kolvira State Revenue",
+      record: "—", outcome: "Flagged", tone: "bad", ref: "AUD-2026-88407741",
+      purpose: "Tax registration identity check", institution: "Kolvira State Revenue", role: "Government Verification User",
+      device: "Integration · credential CRD-KSR-2026-02",
+      detail: "Fourteen checks on citizens with no tax record. Institution throttled automatically.",
+    },
+  ];
+
+  renderVals() {
+    const asAuditor = (this.props.viewerRole ?? "Compliance Officer") === "Auditor";
+    const { category, outcome, sel, exported } = this.state;
+
+    const filtered = this.all.filter((e) => {
+      const catOk = category === "all" || e.cat === category;
+      const outOk = outcome === "all" ||
+        (outcome === "ok" && e.tone !== "bad") ||
+        (outcome === "blocked" && e.tone === "bad");
+      return catOk && outOk;
+    });
+
+    const safeSel = Math.min(sel, Math.max(0, filtered.length - 1));
+    const ev = filtered[safeSel] || this.all[0];
+    const dotColor = { ok: "#35946c", warn: "#c98a1e", bad: "#b04545" };
+    const canExport = !asAuditor;
+
+    return {
+      railWidth: this.state.collapsed ? "76px" : "244px",
+      hideLabel: this.state.collapsed ? "display: none;" : "",
+      railRowExtra: this.state.collapsed ? "justify-content: center;" : "",
+      toggleRail: () => this.setState({ collapsed: !this.state.collapsed }),
+      meName: asAuditor ? "E. Tavon" : "C. Mirel",
+      meInitials: asAuditor ? "ET" : "CM",
+      meRole: asAuditor ? "Auditor" : "Compliance Officer",
+      readOnlyLabel: asAuditor ? "Read-only audit scope" : "Compliance oversight",
+      readOnlyPill: "display: flex; align-items: center; gap: 8px; padding: 7px 13px; border-radius: 20px; font-size: 12px; font-weight: 500; " +
+        (asAuditor ? "background: rgba(20,60,70,0.08); color: #4f6a72" : "background: rgba(74,158,201,0.16); color: #23617f"),
+      readOnlyDot: "width: 7px; height: 7px; border-radius: 50%; background: " + (asAuditor ? "rgba(20,60,70,0.4)" : "#4a9ec9"),
+      onCategory: (e) => this.setState({ category: e.target.value, sel: 0 }),
+      onOutcome: (e) => this.setState({ outcome: e.target.value, sel: 0 }),
+      resultCount: filtered.length + (filtered.length === 1 ? " event" : " events") + " shown of 184,207 today",
+      events: filtered.map((e, i) => ({
+        time: e.time,
+        action: e.action,
+        user: e.user,
+        record: e.record,
+        outcome: e.outcome,
+        select: () => this.setState({ sel: i }),
+        dot: "width: 8px; height: 8px; border-radius: 50%; flex: none; background: " + dotColor[e.tone],
+        rowStyle: [
+          "display: grid",
+          "grid-template-columns: 92px minmax(0, 1.9fr) minmax(0, 1.25fr) minmax(0, 1fr) 104px",
+          "align-items: center",
+          "padding: 12px 22px",
+          "border-top: 1px solid rgba(20,60,70,0.07)",
+          "cursor: pointer",
+          "background: " + (i === safeSel ? "rgba(255,255,255,0.75)" : "transparent"),
+          "box-shadow: " + (i === safeSel ? "inset 3px 0 0 0 #1f8a86" : "none"),
+        ].join(";"),
+        outcomeStyle: "text-align: right; font-size: 11.5px; font-weight: 500; white-space: nowrap; color: " +
+          (e.tone === "bad" ? "#8d3232" : e.tone === "warn" ? "#7a5312" : "#24685a"),
+      })),
+      tableFooter: "Sorted newest first. " + (asAuditor
+        ? "As an Auditor you can read every event but change nothing, here or anywhere."
+        : "Selecting an event does not open the citizen's record — that would be a separate, logged action."),
+      detailAction: ev.action,
+      detailRef: ev.ref,
+      detailDot: "width: 9px; height: 9px; border-radius: 50%; flex: none; background: " + dotColor[ev.tone],
+      detail: [
+        { label: "Timestamp", value: "08/13/2026 " + ev.time, mono: true },
+        { label: "User", value: ev.user },
+        { label: "Role", value: ev.role },
+        { label: "Institution", value: ev.institution },
+        { label: "Approved purpose", value: ev.purpose },
+        { label: "Record affected", value: ev.record, mono: true },
+        { label: "Outcome", value: ev.outcome, tone: ev.tone },
+        { label: "Session", value: ev.device },
+        { label: "Note", value: ev.detail },
+      ].map((d) => ({
+        label: d.label,
+        value: d.value,
+        valueStyle: "flex: 1; min-width: 0; font-size: 12.5px; line-height: 1.5; " +
+          (d.mono ? "font-family: 'IBM Plex Mono', monospace; font-size: 12px; " : "") +
+          (d.tone === "bad" ? "color: #8d3232; font-weight: 500;" : d.tone === "warn" ? "color: #7a5312; font-weight: 500;" : d.tone === "ok" ? "color: #24685a; font-weight: 500;" : "color: #14232a;"),
+      })),
+      hasBefore: !!ev.before,
+      beforeValue: ev.before || "",
+      afterValue: ev.after || "",
+      exportStyle: [
+        "padding: 10px 15px",
+        "border-radius: 10px",
+        "font-size: 12.5px",
+        "font-weight: 500",
+        "white-space: nowrap",
+        canExport
+          ? "cursor: pointer; background: rgba(31,138,134,0.09); color: #14615e"
+          : "cursor: not-allowed; background: rgba(20,60,70,0.07); color: #90a7ad",
+      ].join(";"),
+      exportLabel: canExport ? "Export this view" : "Export not permitted",
+      doExport: () => { if (canExport) this.setState({ exported: true }); },
+      exported: exported && canExport,
+    };
+  }
+}
+</script>
+</body>
+</html>

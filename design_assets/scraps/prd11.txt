@@ -1,0 +1,1724 @@
+NovaID PRD (Version 1.0)
+Page 1 of 40
+PRODUCT REQUIREMENTS DOCUMENT
+NovaID: National Identity Civil Registration System
+(NICRS)
+PRD Title NovaID: National Identity Civil Registration System (NICRS)
+Managed By Novaria Identity and Civil Registration Authority (NICRA), an agency
+under the Novaria Ministry of Interior
+Version 1.0
+Product Manager Gio
+Product Status Conceptual product for demonstration and learning purposes
+Platform Web-based national identity and civil registration platform, with a
+citizen-facing “Log in with NovaID” authentication service
+Technical
+Architecture Proposed cloud-based, modular architecture
+Companion
+Reference
+Novaria Administrative Reference.xlsx: canonical states, zones and
+LGAs shared across all Novaria products
+Security Notice: This document describes a fictional system created for demonstration and
+learning purposes. Novaria, NICRA, NovaID, the Novaria Social Number and all sample
+information are fictional.
+
+-- 1 of 40 --
+
+NovaID PRD (Version 1.0)
+Page 2 of 40
+1. BACKGROUND AND PURPOSE
+Novaria currently lacks a single, authoritative system for registering citizens and managing
+their identities throughout their lifetime. Birth records, naturalization records, identity
+information and death records are maintained across different institutions. This makes it
+difficult to establish and maintain one reliable identity for each citizen.
+NovaID is a national identity and civil registration platform managed by the Novaria Identity
+and Civil Registration Authority (NICRA). It will create and maintain a trusted identity record for
+every eligible citizen and assign each citizen a unique Novaria Social Number (NSN).
+The NSN will serve as the common identity reference across approved government services.
+Systems such as OneHealth will verify a person's identity through NovaID without receiving
+unrelated personal information.
+NovaID will also serve as the public-facing identity platform through which citizens can access
+approved digital government services. Where enabled, citizens will be able to select “Log in
+with NovaID” on a connected government platform and authenticate without creating a
+separate identity for each service. NICRA remains the government authority responsible for
+regulating, operating and overseeing the NovaID platform.
+This document uses three related names precisely, and keeps them distinct on purpose.
+NICRA (Novaria Identity and Civil Registration Authority) is the government agency
+responsible for the system: use it wherever the document is talking about who runs, approves
+or governs something. NICRS (National Identity Civil Registration System) is the formal,
+technical name of the system itself; it appears in this document's title and belongs in technical,
+legal or architectural language. NovaID is the public-facing brand a citizen actually sees and
+interacts with, such as on a login screen; use it for citizen-facing flows and everyday
+references throughout the rest of this document.
+The NSN is different again, and not a fourth name for the same thing: it is the 12-digit identifier
+NovaID issues to each citizen, the way a passport office issues passport numbers rather than
+being one itself. A citizen has an NSN; they log in with NovaID, not with an NSN.
+NovaID will support the full identity lifecycle, including:
+• Birth notification and registration.
+• Registration of naturalized citizens.
+• Issuance of an NSN.
+• Identity verification.
+• Identity updates and corrections.
+• Periodic photo and biometric updates where applicable.
+• Death notification and registration.
+• Secure verification by approved government institutions.
+1.1 Objectives
+• Establish one authoritative identity record for each citizen.
+• Register births and naturalized citizens through standardized processes.
+• Generate and manage a unique NSN for every eligible citizen.
+• Reduce duplicate, fraudulent and conflicting identity records.
+• Enable secure identity verification across approved government systems.
+• Maintain a complete audit history of identity-related actions.
+
+-- 2 of 40 --
+
+NovaID PRD (Version 1.0)
+Page 3 of 40
+• Improve the reliability of national population information.
+• Protect citizen information through role-based and purpose-based access.
+• Provide a trusted identity foundation for OneHealth and future Novarian government
+systems.
+• Provide a secure “Log in with NovaID” service for approved government digital platforms.
+• Reduce the need for citizens to create and maintain separate identities across multiple
+government services.
+2. PROBLEM STATEMENT
+Identity information in Novaria is fragmented, inconsistent and difficult to verify across
+institutions. Government agencies maintain separate records that are not always linked or
+synchronized. This fragmentation creates several challenges:
+• Citizens may have multiple or conflicting identities.
+• Birth and death records may be incomplete.
+• Identity issuance may be delayed because information cannot be verified quickly.
+• Government institutions may struggle to confirm that an individual is who they claim to
+be.
+• Duplicate and fraudulent registrations may go undetected.
+• Citizens may be required to submit the same information repeatedly to different
+institutions.
+• Government planning may rely on incomplete population information.
+• Personal information may be shared excessively or without adequate controls.
+• Citizens may have difficulty accessing essential services when their identities cannot be
+verified.
+• Changes made in one government system may not be reflected in other connected
+systems.
+NovaID will address these issues by establishing a centralized national identity registry,
+standardized civil registration processes and controlled identity-verification services.
+3. PRODUCT PRINCIPLES
+3.1 One Person, One Identity
+Each citizen will have one active NovaID identity record and one NSN. The NSN will not be
+reassigned to another person.
+3.2 Privacy by Design
+Connected institutions will only receive the minimum information required for an approved
+purpose.
+3.3 Authoritative Identity Source
+NovaID will be the official source of core citizen identity information. Connected systems may
+maintain their own service-specific records but should use the NSN to identify the citizen.
+3.4 Traceability
+Every identity registration, search, verification, update, approval, rejection and exceptional
+access must be recorded.
+
+-- 3 of 40 --
+
+NovaID PRD (Version 1.0)
+Page 4 of 40
+3.5 Human Oversight
+High-risk registrations, suspected duplicates, material identity changes and disputed records
+must be reviewed by authorised officers.
+3.6 Inclusive Access
+NovaID will support online and assisted registration. Controlled low-connectivity processes will
+be available for approved centres in areas with unreliable internet access.
+3.7 Separation of Government Records
+NovaID will not store complete medical, criminal, educational or social-service case records.
+These will remain within the systems responsible for them.
+3.8 No Silent Identity Changes
+Material changes to a citizen's identity must be supported by evidence, independently
+approved and communicated to the citizen where appropriate.
+
+-- 4 of 40 --
+
+NovaID PRD (Version 1.0)
+Page 5 of 40
+4. GOALS AND SUCCESS METRICS
+# Metric Baseline Year-One Target
+1 Approved registration centres onboarded 0 1,000+
+2 Eligible registrations assigned an NSN 0 95%
+3 New births registered within the statutory
+period To be established 85%
+4 Standard identity-verification response time Not available Five seconds or
+less
+5 Potential duplicate registrations routed for
+review Not available 100%
+6 High-risk identity changes independently
+approved Not available 100%
+7 Critical activities captured in audit logs Not available 100%
+8 Core platform availability Not available 99.9%
+9 Standard registration applications completed
+within the agreed service period Not available 90%
+10 Connected institutions completing periodic
+access reviews 0 100%
+Novaria's population is set at approximately 38,000,000 for planning purposes, a figure
+established for this PRD rather than measured (recorded in the Platform Reference Decisions
+Log). Year-One targets above assume an initial enrolment wave of roughly 5% of the
+population, approximately 1,900,000 registrations, not universal coverage in year one; NICRA
+will revise both the population figure and these targets once real registration volumes are
+available.
+5. GOVERNANCE AND INSTITUTIONAL OWNERSHIP
+5.1 Novaria Identity and Civil Registration Authority
+NICRA will manage NovaID under the oversight of the Novaria Ministry of Interior. NICRA will be
+responsible for:
+• Implementing national identity and civil registration policies.
+• Approving registration centres.
+• Authorising institutions to access NovaID.
+• Issuing and managing NSNs.
+• Maintaining the core national identity registry.
+• Reviewing identity corrections and disputes.
+• Managing potential duplicate records.
+• Investigating suspected registration fraud.
+• Monitoring access to citizen information.
+• Establishing identity-verification standards.
+
+-- 5 of 40 --
+
+NovaID PRD (Version 1.0)
+Page 6 of 40
+• Managing audit, compliance and operational reporting.
+• Suspending users, centres or institutions that misuse the system.
+5.2 Connected Institutions
+OneHealth
+OneHealth will submit birth notifications for births occurring in connected hospitals and health
+facilities. OneHealth will:
+• Capture birth information at the point of care.
+• Submit the notification to NovaID.
+• Receive a unique birth-notification reference.
+• Track the notification status.
+• Correct rejected or incomplete notifications where permitted.
+• Receive confirmation when the birth has been formally registered.
+OneHealth will not approve civil registration or generate an NSN. Those responsibilities remain
+with NICRA. Births occurring outside OneHealth-connected facilities must be supported through
+civil registration centres and other approved notification channels.
+Civil Registration Centres
+• Register births.
+• Process births that occurred outside health facilities.
+• Process late birth registrations.
+• Capture identity information and supporting evidence.
+• Capture photographs and biometrics where applicable.
+• Provide assisted services.
+• Initiate approved identity updates.
+• Submit applications to NICRA for review and approval.
+Novaria Citizenship and Immigration Service
+The Immigration authority will:
+• Assess citizenship and naturalization applications.
+• Approve or reject citizenship.
+• Provide validated naturalization references to NovaID.
+• Confirm the authenticity and status of naturalization approvals.
+NovaID will not decide whether a person qualifies for citizenship. NICRA will create the identity
+and issue an NSN after Immigration has approved citizenship and NovaID checks have been
+completed.
+Police Services
+The Police system may use NovaID for lawful identity verification. Police access will be limited
+by role, purpose and legal authority. Criminal investigations, arrests, warrants, convictions,
+missing-person cases and police intelligence will remain within a separate Police Case and
+Investigation Management System.
+Social Services
+
+-- 6 of 40 --
+
+NovaID PRD (Version 1.0)
+Page 7 of 40
+Social Services may use the NSN to identify children and other persons receiving government
+support. Child-protection assessments, foster-care information and social-service case notes
+will remain in the Social Services system.
+Other Government Institutions
+Additional government institutions may be connected after completing:
+• Business-purpose approval.
+• Data-protection review.
+• Security assessment.
+• Integration testing.
+• Access configuration.
+• User training.
+• Formal onboarding by NICRA.
+
+-- 7 of 40 --
+
+NovaID PRD (Version 1.0)
+Page 8 of 40
+6. USER ROLES AND PERMISSIONS
+Role Access Scope Core Permissions
+NICRA National
+Administrator Nationwide Manage institutions, centres, roles, access
+policies and national system configuration
+NICRA Regional
+Administrator Assigned region Monitor centres, officers and applications within
+the assigned region
+Registration Centre
+Administrator Assigned centre Manage centre staff and monitor centre
+operations
+Registration Officer Assigned centre Create and submit registrations and correction
+requests
+Verification Officer Assigned queue
+or region
+Review information, validate evidence and
+request clarification
+Senior Approver Assigned region
+or nationwide
+Approve high-risk registrations, material
+corrections and duplicate resolutions
+Duplicate Review
+Officer
+Assigned review
+queue Investigate possible duplicate identities
+Birth Notification
+Officer
+Approved health
+facility Submit and track birth notifications
+Immigration Officer Approved
+Immigration unit
+Submit and confirm naturalization approval
+references
+Government
+Verification User
+Approved
+institution
+Verify permitted identity attributes for an
+approved purpose
+Compliance Officer Assigned
+oversight scope
+Review access history, unusual activity and
+compliance reports
+Auditor Read-only audit
+scope
+Review audit records without modifying identity
+information
+Citizen Personal access View permitted personal information and initiate
+requests
+System Support
+Administrator
+Technical
+operations
+Monitor system health without unrestricted
+access to readable identity records
+6.1 Permission Rules
+• A user must only access information required for their assigned role.
+• Users must not share accounts.
+• Registration Officers must not approve applications they created.
+• Verification Officers must not approve high-risk changes where independent approval is
+required.
+• Government Verification Users must select or provide an approved verification purpose.
+• Sensitive fields must be masked when they are not required.
+• System Support Administrators must not have routine access to readable citizen records.
+• Emergency access must be time-limited, justified and reviewed.
+
+-- 8 of 40 --
+
+NovaID PRD (Version 1.0)
+Page 9 of 40
+• Suspended users must lose access immediately.
+• Historical actions must remain in the audit log after a user is suspended or removed.
+• Access must be reviewed periodically by NICRA and the connected institution.
+
+-- 9 of 40 --
+
+NovaID PRD (Version 1.0)
+Page 10 of 40
+7. FUNCTIONAL REQUIREMENTS
+7.1 Birth Notification from OneHealth
+For a birth occurring in a connected health facility, OneHealth must submit:
+• Child's first name where already provided.
+• Child's surname or proposed surname.
+• Date and time of birth.
+• Place of birth.
+• Sex recorded at birth.
+• Birth type, such as single, twin or triplet.
+• Birth order for multiple births.
+• Mother's name and NSN where available.
+• Father's name and NSN where available.
+• Guardian information where applicable.
+• Attending healthcare professional.
+• Health facility.
+• Date and time of notification.
+• Supporting birth record reference.
+NovaID must:
+• Validate that required fields are present.
+• Check that the health facility and submitting officer are authorised.
+• Generate a unique birth-notification reference.
+• Check for a possible earlier notification of the same birth.
+• Return the notification status to OneHealth.
+• Place incomplete or conflicting notifications in an exception queue.
+• Prevent the birth notification from automatically generating an NSN.
+7.2 Birth Registration
+A birth notification becomes a formal identity record only after civil registration is completed.
+The Registration Officer must:
+1. Retrieve the birth notification or create a registration for a birth without an electronic
+notification.
+2. Confirm the parent or guardian information.
+3. Capture required residential and contact information.
+4. Review supporting evidence.
+5. Capture a child photograph where required by policy.
+6. Submit the application for validation.
+NovaID must:
+• Check for possible duplicate births or identities.
+• Validate parent or guardian NSNs where provided.
+• Flag conflicting names, dates or parent information.
+
+-- 10 of 40 --
+
+NovaID PRD (Version 1.0)
+Page 11 of 40
+• Route standard applications to a Verification Officer.
+• Route high-risk or late registrations for additional review.
+• Generate the NSN only after final approval.
+• Preserve the registration source and supporting evidence.
+• Notify the parent or guardian of the outcome.
+7.3 Birth Outside a Health Facility
+Where a birth occurs outside a registered health facility, NovaID must allow an authorised
+Registration Officer to initiate the registration. The application must include:
+• Details of the child.
+• Parent or guardian information.
+• Place and circumstances of birth.
+• Supporting evidence required by NICRA: typically a signed statement from the attending
+health worker or traditional birth attendant, or, where none was present, a sworn affidavit.
+• Witness or community verification where permitted.
+• Reason no hospital notification is available.
+Such applications must be assigned a higher review level than a standard hospital-notified
+birth.
+7.4 Late Birth Registration
+NovaID must classify a registration as late when it is submitted more than 60 days after the
+date of birth. Late registration must:
+• Capture the reason for the delay.
+• Require additional supporting evidence, such as a school enrolment record, a religious or
+baptismal record, or a sworn affidavit of age declaration.
+• Perform enhanced duplicate checks.
+• Require approval by an authorised senior officer.
+• Preserve all evidence and decisions.
+• Allow the applicant to appeal a rejection.
+7.5 Naturalized Citizen Registration
+Naturalized citizen registration must begin only after Immigration has approved citizenship.
+NovaID must:
+• Validate the naturalization approval reference.
+• Confirm that the approval is active and has not been withdrawn.
+• Capture the person's legal name.
+• Capture previous names.
+• Capture date and place of birth.
+• Capture previous nationality where required.
+• Capture contact and residential information.
+• Capture photograph and approved biometrics.
+• Check for an existing NSN or identity record.
+• Route possible matches to a Duplicate Review Officer.
+
+-- 11 of 40 --
+
+NovaID PRD (Version 1.0)
+Page 12 of 40
+• Generate an NSN after successful approval.
+• Retain the Immigration reference without exposing restricted immigration records.
+7.6 Citizen Identity Record
+The core identity record will contain:
+Primary Identity Information
+• NSN.
+• Legal first name.
+• Middle name.
+• Surname.
+• Previous legal names.
+• Date of birth.
+• Place of birth.
+• Sex recorded at registration.
+• Citizenship status.
+• Basis of citizenship.
+• Registration date and source.
+• Identity status.
+Relationship Information
+• Mother's name and NSN where available.
+• Father's name and NSN where available.
+• Legal guardian information where applicable.
+• Relationship status and supporting authority.
+Contact Information
+• Residential address.
+• State and district.
+• Phone number.
+• Email address where available.
+• Preferred notification channel.
+Identity Attributes
+• Current photograph.
+• Previous photographs.
+• Approved biometric references.
+• Physical identification credential status where applicable.
+Record Information
+• Registration centre.
+• Creating officer.
+• Approval date.
+• Record version.
+• Previous values.
+
+-- 12 of 40 --
+
+NovaID PRD (Version 1.0)
+Page 13 of 40
+• Correction and update history.
+• Date and place of death where applicable.
+7.7 Mandatory and Optional Information
+Mandatory information must depend on the registration type and age of the applicant. NovaID
+must:
+• Clearly identify mandatory fields.
+• Prevent submission when required information is missing.
+• Permit approved exceptions where information is genuinely unavailable.
+• Record the reason for every exception.
+• Distinguish between information that is unknown and information that is not applicable.
+The detailed mandatory and optional fields are documented in the Data Dictionary (Section
+23.1); items marked “mandatory” there are a starting inventory, not a final rule, since
+mandatory status also depends on registration type and age as stated above.
+7.8 Photo and Biometric Lifecycle
+Biometric information forms part of the NovaID MVP because demographic information alone
+may not be sufficient to prevent duplicate identities in a large population.
+Biometrics Included in the MVP
+• Facial photograph.
+• Facial biometric template.
+• Fingerprints for eligible citizens.
+• Biometric exception records for citizens whose biometrics cannot be captured reliably.
+Iris scanning will not form part of the MVP. It may be considered in a future version if required.
+Biometric Requirements for Children
+• A photograph may be captured at initial registration where required.
+• The identity will initially be linked to the verified parent or guardian records and the
+registered birth event.
+• The child's photograph must be updated at age five.
+• Fingerprints will be enrolled from age five where they can be captured reliably.
+• Biometrics must be updated again at ages 12 and 18 as the child develops.
+• NICRA must provide advance notification and a reasonable grace period for mandatory
+updates.
+The absence of usable fingerprints must not prevent an eligible child from receiving an NSN.
+Failure to update a photograph must not automatically cancel citizenship or delete the NSN.
+Biometric Requirements for Adults
+Adults registering through naturalization, late registration or another approved enrolment
+process must provide a current facial photograph, a facial biometric template, and available
+fingerprints captured according to NICRA standards.
+Adults must recapture their facial photograph, facial biometric template and available
+fingerprints at intervals set by NICRA, nominally every ten years, or sooner if requested or if
+existing biometrics can no longer be matched reliably.
+
+-- 13 of 40 --
+
+NovaID PRD (Version 1.0)
+Page 14 of 40
+Where fingerprints cannot be captured because of disability, injury, age or another valid
+reason:
+• The Registration Officer must record the exception.
+• Supporting information may be required.
+• The application must be routed for enhanced review.
+• Alternative identity-verification methods must be used.
+Biometric Protection
+Biometric information must:
+• Be encrypted in transit and at rest.
+• Be stored separately from ordinary demographic data where technically possible.
+• Be converted into protected biometric templates for matching.
+• Be accessible only to authorised users and services.
+• Not be displayed in ordinary search results.
+• Not be included in standard reports or exports.
+• Be retained and used only according to approved NICRA policies.
+• Have every access and matching request recorded in the audit log.
+7.9 NSN Generation and Management
+The Novaria Social Number will use the following format:
+• The NSN will contain 12 numeric digits.
+• The first 11 digits will be generated randomly.
+• The final digit will be a check digit used to detect common entry errors.
+• The number will be displayed in groups of four for readability: XXXX-XXXX-XXXX.
+• Dashes used for display will not form part of the stored NSN.
+• The number must not contain embedded information about the citizen.
+The NSN must not reveal:
+• Date of birth.
+• Sex.
+• State or district.
+• Registration centre.
+• Citizenship type.
+• Registration date.
+The NSN-generation service must:
+• Use a secure random-number generation process.
+• Check the complete number against all existing NSNs before issuance.
+• Apply the approved check-digit algorithm (Luhn / mod-10).
+• Reject and regenerate any duplicate number.
+• Record the date, time and system event responsible for generation.
+• Prevent users from generating an NSN manually.
+• Prevent an issued NSN from being changed or reused.
+
+-- 14 of 40 --
+
+NovaID PRD (Version 1.0)
+Page 15 of 40
+• Generate an NSN only after the registration has received final approval.
+Where a citizen forgets their NSN, NovaID must retrieve the existing number after successful
+identity verification; a replacement NSN must not be created. Where a physical or digital
+credential is lost or compromised, the credential may be revoked and replaced, but the
+citizen's NSN must remain unchanged, and the incident must be logged.
+7.10 Log in with NovaID: Digital Authentication Service
+NovaID provides an authentication service known as “Log in with NovaID.” Approved
+government platforms may use this service to authenticate citizens without creating separate
+identity credentials for each platform.
+The authentication process must:
+1. Redirect the citizen from the connected service to NovaID.
+2. Display the name of the requesting service.
+3. Display the information the service is requesting.
+4. Authenticate the citizen using an approved method.
+5. Confirm that the requesting service is authorised.
+6. Return an authentication result and only the approved identity attributes.
+7. Record the authentication event in the audit log.
+8. Return the citizen to the requesting service.
+Connected services must not receive the citizen's NovaID password, PIN or biometric
+information. Authentication methods may include:
+• Password and one-time password.
+• NovaID PIN.
+• Approved authenticator application.
+• Device-based authentication.
+• Biometric authentication performed on the citizen's device.
+The exact authentication methods included in the MVP will be defined during security design.
+7.11 Identity Search
+NovaID must support authorised searches using approved combinations such as:
+• NSN.
+• Full name and date of birth.
+• Name and registered phone number.
+• Name and parent or guardian details.
+• Approved biometric match for authorised officers.
+Search controls must include:
+• Minimum search criteria.
+• Role-based result limits.
+• Masking of sensitive information.
+• Rate limits.
+• Prevention of unrestricted browsing.
+• Logging of the search purpose.
+
+-- 15 of 40 --
+
+NovaID PRD (Version 1.0)
+Page 16 of 40
+• Monitoring of repeated searches for unrelated citizens.
+• Additional approval for bulk or exceptional searches.
+7.12 Identity Verification
+Connected institutions may submit selected identity attributes for verification. NovaID may
+return:
+• Match.
+• Partial match.
+• No match.
+• Record under review.
+• Record restricted.
+• Deceased status where the requesting institution is authorised to receive it.
+• Service temporarily unavailable.
+NovaID must not return the complete identity record when a simple verification result is
+sufficient.
+7.13 Identity Updates and Corrections
+NovaID must distinguish between:
+Minor Updates
+Examples include: phone number, email address, residential address. Minor updates may be
+completed after standard authentication and validation.
+Material Identity Changes
+Examples include: legal name, date of birth, place of birth, parentage, citizenship information,
+sex recorded in the identity record, deceased status, and linking or merging identity records.
+Material changes must:
+• Require evidence appropriate to the specific change, for example a court order, marriage
+certificate or government gazette notice for a legal name change, or medical or school
+records plus a sworn affidavit for a date-of-birth correction.
+• Be reviewed by a Verification Officer.
+• Be approved by a separate Senior Approver.
+• Preserve the previous value.
+• Record the reason for the change.
+• Record the initiating and approving officers.
+• Notify the citizen where appropriate.
+• Send approved updates to affected connected systems.
+7.14 Duplicate Detection and Resolution
+NovaID must screen every new registration against existing identity records before an NSN is
+issued. Duplicate checks will use:
+• Legal and previous names.
+• Date and place of birth.
+• Parent or guardian information.
+
+-- 16 of 40 --
+
+NovaID PRD (Version 1.0)
+Page 17 of 40
+• Contact information.
+• Supporting-document references.
+• Facial biometric matching.
+• Fingerprint matching where fingerprints are available.
+The system must not automatically merge or reject records based only on a biometric score.
+Potential matches must:
+1. Be placed in a dedicated review queue.
+2. Temporarily pause NSN issuance.
+3. Display the demographic and biometric factors contributing to the match.
+4. Be reviewed by an authorised Duplicate Review Officer.
+5. Allow additional evidence to be requested.
+6. Require an independently approved decision.
+7. Preserve the original records and decision history.
+8. Allow the affected citizen to dispute an incorrect match.
+NICRA will define separate matching thresholds for low-confidence matches that may proceed
+without escalation, medium-confidence matches requiring officer review, and high-confidence
+matches requiring enhanced investigation. The specific numeric thresholds will be validated
+during biometric testing because performance may vary by biometric provider, age group and
+data quality.
+7.15 Death Notification and Registration
+Death notifications may be received from OneHealth-connected health facilities, other
+approved health facilities, Civil Registration Centres, approved government authorities, or an
+authorised family or representative process. NovaID must:
+• Validate the deceased person's identity.
+• Capture date and place of death.
+• Capture the notifier and source.
+• Capture supporting evidence.
+• Check for conflicting information.
+• Require approval before changing the identity status.
+• Preserve the identity record and NSN.
+• Notify approved connected systems.
+• Prevent prohibited use of the deceased person's identity.
+• Support urgent reversal where a person has been incorrectly marked as deceased.
+An incorrect death registration must be treated as a critical incident.
+7.16 Citizen Self-Service
+Where included in the approved release, citizens may:
+• Sign in securely.
+• View permitted identity information.
+• View their NSN.
+• View and self-print a virtual identity card.
+• Track registration and correction requests.
+
+-- 17 of 40 --
+
+NovaID PRD (Version 1.0)
+Page 18 of 40
+• Submit minor update requests.
+• Submit correction requests with evidence.
+• Report suspected identity misuse.
+• Receive notifications.
+• View selected access history where permitted.
+Citizens must not be able to directly edit material identity fields.
+7.17 Registration Centre Management
+NICRA must be able to:
+• Create and approve a registration centre.
+• Assign the centre to a state and LGA using the canonical administrative structure (see
+Section 20).
+• Define permitted services.
+• Assign a Centre Administrator.
+• Approve centre staff.
+• Monitor registrations and exceptions.
+• Suspend or deactivate the centre.
+• Preserve historical centre activities.
+• Transfer unresolved applications to another centre where necessary.
+7.18 Institutional Access Management
+NICRA must be able to:
+• Register an institution.
+• Record its approved business purposes.
+• Define accessible identity attributes.
+• Set transaction and search limits.
+• Issue integration credentials.
+• Set credential expiry dates.
+• Suspend or revoke credentials.
+• Monitor institution activity.
+• Require periodic access certification.
+• Record the institution's data-protection and security approvals.
+7.19 Notifications
+NovaID must send notifications for: birth notification submission, registration submission,
+requests for additional evidence, approval, rejection, NSN issuance, correction-request status,
+material identity changes, photo or biometric update reminders, suspected identity misuse,
+and institutional or user suspension.
+Supported channels may include in-platform notification, email, SMS, and approved
+government notification channels. Sensitive personal information must not be included in
+unsecured notifications.
+Failed notifications must be retried according to configured rules, be recorded, be available in
+an operational failure queue, and must not reverse an otherwise successful identity action.
+
+-- 18 of 40 --
+
+NovaID PRD (Version 1.0)
+Page 19 of 40
+7.20 Identifiers for Non-Citizens
+Lawful residents and refugees who are not Novaria citizens are not issued an NSN. NICRA
+issues these individuals a Novaria Resident Number (NRN): a 12-digit identifier in the same
+XXXX-XXXX-XXXX display format as the NSN, generated by the same secure random-number
+process and validated with the same check-digit algorithm, but held in a separate number
+series so an NRN can never be mistaken for or reused as an NSN.
+Connected systems must treat the NRN as a distinct identifier type, not a variant of the NSN,
+and must record which type an individual holds. Where a resident is later granted citizenship
+through naturalization, NICRA issues a new NSN and retires the NRN, preserving a record of
+the change; the individual's prior identity record is linked but not deleted.
+
+-- 19 of 40 --
+
+NovaID PRD (Version 1.0)
+Page 20 of 40
+8. KEY USER JOURNEYS
+8.1 Birth in a OneHealth-Connected Facility
+1. The hospital records the birth in OneHealth.
+2. OneHealth submits the birth notification to NovaID.
+3. NovaID validates the hospital, officer and required information.
+4. NovaID generates a birth-notification reference.
+5. The parent or guardian completes civil registration at an approved centre or through an
+approved process.
+6. A Registration Officer reviews the notification and supporting evidence.
+7. NovaID performs duplicate and consistency checks.
+8. A Verification Officer reviews the application.
+9. Exceptions are resolved or escalated.
+10. The application is approved.
+11. NovaID creates the identity record and generates an NSN.
+12. OneHealth receives confirmation that the birth has been registered.
+13. The parent or guardian receives confirmation.
+8.2 Birth Outside a Health Facility
+1. The parent or guardian visits an approved Registration Centre.
+2. The Registration Officer records the birth details.
+3. The required supporting evidence and witness information are captured.
+4. NovaID checks for an earlier notification or registration.
+5. The application is classified for enhanced review.
+6. A Verification Officer reviews the evidence.
+7. A Senior Approver approves or rejects the application.
+8. NovaID creates the identity and issues an NSN after approval.
+8.3 Naturalized Citizen Registration
+1. Immigration approves the citizenship application.
+2. Immigration sends or confirms the approval reference.
+3. The citizen completes identity enrolment.
+4. NovaID validates the Immigration approval.
+5. NovaID performs demographic and biometric duplicate checks.
+6. A Verification Officer reviews the application.
+7. Any possible duplicate is sent for investigation.
+8. The application is approved.
+9. NovaID creates the identity and issues an NSN.
+8.4 Identity Correction
+1. The citizen or authorised officer submits a correction request.
+
+-- 20 of 40 --
+
+NovaID PRD (Version 1.0)
+Page 21 of 40
+2. NovaID identifies whether it is minor or material.
+3. Required evidence is submitted.
+4. A Verification Officer reviews the request.
+5. Material changes are sent to a Senior Approver.
+6. The request is approved, rejected or returned for more information.
+7. NovaID preserves the previous value.
+8. The active identity record is updated.
+9. The citizen and affected connected systems are notified.
+8.5 Potential Duplicate
+1. NovaID identifies a possible match.
+2. The new application is paused.
+3. A Duplicate Review Officer compares the records.
+4. Additional evidence is requested where necessary.
+5. The officer recommends separate identities, a merge, a link or suspected fraud.
+6. A Senior Approver reviews the recommendation.
+7. NovaID records the decision.
+8. The application continues or is rejected based on the outcome.
+8.6 Death Registration
+1. An approved source submits a death notification.
+2. NovaID validates the identity and evidence.
+3. Conflicting information is sent for review.
+4. An authorised officer approves the death registration.
+5. The citizen's status changes to deceased.
+6. The NSN and identity remain preserved.
+7. Approved connected systems receive the status update.
+8. Any subsequent use of the identity may trigger an alert.
+8.7 Log in with NovaID (Digital Authentication)
+1. A citizen selects “Log in with NovaID” on an approved government platform.
+2. The platform redirects the citizen to NovaID.
+3. NovaID displays the requesting service and the information it is requesting.
+4. The citizen authenticates using an approved method.
+5. NovaID confirms the requesting service is authorised.
+6. NovaID returns only the approved identity attributes to the service.
+7. The authentication event is recorded in the audit log.
+8. The citizen is returned to the requesting service, signed in.
+9. INTER-AGENCY INTEGRATION
+
+-- 21 of 40 --
+
+NovaID PRD (Version 1.0)
+Page 22 of 40
+Connected
+System Purpose Permitted Information
+OneHealth Birth notification and patient
+verification
+Birth-notification status, NSN status
+and approved demographic
+verification
+Immigration Naturalization confirmation Approval reference, citizenship status
+and identity matching
+Police System Lawful identity verification Minimum permitted identity attributes
+Social Services Identity and guardian
+verification
+NSN status and approved relationship
+information
+Other Government
+Services Identity verification Purpose-specific verification result
+Every integration must have an approved purpose, defined data fields, authentication controls,
+access limits, audit requirements, error-response standards, credential-expiry and revocation
+controls, and an incident-management procedure.
+Integration status: OneHealth is the only connected system currently in production. Its
+integration with NovaID is planned for a future release; OneHealth continues to operate on its
+existing Patient Reference identifiers until that integration is delivered, with the NSN populated
+per patient as part of the rollout (see the Platform Reference Decisions Log).
+Immigration integration: naturalized-citizen registration (Sections 7.5 and 8.3) formally
+depends on Immigration providing an approval reference. As with OneHealth, this integration
+is planned and activates when the Immigration system ships; birth-based registration alone is
+sufficient for NovaID's V1 launch, so V1 does not wait on it.
+
+-- 22 of 40 --
+
+NovaID PRD (Version 1.0)
+Page 23 of 40
+10. DATA GOVERNANCE, PRIVACY AND SECURITY
+NovaID must:
+• Encrypt sensitive information in transit and at rest.
+• Require multi-factor authentication for privileged users.
+• Apply role-based and purpose-based access.
+• Mask information that is not required.
+• Prevent shared accounts.
+• Restrict data exports.
+• Separate production, testing and training environments.
+• Use fictional or anonymised information outside production.
+• Define information-retention and archival periods.
+• Conduct privacy and security assessments before onboarding institutions.
+• Maintain incident-response procedures.
+• Record exceptional access.
+• Periodically review user and institutional permissions.
+• Protect biometric information with additional controls.
+• Prevent ordinary users from deleting identity or audit records.
+11. AUDIT AND ACCOUNTABILITY
+NovaID must record:
+• Successful and failed logins.
+• Searches.
+• Verification requests.
+• Records viewed.
+• Applications created.
+• Information added or changed.
+• Previous and updated values.
+• Approvals and rejections.
+• Duplicate-review decisions.
+• Identity merges and links.
+• Evidence accessed.
+• Reports and records exported.
+• Emergency access.
+• User-permission changes.
+• Institution and centre changes.
+• System-configuration changes.
+Each audit event must include: user, role, institution, action, approved purpose, date and time,
+record affected, outcome, and session or device information where permitted.
+
+-- 23 of 40 --
+
+NovaID PRD (Version 1.0)
+Page 24 of 40
+12. ANALYTICS AND MONITORING
+12.1 National Dashboard
+The NICRA National Administrator should see:
+• Total registered citizens.
+• NSNs issued.
+• Birth registrations.
+• Naturalized citizen registrations.
+• Death registrations.
+• Pending applications.
+• Rejected applications.
+• Late birth registrations.
+• Potential duplicates.
+• Correction requests.
+• Active registration centres.
+• Active connected institutions.
+• System availability.
+• Security and compliance alerts.
+12.2 Regional Dashboard
+Regional Administrators should see the same operational categories limited to their assigned
+region.
+12.3 Registration Centre Dashboard
+• Applications created by the centre.
+• Pending reviews.
+• Applications returned for more information.
+• Approved and rejected applications.
+• Average processing time.
+• Officer activity.
+• Unresolved exceptions.
+12.4 Metric Rules
+Every metric must define: data source, calculation method, reporting period, update
+frequency, user roles permitted to view it, and whether personally identifiable information is
+included.
+
+-- 24 of 40 --
+
+NovaID PRD (Version 1.0)
+Page 25 of 40
+13. NON-FUNCTIONAL REQUIREMENTS
+13.1 Availability
+NovaID should provide 99.9% availability for core services. Planned maintenance must be
+communicated in advance. Critical integrations must have defined fallback responses.
+13.2 Performance
+• Standard identity-verification requests should return within five seconds.
+• Search results should return within an agreed operational threshold.
+• The platform must support nationwide concurrent usage.
+13.3 Scalability
+• The architecture must support growth in citizens, users, centres and connected
+institutions.
+• Services should scale independently where possible.
+13.4 Accessibility
+• The interface must support users with disabilities.
+• Assisted registration must be available.
+• Instructions and error messages must use clear language.
+13.5 Offline-First and Low-Connectivity Registration
+NovaID must support controlled registration in approved rural or low-connectivity centres.
+Permitted Offline Activities
+Authorised Registration Officers may: begin a new registration, capture demographic
+information, capture supporting documents, capture photographs and biometrics, save an
+encrypted registration package, and continue working on a previously saved local draft.
+The following actions must not be completed offline:
+• Final registration approval.
+• NSN generation.
+• Duplicate-resolution decisions.
+• Material identity corrections.
+• Death-registration approval.
+• Institutional-access changes.
+Local Storage Controls
+• Be encrypted on the approved device.
+• Be linked to the authenticated officer and registration centre.
+• Be stored only on NICRA-approved devices.
+• Receive a temporary, globally unique submission reference.
+• Be protected from copying to unauthorised storage.
+
+-- 25 of 40 --
+
+NovaID PRD (Version 1.0)
+Page 26 of 40
+• Be deleted from the local device after confirmed synchronization and the applicable
+retention period.
+• Remain inaccessible after the officer's access is suspended.
+Synchronization Process
+When connectivity is restored:
+1. The device authenticates with NovaID.
+2. The queued registrations are uploaded securely.
+3. NovaID validates the officer, device and centre.
+4. NovaID checks whether each temporary submission reference has already been received.
+5. Uploaded records undergo central validation and duplicate checks.
+6. Successfully received records receive a central application reference.
+7. The device receives confirmation of synchronization.
+8. Confirmed local copies are securely removed according to NICRA policy.
+Conflict Resolution
+Where NovaID identifies conflicting information or another application for the same person: the
+later submission must not overwrite the earlier record automatically; both submissions are
+placed in an exception queue; the system shows the conflicting fields; a Verification Officer
+reviews the records; supporting evidence may be requested; the approved record is retained
+as the active application; and the rejected, merged or withdrawn submission remains in the
+audit history.
+Failed Synchronization
+Where synchronization fails, the encrypted registration package remains in the local queue,
+the system retries according to configured rules, the officer sees the failure reason and current
+status, the same submission must not be recreated as a new application, and repeated failures
+are escalated to technical support, which must not receive unrestricted access to the citizen's
+readable information.
+Offline Audit Requirements
+The system must record: the officer who captured the information, the approved device used,
+the registration centre, the date and time of initial capture, the date and time of
+synchronization, offline edits made before synchronization, failed synchronization attempts,
+and conflict-resolution decisions.
+13.6 Backup and Recovery
+• Identity and audit records must be backed up regularly.
+• Recovery procedures must be tested.
+• Recovery must preserve record integrity and audit history.
+13.7 Technical Architecture
+The proposed architecture should separate: identity services, registration services, verification
+services, access management, audit services, notification services, analytics services,
+integration services, and biometric services where applicable. As a working assumption for V1,
+consistent with OneHealth's precedent, the stack is a Next.js frontend with a
+Firebase/Firestore-style backend; the final technology stack will be confirmed after the
+functional requirements are approved. Development is expected to use Google Antigravity, an
+
+-- 26 of 40 --
+
+NovaID PRD (Version 1.0)
+Page 27 of 40
+agentic development platform, as the build environment; this is a tooling choice and does not
+change the underlying stack.
+
+-- 27 of 40 --
+
+NovaID PRD (Version 1.0)
+Page 28 of 40
+14. ERROR AND EXCEPTION HANDLING
+Scenario Required Response
+Missing mandatory information Prevent submission and identify the missing fields
+Invalid birth notification Return the notification to the originating facility
+with the reason
+Potential duplicate Pause NSN issuance and send the application for
+review
+Immigration reference cannot be verified Pause the application and request confirmation
+from Immigration
+Conflicting parent information Route the application for enhanced review
+Failed connected-system verification Display a temporary failure and allow controlled
+retry
+Incorrect death registration Treat as a critical incident and begin urgent
+reversal
+Unauthorised search Block the request, log it and alert Compliance
+where required
+Failed notification Retry and place unresolved failures in an
+operational queue
+Interrupted submission Save a draft where permitted and prevent
+duplicate submission
+Compromised user account Suspend access and begin security investigation
+Citizen disputes an identity decision Create a formal review or appeal case
+Every exception must have an owner, status, priority, action history and escalation route.
+15. ASSUMPTIONS AND DEPENDENCIES
+• Novaria has a legal basis for national identity and civil registration under two fictional
+instruments: the Novaria Identity and Civil Registration Act, which establishes NICRA's
+mandate to register citizens and issue the NSN, and the Novaria Data Protection Act,
+which governs purpose-based access to identity information and sets penalties for misuse.
+• NICRA is authorised to issue and manage the NSN.
+• Immigration remains responsible for citizenship decisions.
+• OneHealth is available to submit birth notifications from connected health facilities.
+• Alternative registration channels exist for births outside connected facilities.
+• Connected institutions must complete security and privacy assessments.
+• Registration Officers will be trained and authorised.
+• Biometric use will be approved before implementation.
+• Connected government systems will adopt the NSN as a common identity reference.
+• Specialised government records will remain in their responsible systems.
+
+-- 28 of 40 --
+
+NovaID PRD (Version 1.0)
+Page 29 of 40
+• Novaria's states, zones and LGAs follow the canonical administrative structure defined in
+Section 20 and the companion Novaria Administrative Reference workbook.
+
+-- 29 of 40 --
+
+NovaID PRD (Version 1.0)
+Page 30 of 40
+16. RISKS AND MITIGATIONS
+Risk Impact Mitigation
+Unauthorised access Privacy and trust damage Purpose-based access, monitoring
+and sanctions
+Duplicate identities Unreliable registry Duplicate screening and human
+review
+Incorrect identity
+changes Loss of access to services Evidence, independent approval
+and appeals
+System outage Disruption across government
+services
+High availability and disaster
+recovery
+Excessive data sharing Privacy breach Minimum-information verification
+Insider misuse Identity theft or profiling Segregation of duties and access
+monitoring
+Exclusion of vulnerable
+citizens Incomplete national coverage Assisted and low-connectivity
+registration
+Poor-quality source
+information Incorrect identities Validation and exception handling
+Incorrect duplicate
+match
+Separate persons treated as
+one
+Independent review and citizen
+appeal
+Incorrect death status Citizen blocked from services Enhanced validation and urgent
+reversal
+Institutional credential
+compromise
+Large-scale unauthorised
+access
+Rate limits, expiry, monitoring and
+revocation
+17. MINIMUM VIABLE PRODUCT
+NovaID V1 will include:
+• NICRA user and role management.
+• Registration Centre management.
+• Institutional onboarding.
+• Birth notifications from OneHealth.
+• Alternative birth registration.
+• Late birth registration.
+• Naturalized citizen registration.
+• Core citizen identity records.
+• NSN generation.
+• Identity search and verification.
+• Identity corrections.
+• Duplicate review.
+• Death registration.
+
+-- 30 of 40 --
+
+NovaID PRD (Version 1.0)
+Page 31 of 40
+• Audit logs.
+• Operational dashboards.
+• Notifications.
+• OneHealth integration.
+• Immigration verification integration.
+• Core security and compliance monitoring.
+• Facial biometric capture and matching.
+• Fingerprint capture and matching for eligible citizens.
+• Biometric exception management.
+• Demographic and biometric duplicate detection.
+• Controlled offline registration and synchronization.
+• Conflict-resolution queues for offline submissions.
+• Citizen self-service (Section 7.16).
+• Virtual identity card (view and self-print).
+• Basic “Log in with NovaID” authentication for approved government services.
+17.1 V1 Exclusions
+The following will not form part of V1:
+• Police case management.
+• Criminal records.
+• Missing-person case management.
+• Social-service case management.
+• Medical records.
+• Education records.
+• A full digital identity wallet.
+• Cross-border identity verification.
+• Advanced predictive fraud models.
+• Unrestricted citizen editing of identity information.
+18. FUTURE SCOPE
+Future versions may include:
+• Citizen mobile application.
+• Digital identity credential.
+• Physical identity-card management.
+• Mobile registration units.
+• Expanded multilingual support.
+• Citizen access-history visibility.
+• Additional government integrations.
+• Advanced fraud analysis with human review.
+• Cross-border verification where legally approved.
+• Identity services for lawful residents and refugees.
+
+-- 31 of 40 --
+
+NovaID PRD (Version 1.0)
+Page 32 of 40
+• Online appointment scheduling.
+• Expanded citizen self-service.
+• Iris biometric capture and matching, subject to future legal, operational and technical
+approval.
+
+-- 32 of 40 --
+
+NovaID PRD (Version 1.0)
+Page 33 of 40
+19. REPORTING REQUIREMENTS
+Report Intended User Purpose
+Registration Performance
+Report NICRA Administrators Monitor volumes and
+processing times
+Birth Registration Coverage
+Report NICRA and Ministry of Interior Monitor registration
+coverage
+Late Birth Registration Report NICRA Operations Monitor delayed
+registrations and outcomes
+Duplicate Review Report Duplicate and Compliance
+Teams
+Track possible duplicates
+and decisions
+Identity Correction Report NICRA Operations Monitor correction volumes
+and outcomes
+Institutional Access Report Compliance Review searches and
+verification activity
+Security Exception Report Security and Compliance Investigate suspicious
+activity
+User Access Review Report NICRA and Institution
+Administrators
+Review active users and
+permissions
+Platform Availability Report Technical Operations Monitor uptime and failures
+Death Registration Report NICRA Operations Monitor death notifications
+and approvals
+
+-- 33 of 40 --
+
+NovaID PRD (Version 1.0)
+Page 34 of 40
+20. ADMINISTRATIVE STRUCTURE OF NOVARIA
+This section defines Novaria's states, zones and LGAs. It is the canonical version for NovaID,
+OneHealth and any future Novaria product; see the companion workbook Novaria
+Administrative Reference.xlsx for the full, extensible dataset.
+Novaria is organised into five geopolitical zones and one federal capital territory. The number
+of states is tracked in the companion workbook rather than fixed here, currently 30, precisely
+so this section does not go stale each time a state is added or a zone is reassigned. Each state
+is divided into Local Government Areas (LGAs); the Novaria Capital Territory (NCT) is divided
+into five Area Councils. NovaID's registration centres, dashboards and address fields (Section
+7.6 and 7.17) will use this structure.
+20.1 Zones and States
+Novaria has five geopolitical zones (North, South, East, West and Central), plus the Novaria
+Capital Territory (NCT), which sits outside the zone structure. The current zone-to-state
+assignment and state capitals are maintained in the companion workbook,
+Novaria_Administrative_Reference.xlsx, which is the canonical source; this section intentionally
+does not reproduce that table here so the two documents cannot drift out of sync as states are
+added.
+20.2 States and Local Government Areas
+Each state's Local Government Areas (LGAs), state codes and LGA codes are maintained in the
+same workbook, on the States and LGAs sheets. State codes are two-letter codes (for example,
+KD for Kandova State); LGA codes follow the pattern STATECODE-01, STATECODE-02, and so
+on. Consult the workbook directly for the current, authoritative list rather than this document.
+20.3 Novaria Capital Territory (NCT)
+The NCT is the federal capital district and the seat of NICRA headquarters and the Ministry of
+Interior. It sits outside the five zones; in the same way Section 5 keeps NICRA's national
+authority separate from regional administration. It is divided into five Area Councils: North,
+South, East, West and Central Area Council.
+20.4 How this was built, and why it matters for OneHealth
+Kandova State's seven LGAs, and several of the other LGA names, are already in use in
+OneHealth's live sample data; this reference formalizes them rather than replacing them. Two
+things are new: the label “North Region” (used loosely in some OneHealth exports) is now
+formally Kandova State, and the directional LGA values already seen under “Capital Territory”
+rows (North, South, East, West, Central) are now formally the NCT's Area Councils.
+This means no correction is required in OneHealth's existing patient data before NovaID can
+reference it; only the display label for one state name is affected. A short mapping table for
+that future cleanup pass is included as a separate sheet in the reference workbook, so it does
+not need to be repeated here.
+20.5 Extending the structure
+Additional states, LGAs, or zone reassignments should be added to the Novaria Administrative
+Reference workbook directly, using the same code pattern (next unused 2-letter state code,
+LGA codes as STATECODE-01, -02, …), so every product that reads from it stays in sync
+automatically.
+
+-- 34 of 40 --
+
+NovaID PRD (Version 1.0)
+Page 35 of 40
+21. RESOLVED DECISIONS
+NovaID as the product name, biometric scope for the MVP, and the general structure of the
+NSN are already decided (Sections 1, 7.8 and 7.9). The administrative structure is resolved in
+Section 20. The following items are now resolved:
+1. Check-digit algorithm: the NSN's twelfth digit uses the Luhn (mod-10) algorithm.
+2. Biometric vendor and matching technology: no specific commercial vendor is named in this
+document; biometric templates and matching must conform to ISO/IEC 19794 (fingerprint)
+and ISO/IEC 39794 (facial) interchange standards, with vendor selection made during
+procurement.
+3. Biometric matching thresholds: the three-tier confidence model (low, medium, high; see
+Section 7.14) is decided. The specific numeric thresholds remain open and will be set
+during biometric testing, since they depend on the vendor and data quality.
+4. Biometric update intervals: children's biometrics are recaptured at ages 12 and 18 in
+addition to the initial capture at age five (see Section 7.8). Adults recapture biometrics at
+intervals set by NICRA, nominally every ten years, or sooner if requested.
+5. Physical identity cards: not included in V1. V1 provides a virtual identity card through citizen
+self-service (see Sections 7.16 and 17); physical cards are future scope.
+6. Citizen self-service: included in V1 (see Sections 7.16 and 17).
+7. Statutory registration period: a birth must be registered within 60 days of the date of birth;
+a registration submitted after that period is treated as a late registration (see Section 7.4).
+8. Evidence for births outside a health facility: a signed statement from the attending health
+worker or traditional birth attendant, or, where none was present, a sworn affidavit,
+together with witness or community verification where available (see Section 7.3).
+9. Evidence for late registration: at least one corroborating document, such as a school
+enrolment record, a religious or baptismal record, or a sworn affidavit of age declaration,
+in addition to the standard registration evidence (see Section 7.4).
+10. Evidence for material corrections: evidence appropriate to the specific change, for
+example a court order, marriage certificate or government gazette notice for a legal name
+change, or medical or school records plus a sworn affidavit for a date-of-birth correction,
+reviewed case by case by a Verification Officer (see Section 7.13).
+11. Identifier for lawful residents and refugees: a distinct identifier, the Novaria Resident
+Number (NRN), not the NSN (see the new Section 7.20).
+12. Governing legislation: the fictional Novaria Identity and Civil Registration Act (establishing
+NICRA's mandate and the NSN) and the Novaria Data Protection Act (governing access
+and misuse penalties); see Section 15.
+13. Technology stack: a Next.js frontend with a Firebase/Firestore-style backend is the working
+assumption for V1, consistent with OneHealth's precedent, and will be refined during
+technical design (see Section 13.7). Development tooling: Google Antigravity is the
+expected build environment; it does not change the stack itself.
+14. Implementation timeline: a phased rollout, with Phase 1 covering core registration, NSN
+issuance and OneHealth integration, and Phase 2 covering biometric expansion and
+additional agency integrations; specific dates will be set during project planning.
+
+-- 35 of 40 --
+
+NovaID PRD (Version 1.0)
+Page 36 of 40
+22. ACCEPTANCE CRITERIA
+This section starts the Acceptance Criteria for NovaID, covering the highest-risk MVP flows first:
+NSN issuance, birth registration, duplicate handling, death registration, and Log in with NovaID.
+It should grow alongside Section 7 rather than being written all at once at the end.
+22.1 NSN Generation and Uniqueness (Section 7.9)
+ID Given When Then
+AC-1.1
+A registration has
+received final approval
+and has no existing NSN
+The system issues an
+NSN
+A unique 12-digit NSN with a
+valid check digit is
+generated, and it is not
+manually editable
+AC-1.2
+A generated NSN would
+collide with an existing
+NSN
+The collision is detected
+during issuance
+The number is rejected and
+regenerated before being
+assigned
+AC-1.3
+A citizen has forgotten
+their NSN and completes
+identity verification
+successfully
+They request their NSN
+The existing NSN is
+retrieved; no new NSN is
+created
+22.2 Birth Registration from OneHealth (Sections 7.1, 7.2, 8.1)
+ID Given When Then
+AC-2.1
+A connected hospital
+submits a complete birth
+notification
+NovaID receives it
+A unique birth-notification
+reference is generated and
+returned to OneHealth; no
+NSN is issued yet
+AC-2.2 A birth notification is
+missing a required field NovaID validates it
+The notification is placed in
+an exception queue and not
+silently accepted
+AC-2.3
+A Registration Officer
+submits a civil
+registration application
+built from a valid
+notification
+A Verification Officer
+and, where required, a
+Senior Approver approve
+it
+The identity record is
+created and an NSN is
+generated only after final
+approval
+22.3 Duplicate Detection (Sections 7.14, 8.5)
+ID Given When Then
+AC-3.1
+A new registration
+matches an existing
+record above the
+medium-confidence
+threshold
+The match is detected
+NSN issuance is paused and
+the case is routed to a
+Duplicate Review Officer, not
+auto-resolved
+AC-3.2
+A Duplicate Review
+Officer recommends a
+merge
+A Senior Approver
+independently reviews
+the recommendation
+Both original records and the
+full decision history are
+preserved regardless of
+
+-- 36 of 40 --
+
+NovaID PRD (Version 1.0)
+Page 37 of 40
+ID Given When Then
+outcome
+AC-3.3
+A citizen believes they
+were incorrectly
+matched as a duplicate
+They dispute the match
+A formal review case is
+created and the citizen's
+application is not rejected
+without it
+22.4 Death Registration and Reversal (Sections 7.15, 8.6)
+ID Given When Then
+AC-4.1
+An approved source
+submits a death
+notification with
+supporting evidence
+An authorised officer
+approves it
+The citizen's status changes
+to deceased; the NSN and
+identity record are
+preserved, not deleted
+AC-4.2
+A citizen has been
+incorrectly marked as
+deceased
+The error is reported
+The record supports urgent
+reversal and the incident is
+treated as critical, not as a
+routine correction
+22.5 Log in with NovaID (Sections 7.10, 8.7)
+ID Given When Then
+AC-5.1
+A citizen selects “Log in
+with NovaID” on an
+approved government
+platform
+They authenticate
+successfully
+Only the identity attributes
+the platform is approved to
+receive are returned; never
+the citizen's password, PIN or
+biometric data
+AC-5.2
+A platform requesting
+authentication is not on
+NICRA's approved list
+A login is attempted
+The request is rejected
+before any identity attribute
+is returned
+
+-- 37 of 40 --
+
+NovaID PRD (Version 1.0)
+Page 38 of 40
+23. APPENDICES
+The following appendices will provide detailed implementation references after the main
+requirements are approved. Acceptance Criteria (started in Section 22), the Novaria
+administrative structure (Section 20, with the full dataset in the companion workbook), and the
+Data Dictionary (Section 23.1, below) are no longer on this list, since all three now exist.
+23.1 Data Dictionary
+Grouped by the record categories defined in Section 7.6. Values marked “TBD” or “to be
+defined during technical design” are genuinely undecided in this PRD — they are listed here as
+an inventory of what needs a decision, not as a claim that the decision has already been made.
+Field Category Format / Type Status Notes
+NSN Primary
+Identity
+12 digits, XXXX-XXXX-
+XXXX, Luhn check
+digit (Sec. 7.9)
+System
+-
+assigne
+d
+Generated by NovaID on
+approval, never entered
+manually.
+Legal first name Primary
+Identity Text Mandat
+ory
+Middle name Primary
+Identity Text Option
+al
+Surname Primary
+Identity Text Mandat
+ory
+Previous legal
+names
+Primary
+Identity Text, repeatable Option
+al
+Populated after an approved
+material name change (Sec.
+7.13).
+Date of birth Primary
+Identity
+Date; ISO 8601 YYYY-
+MM-DD (Platform
+Reference)
+Mandat
+ory
+Never reformatted to match
+system-timestamp display.
+Place of birth Primary
+Identity
+Text / structured
+address
+Mandat
+ory
+Sex recorded at
+registration
+Primary
+Identity Enumerated Mandat
+ory
+Value set to be defined during
+technical design; not specified
+in this PRD.
+Citizenship status Primary
+Identity Enumerated Mandat
+ory
+Value set to be defined during
+technical design.
+Basis of
+citizenship
+Primary
+Identity Enumerated Mandat
+ory
+Value set to be defined during
+technical design.
+Registration date
+and source
+Primary
+Identity
+Date/timestamp (24h
+stored, MM/DD/YYYY
+display) +
+enumerated source
+System
+-
+genera
+ted
+Identity status Primary
+Identity
+Enumerated (e.g.
+active, deceased,
+suspended)
+System
+-
+manag
+ed
+Full value set to be defined
+during technical design.
+Mother's name
+and NSN where
+available
+Relationship Text + NSN Option
+al
+
+-- 38 of 40 --
+
+NovaID PRD (Version 1.0)
+Page 39 of 40
+Field Category Format / Type Status Notes
+Father's name
+and NSN where
+available
+Relationship Text + NSN Option
+al
+Legal guardian
+information
+where applicable
+Relationship Text / structured Conditi
+onal
+Mandatory only where
+applicable (e.g. minors
+without both parents).
+Relationship
+status and
+supporting
+authority
+Relationship Text / structured Conditi
+onal
+Residential
+address Contact Structured address Mandat
+ory
+State and district Contact
+Reference to
+Novaria_Administrativ
+e_Reference.xlsx
+Mandat
+ory
+Phone number Contact
+10 digits, XXX XXX
+XXXX, starts with 8
+(Platform Reference)
+TBD
+Mandatory/optional status not
+explicitly stated in Section 7;
+confirm during technical
+design.
+Email address
+where available Contact Email Option
+al
+Preferred
+notification
+channel
+Contact
+Enumerated (in-
+platform, email, SMS,
+approved gov. channel
+— Sec. 7.19)
+Option
+al
+Current
+photograph
+Identity
+Attributes
+Image + facial
+biometric template
+Mandat
+ory
+Per the biometric lifecycle in
+Section 7.8.
+Previous
+photographs
+Identity
+Attributes Image, repeatable
+System
+-
+retaine
+d
+Approved
+biometric
+references
+Identity
+Attributes
+Facial template;
+fingerprints where
+eligible (Sec. 7.8)
+Mandat
+ory
+where
+captura
+ble
+Absence must not block NSN
+issuance (Sec. 7.8).
+Physical
+identification
+credential status
+where applicable
+Identity
+Attributes Enumerated Conditi
+onal
+V1 has no physical card (Sec.
+21, item 5); field reserved for
+future scope.
+Registration
+centre Record Info Reference
+System
+-
+genera
+ted
+Creating officer Record Info Reference to user/role
+record
+System
+-
+genera
+ted
+Approval date Record Info Date/timestamp
+System
+-
+genera
+
+-- 39 of 40 --
+
+NovaID PRD (Version 1.0)
+Page 40 of 40
+Field Category Format / Type Status Notes
+ted
+Record version Record Info Integer / version
+identifier
+System
+-
+genera
+ted
+Previous values Record Info Structured history
+System
+-
+retaine
+d
+Correction and
+update history Record Info Structured / audit log
+System
+-
+retaine
+d
+Date and place of
+death where
+applicable
+Record Info Date (ISO 8601) +
+text
+Conditi
+onal
+Populated only via death
+registration (Sec. 7.15).
+• NSN Format and Validation Rules.
+• Full Role and Permission Matrix.
+• Registration Status Definitions.
+• Identity Update Classification.
+• Duplicate Resolution Framework.
+• Integration Field Matrix.
+• Notification Catalogue.
+• Audit Event Catalogue.
+• Report Definitions.
+• Test Scenarios.
+• User Flows.
+• System Architecture Diagram.
+
+-- 40 of 40 --
+

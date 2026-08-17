@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin: 0; padding: 0; }
+  body { background: #eef4f4; -webkit-font-smoothing: antialiased; }
+  a { color: #1f8a86; text-decoration: none; }
+  a:hover { color: #14615e; text-decoration: underline; }
+  ::selection { background: #cfe9e5; }
+  input, select { font-family: inherit; }
+</style>
+</helmet>
+<div style="min-height: 100vh; min-width: 1280px; display: flex; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #14232a; background: linear-gradient(135deg, #e9f4f1 0%, #f2f5fb 46%, #f7f1f7 100%);">
+
+  <aside style="width: {{ railWidth }}; flex: 0 0 {{ railWidth }}; background: linear-gradient(180deg, #123035 0%, #10262c 100%); display: flex; flex-direction: column; padding: 26px 16px 18px; box-sizing: border-box;">
+    <div onClick="{{ toggleRail }}" style="display: flex; justify-content: flex-end; margin-bottom: 10px; {{ railRowExtra }}">
+      <div style="width: 30px; height: 30px; border-radius: 9px; background: rgba(255,255,255,0.06); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3.5px; cursor: pointer;" style-hover="background: rgba(255,255,255,0.15);">
+        <div style="width: 13px; height: 1.5px; border-radius: 2px; background: #9dbcc2;"></div>
+        <div style="width: 13px; height: 1.5px; border-radius: 2px; background: #9dbcc2;"></div>
+        <div style="width: 13px; height: 1.5px; border-radius: 2px; background: #9dbcc2;"></div>
+      </div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 11px; padding: 0 8px 24px; {{ railRowExtra }}">
+      <div style="width: 32px; height: 32px; border-radius: 10px; background: linear-gradient(140deg, #5ec9bd, #4a9ec9); display: flex; align-items: center; justify-content: center;">
+        <div style="width: 11px; height: 11px; border-radius: 50%; border: 2.5px solid rgba(255,255,255,0.95); box-sizing: border-box;"></div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 1px; {{ hideLabel }}">
+        <div style="font-family: 'Jost', sans-serif; font-size: 17px; font-weight: 500; letter-spacing: 0.2px; color: #f2fbfa;">NovaID</div>
+        <div style="font-size: 9.5px; letter-spacing: 1.1px; text-transform: uppercase; color: #6f9299;">Verification portal</div>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 3px;">
+      <div style="font-size: 9.5px; letter-spacing: 1.1px; text-transform: uppercase; color: #55787f; padding: 0 10px 9px; {{ hideLabel }}">Verify</div>
+      <div style="display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 10px; background: linear-gradient(100deg, rgba(94,201,189,0.22), rgba(94,201,189,0.08)); box-shadow: inset 0 0 0 1px rgba(140,226,215,0.28); color: #f0fbfa; font-size: 13.5px; font-weight: 500; {{ railRowExtra }}">
+        <div style="width: 16px; height: 16px; border-radius: 4px; background: #5ec9bd; display: flex; align-items: center; justify-content: center;"><div style="width: 5px; height: 5px; border-radius: 50%; background: #10262c;"></div></div>
+        <span style="flex: 1; {{ hideLabel }}">Identity check</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 11px; padding: 9px 10px; border-radius: 10px; color: #b6cdd1; font-size: 13.5px; {{ railRowExtra }}" style-hover="background: rgba(255,255,255,0.06); color: #e6f3f2;">
+        <div style="width: 16px; height: 16px; border-radius: 5px; background: rgba(255,255,255,0.13); display: flex; align-items: center; justify-content: center;"><div style="width: 6px; height: 6px; border-radius: 2px; background: currentColor; opacity: 0.7;"></div></div><span style="{{ hideLabel }} font-size: 13.5px;">My checks</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 11px; padding: 9px 10px; border-radius: 10px; color: #b6cdd1; font-size: 13.5px; {{ railRowExtra }}" style-hover="background: rgba(255,255,255,0.06); color: #e6f3f2;">
+        <div style="width: 16px; height: 16px; border-radius: 5px; background: rgba(255,255,255,0.13); display: flex; align-items: center; justify-content: center;"><div style="width: 6px; height: 6px; border-radius: 2px; background: currentColor; opacity: 0.7;"></div></div><span style="{{ hideLabel }} font-size: 13.5px;">Approved purposes</span>
+      </div>
+      <div style="font-size: 9.5px; letter-spacing: 1.1px; text-transform: uppercase; color: #55787f; padding: 18px 10px 9px; {{ hideLabel }}">Institution</div>
+      <div style="display: flex; align-items: center; gap: 11px; padding: 9px 10px; border-radius: 10px; color: #b6cdd1; font-size: 13.5px; {{ railRowExtra }}" style-hover="background: rgba(255,255,255,0.06); color: #e6f3f2;">
+        <div style="width: 16px; height: 16px; border-radius: 5px; background: rgba(255,255,255,0.13); display: flex; align-items: center; justify-content: center;"><div style="width: 6px; height: 6px; border-radius: 2px; background: currentColor; opacity: 0.7;"></div></div><span style="{{ hideLabel }} font-size: 13.5px;">Usage and limits</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 11px; padding: 9px 10px; border-radius: 10px; color: #b6cdd1; font-size: 13.5px; {{ railRowExtra }}" style-hover="background: rgba(255,255,255,0.06); color: #e6f3f2;">
+        <div style="width: 16px; height: 16px; border-radius: 5px; background: rgba(255,255,255,0.13); display: flex; align-items: center; justify-content: center;"><div style="width: 6px; height: 6px; border-radius: 2px; background: currentColor; opacity: 0.7;"></div></div><span style="{{ hideLabel }} font-size: 13.5px;">Access review</span>
+      </div>
+    </div>
+
+    <div style="margin-top: auto; padding: 14px 12px; border-radius: 14px; background: rgba(255,255,255,0.055); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.07); display: flex; gap: 11px; align-items: center;">
+      <div style="width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(140deg, #7c8fd6, #5ec9bd); display: flex; align-items: center; justify-content: center; font-family: 'Jost', sans-serif; font-size: 13px; color: #0d2226; font-weight: 500;">JM</div>
+      <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0; {{ hideLabel }}">
+        <div style="font-size: 12.5px; color: #e9f5f4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">J. Iranm</div>
+        <div style="font-size: 10.5px; color: #7d9ea4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Verification User · NHA</div>
+      </div>
+    </div>
+  </aside>
+
+  <main style="flex: 1; min-width: 0; display: flex; flex-direction: column;">
+
+    <header style="display: flex; align-items: center; gap: 20px; padding: 18px 32px; background: rgba(255,255,255,0.55); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255,255,255,0.8);">
+      <div style="display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: #4f6a72;">
+        <span>Novaria Health Authority</span>
+        <span style="color: #a8bcc1;">/</span>
+        <span style="color: #14232a;">Identity check</span>
+      </div>
+      <div style="flex: 1;"></div>
+      <div style="display: flex; align-items: center; gap: 9px; padding: 7px 13px; border-radius: 20px; background: rgba(74,158,201,0.14); color: #23617f; font-size: 12px; font-weight: 500;">
+        <span style="width: 7px; height: 7px; border-radius: 50%; background: #4a9ec9;"></span>{{ quotaLabel }}
+      </div>
+      <div style="display: flex; align-items: center; gap: 7px; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: #4f6a72;">
+        <div style="width: 6px; height: 6px; border-radius: 50%; background: #35946c;"></div>08/13/2026 14:22
+      </div>
+    </header>
+
+    <div style="flex: 1; padding: 26px 32px 44px; display: flex; flex-direction: column; gap: 20px;">
+
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <h1 style="font-family: 'Jost', sans-serif; font-size: 30px; font-weight: 500; letter-spacing: -0.2px; margin: 0; line-height: 1.2;">Verify an identity</h1>
+        <p style="margin: 0; font-size: 13.5px; line-height: 1.55; color: #4f6a72; max-width: 700px; text-wrap: pretty;">You receive a verification result, not a citizen's record. Every check needs an approved purpose, and the purpose you select is recorded against your name.</p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: minmax(0, 1fr) 372px; gap: 20px; align-items: start;">
+
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+
+          <section style="border-radius: 20px; background: rgba(255,255,255,0.8); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.92), 0 16px 40px -22px rgba(16,45,52,0.26); overflow: hidden;">
+            <div style="display: flex; gap: 4px; padding: 15px 22px 0;">
+              <div onClick="{{ tabNsn }}" style="{{ styleNsnTab }}">By NSN</div>
+              <div onClick="{{ tabName }}" style="{{ styleNameTab }}">By name and date of birth</div>
+            </div>
+            <div style="height: 1px; background: rgba(20,60,70,0.08);"></div>
+
+            <div style="padding: 20px 22px; display: flex; flex-direction: column; gap: 17px;">
+
+              <sc-if value="{{ byNsn }}" hint-placeholder-val="{{ true }}">
+                <div style="display: grid; grid-template-columns: minmax(0, 1fr) 150px; gap: 14px;">
+                  <div style="display: flex; flex-direction: column; gap: 6px;">
+                    <label style="font-size: 11.5px; color: #4f676e; font-weight: 500;">Novaria Social Number</label>
+                    <input onChange="{{ onNsn }}" value="{{ nsn }}" placeholder="XXXX-XXXX-XXXX" style="padding: 11px 13px; border-radius: 10px; border: 1px solid rgba(20,60,70,0.16); background: rgba(255,255,255,0.92); font-family: 'IBM Plex Mono', monospace; font-size: 15px; letter-spacing: 1px; color: #14232a; outline: none; box-sizing: border-box; width: 100%;" style-focus="border-color: #1f8a86; box-shadow: 0 0 0 3px rgba(31,138,134,0.12);" />
+                  </div>
+                  <div style="display: flex; flex-direction: column; gap: 6px;">
+                    <label style="font-size: 11.5px; color: #4f676e; font-weight: 500;">Date of birth</label>
+                    <input value="1994-07-22" style="padding: 11px 13px; border-radius: 10px; border: 1px solid rgba(20,60,70,0.16); background: rgba(255,255,255,0.92); font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #14232a; outline: none; box-sizing: border-box; width: 100%;" style-focus="border-color: #1f8a86; box-shadow: 0 0 0 3px rgba(31,138,134,0.12);" />
+                  </div>
+                </div>
+                <div style="{{ checkDigitStyle }}">{{ checkDigitNote }}</div>
+              </sc-if>
+
+              <sc-if value="{{ byName }}" hint-placeholder-val="{{ false }}">
+                <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px;">
+                  <div style="display: flex; flex-direction: column; gap: 6px;">
+                    <label style="font-size: 11.5px; color: #4f676e; font-weight: 500;">Surname</label>
+                    <input value="Vantis" style="padding: 11px 13px; border-radius: 10px; border: 1px solid rgba(20,60,70,0.16); background: rgba(255,255,255,0.92); font-size: 13px; color: #14232a; outline: none; box-sizing: border-box; width: 100%;" style-focus="border-color: #1f8a86; box-shadow: 0 0 0 3px rgba(31,138,134,0.12);" />
+                  </div>
+                  <div style="display: flex; flex-direction: column; gap: 6px;">
+                    <label style="font-size: 11.5px; color: #4f676e; font-weight: 500;">First name</label>
+                    <input value="Danika" style="padding: 11px 13px; border-radius: 10px; border: 1px solid rgba(20,60,70,0.16); background: rgba(255,255,255,0.92); font-size: 13px; color: #14232a; outline: none; box-sizing: border-box; width: 100%;" style-focus="border-color: #1f8a86; box-shadow: 0 0 0 3px rgba(31,138,134,0.12);" />
+                  </div>
+                  <div style="display: flex; flex-direction: column; gap: 6px;">
+                    <label style="font-size: 11.5px; color: #4f676e; font-weight: 500;">Date of birth</label>
+                    <input value="1994-07-22" style="padding: 11px 13px; border-radius: 10px; border: 1px solid rgba(20,60,70,0.16); background: rgba(255,255,255,0.92); font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #14232a; outline: none; box-sizing: border-box; width: 100%;" style-focus="border-color: #1f8a86; box-shadow: 0 0 0 3px rgba(31,138,134,0.12);" />
+                  </div>
+                </div>
+                <div style="padding: 11px 13px; border-radius: 11px; background: rgba(20,60,70,0.05); font-size: 11.5px; color: #4f6a72; line-height: 1.5;">Name searches need at least two criteria and never return a browsable list. If more than one record matches, you get a count and no details.</div>
+              </sc-if>
+
+              <div style="display: grid; grid-template-columns: minmax(0, 1fr) 190px; gap: 14px; align-items: end;">
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                  <label style="font-size: 11.5px; color: #4f676e; font-weight: 500;">Approved purpose <span style="color: #7a5312;">required</span></label>
+                  <select onChange="{{ onPurpose }}" style="padding: 11px 13px; border-radius: 10px; border: 1px solid rgba(20,60,70,0.16); background: rgba(255,255,255,0.92); font-size: 13px; color: #14232a; outline: none; width: 100%; box-sizing: border-box;" style-focus="border-color: #1f8a86;">
+                    <option value="">Select the purpose for this check…</option>
+                    <option value="patient">Patient identity verification</option>
+                    <option value="enrol">Enrolment eligibility check</option>
+                    <option value="claim">HMO claim validation</option>
+                    <option value="record">Reconciling a duplicate patient record</option>
+                  </select>
+                </div>
+                <div onClick="{{ run }}" style="{{ runStyle }}">Run check</div>
+              </div>
+            </div>
+          </section>
+
+          <sc-if value="{{ hasResult }}" hint-placeholder-val="{{ false }}">
+            <section style="{{ resultStyle }}">
+              <div style="display: flex; align-items: flex-start; gap: 15px;">
+                <div style="{{ resultIcon }}"></div>
+                <div style="flex: 1;">
+                  <div style="font-family: 'Jost', sans-serif; font-size: 22px; font-weight: 500; line-height: 1.25;">{{ resultTitle }}</div>
+                  <div style="font-size: 13px; color: #4f6a72; margin-top: 7px; line-height: 1.55; max-width: 560px;">{{ resultBody }}</div>
+                </div>
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #5a7178; white-space: nowrap;">{{ resultTime }}</div>
+              </div>
+
+              <sc-if value="{{ showAttributes }}" hint-placeholder-val="{{ true }}">
+                <div style="margin-top: 20px; border-radius: 15px; background: rgba(255,255,255,0.72); box-shadow: inset 0 0 0 1px rgba(20,60,70,0.07); overflow: hidden;">
+                  <div style="padding: 13px 16px 10px; font-size: 11px; letter-spacing: 0.9px; text-transform: uppercase; color: #4f676e;">Attributes your institution may receive</div>
+                  <sc-for list="{{ attributes }}" as="a" hint-placeholder-count="4">
+                    <div style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-top: 1px solid rgba(20,60,70,0.06);">
+                      <span style="{{ a.dot }}"></span>
+                      <div style="flex: 1; min-width: 0; font-size: 13px;">{{ a.label }}</div>
+                      <div style="{{ a.valueStyle }}">{{ a.value }}</div>
+                    </div>
+                  </sc-for>
+                  <div style="padding: 12px 16px; border-top: 1px solid rgba(20,60,70,0.06); background: rgba(240,246,246,0.6); font-size: 11.5px; color: #4f676e; line-height: 1.5;">Masked fields are outside your approved purpose. Biometrics, evidence and other institutions' records are never returned.</div>
+                </div>
+              </sc-if>
+            </section>
+          </sc-if>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+
+          <section style="border-radius: 20px; background: rgba(255,255,255,0.8); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.92), 0 16px 40px -22px rgba(16,45,52,0.26); padding: 19px;">
+            <div style="font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 500; margin-bottom: 13px;">Possible results</div>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <sc-for list="{{ outcomes }}" as="o" hint-placeholder-count="7">
+                <div style="display: flex; align-items: flex-start; gap: 10px;">
+                  <span style="{{ o.dot }}"></span>
+                  <div>
+                    <div style="font-size: 12.5px;">{{ o.label }}</div>
+                    <div style="font-size: 11px; color: #4f676e; margin-top: 2px; line-height: 1.45;">{{ o.note }}</div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </section>
+
+          <section style="border-radius: 20px; background: rgba(255,255,255,0.72); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.9), 0 16px 40px -22px rgba(16,45,52,0.22); padding: 19px;">
+            <div style="font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 500; margin-bottom: 14px;">Your institution's access</div>
+            <div style="display: flex; flex-direction: column; gap: 11px;">
+              <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 12.5px;"><span style="color: #4f676e;">Institution</span><span>Novaria Health Authority</span></div>
+              <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 12.5px;"><span style="color: #4f676e;">Credential expires</span><span style="font-family: 'IBM Plex Mono', monospace;">11/30/2026</span></div>
+              <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 12.5px;"><span style="color: #4f676e;">Daily limit</span><span style="font-family: 'IBM Plex Mono', monospace;">2,000 checks</span></div>
+              <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 12.5px;"><span style="color: #4f676e;">Used today</span><span style="font-family: 'IBM Plex Mono', monospace;">{{ usedToday }}</span></div>
+              <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 12.5px;"><span style="color: #4f676e;">Access review due</span><span style="font-family: 'IBM Plex Mono', monospace; color: #7a5312;">09/30/2026</span></div>
+            </div>
+            <div style="margin-top: 15px; padding: 11px 13px; border-radius: 11px; background: rgba(20,60,70,0.05); font-size: 11.5px; color: #4f6a72; line-height: 1.5;">Repeated checks on citizens unrelated to your work are monitored and referred to Compliance.</div>
+          </section>
+
+          <section style="border-radius: 20px; background: rgba(255,255,255,0.7); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.9), 0 16px 40px -22px rgba(16,45,52,0.2); padding: 19px;">
+            <div style="font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 500; margin-bottom: 14px;">Your recent checks</div>
+            <sc-for list="{{ recent }}" as="r" hint-placeholder-count="4">
+              <div style="display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(20,60,70,0.06);">
+                <span style="{{ r.dot }}"></span>
+                <div style="flex: 1; min-width: 0;">
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px;">{{ r.nsn }}</div>
+                  <div style="font-size: 11px; color: #4f676e; margin-top: 3px;">{{ r.purpose }}</div>
+                </div>
+                <div style="{{ r.resultStyle }}">{{ r.result }}</div>
+              </div>
+            </sc-for>
+          </section>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;resultScenario&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Match&quot;,&quot;Partial match&quot;,&quot;No match&quot;,&quot;Record under review&quot;,&quot;Record restricted&quot;,&quot;Deceased&quot;,&quot;Unavailable&quot;],&quot;default&quot;:&quot;Match&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;label&quot;:&quot;Result returned&quot;,&quot;section&quot;:&quot;Scenario&quot;},&quot;returnAttributes&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;label&quot;:&quot;Return attributes with the result&quot;,&quot;section&quot;:&quot;Policy&quot;}}">
+class Component extends DCLogic {
+  state = { collapsed: false, tab: "nsn", nsn: "7204-3318-9050", purpose: "", result: null };
+
+  tabStyle(key) {
+    const on = this.state.tab === key;
+    return [
+      "padding: 10px 15px",
+      "border-radius: 11px 11px 0 0",
+      "font-size: 13px",
+      "cursor: pointer",
+      "font-weight: " + (on ? "600" : "400"),
+      "color: " + (on ? "#14232a" : "#4f6a72"),
+      "background: " + (on ? "rgba(255,255,255,0.85)" : "transparent"),
+      "box-shadow: " + (on ? "inset 0 1.5px 0 0 #1f8a86" : "none"),
+    ].join(";");
+  }
+
+  luhnOk(digits) {
+    if (digits.length !== 12) return false;
+    let sum = 0;
+    for (let i = 0; i < 12; i++) {
+      let d = +digits[11 - i];
+      if (i % 2 === 1) { d *= 2; if (d > 9) d -= 9; }
+      sum += d;
+    }
+    return sum % 10 === 0;
+  }
+
+  renderVals() {
+    const scenario = this.props.resultScenario ?? "Match";
+    const showAttributes = this.props.returnAttributes ?? true;
+    const { tab, nsn, purpose, result } = this.state;
+    const digits = nsn.replace(/\D/g, "");
+    const formatOk = digits.length === 12;
+    const ready = !!purpose && (tab === "name" || formatOk);
+
+    const kinds = {
+      Match: {
+        title: "Match", tone: "ok",
+        body: "The details you submitted match one active identity record. Only the attributes below were returned to your institution.",
+      },
+      "Partial match": {
+        title: "Partial match", tone: "warn",
+        body: "Some details match and at least one does not. No identity is confirmed. Ask the citizen to check the spelling of their name, or verify in person.",
+      },
+      "No match": {
+        title: "No match", tone: "bad",
+        body: "No active identity record matches these details. This does not mean the person has no NSN — it means these details do not identify one.",
+      },
+      "Record under review": {
+        title: "Record under review", tone: "warn",
+        body: "This identity is subject to an open review, such as a duplicate or correction case. Attributes are withheld until the review concludes.",
+      },
+      "Record restricted": {
+        title: "Record restricted", tone: "bad",
+        body: "Access to this record is restricted. Your institution's approved purposes do not permit a result. The attempt has been logged.",
+      },
+      Deceased: {
+        title: "Deceased status returned", tone: "warn",
+        body: "This identity is recorded as deceased. Your institution is authorised to receive that status. If the citizen is present and alive, report it immediately as a critical incident.",
+      },
+      Unavailable: {
+        title: "Service temporarily unavailable", tone: "bad",
+        body: "NovaID could not complete the check. Do not retry more than the configured limit — a controlled retry is available, and no result means no result, not a failed identity.",
+      },
+    };
+
+    const k = kinds[scenario] || kinds.Match;
+    const toneBg = {
+      ok: "linear-gradient(155deg, rgba(226,241,232,0.85), rgba(255,255,255,0.82))",
+      warn: "linear-gradient(155deg, rgba(251,238,218,0.8), rgba(255,255,255,0.82))",
+      bad: "linear-gradient(155deg, rgba(244,230,230,0.8), rgba(255,255,255,0.82))",
+    };
+    const toneMark = { ok: "#24685a", warn: "#a9701a", bad: "#8d3232" };
+    const toneRing = { ok: "rgba(53,148,108,0.28)", warn: "rgba(201,138,30,0.3)", bad: "rgba(176,69,69,0.28)" };
+
+    const full = scenario === "Match" || scenario === "Deceased";
+    const attributes = [
+      { label: "Full legal name", value: full ? "Danika Orelle Vantis" : "Withheld", ok: full },
+      { label: "Date of birth", value: full ? "1994-07-22" : "Withheld", ok: full, mono: true },
+      { label: "NSN status", value: scenario === "Deceased" ? "Deceased" : full ? "Active" : "Withheld", ok: full },
+      { label: "Residential address", value: "Masked — outside your purpose", ok: null },
+      { label: "Biometric templates", value: "Never returned", ok: null },
+    ];
+
+    const outcomes = [
+      { label: "Match", note: "One active record matches", state: "ok" },
+      { label: "Partial match", note: "Some details differ — nothing confirmed", state: "warn" },
+      { label: "No match", note: "These details identify no record", state: "bad" },
+      { label: "Record under review", note: "Duplicate or correction case open", state: "warn" },
+      { label: "Record restricted", note: "Outside your permitted access", state: "bad" },
+      { label: "Deceased status", note: "Only where your institution is authorised", state: "warn" },
+      { label: "Temporarily unavailable", note: "Controlled retry, not a failed identity", state: "info" },
+    ];
+
+    const dotColor = { ok: "#35946c", warn: "#c98a1e", bad: "#b04545", info: "rgba(20,60,70,0.35)" };
+
+    const recent = [
+      { nsn: "••••-••••-9050", purpose: "Patient identity verification", result: "Match", state: "ok" },
+      { nsn: "••••-••••-4478", purpose: "Reconciling a duplicate record", result: "Under review", state: "warn" },
+      { nsn: "••••-••••-2280", purpose: "Enrolment eligibility check", result: "Match", state: "ok" },
+      { nsn: "••••-••••-7719", purpose: "HMO claim validation", result: "Partial", state: "warn" },
+    ];
+
+    return {
+      railWidth: this.state.collapsed ? "76px" : "244px",
+      hideLabel: this.state.collapsed ? "display: none;" : "",
+      railRowExtra: this.state.collapsed ? "justify-content: center;" : "",
+      toggleRail: () => this.setState({ collapsed: !this.state.collapsed }),
+      quotaLabel: "412 of 2,000 checks today",
+      usedToday: "412",
+      styleNsnTab: this.tabStyle("nsn"),
+      styleNameTab: this.tabStyle("name"),
+      tabNsn: () => this.setState({ tab: "nsn", result: null }),
+      tabName: () => this.setState({ tab: "name", result: null }),
+      byNsn: tab === "nsn",
+      byName: tab === "name",
+      nsn,
+      onNsn: (e) => this.setState({ nsn: e.target.value, result: null }),
+      onPurpose: (e) => this.setState({ purpose: e.target.value }),
+      checkDigitNote: !formatOk
+        ? "An NSN is 12 digits, shown in groups of four. Dashes are for reading only."
+        : this.luhnOk(digits)
+          ? "Check digit valid — the number is well formed. That is not the same as it existing."
+          : "Check digit failed. This number contains a typing error and cannot be a valid NSN.",
+      checkDigitStyle: [
+        "padding: 11px 13px",
+        "border-radius: 11px",
+        "font-size: 11.5px",
+        "line-height: 1.5",
+        !formatOk
+          ? "background: rgba(20,60,70,0.05); color: #4f6a72"
+          : this.luhnOk(digits)
+            ? "background: rgba(53,148,108,0.1); color: #24685a"
+            : "background: rgba(176,69,69,0.1); color: #8d3232",
+      ].join(";"),
+      runStyle: [
+        "padding: 12px",
+        "border-radius: 11px",
+        "text-align: center",
+        "font-size: 13px",
+        "font-weight: 600",
+        ready
+          ? "cursor: pointer; color: #fff; background: linear-gradient(100deg, #1f8a86, #2f7d9b); box-shadow: 0 8px 20px -10px rgba(31,138,134,0.7)"
+          : "cursor: not-allowed; color: #90a7ad; background: rgba(20,60,70,0.07)",
+      ].join(";"),
+      run: () => { if (ready) this.setState({ result: scenario }); },
+      hasResult: !!result,
+      resultStyle: [
+        "border-radius: 20px",
+        "padding: 22px",
+        "backdrop-filter: blur(18px)",
+        "-webkit-backdrop-filter: blur(18px)",
+        "background: " + toneBg[k.tone],
+        "box-shadow: inset 0 0 0 1px " + toneRing[k.tone] + ", 0 16px 40px -22px rgba(16,45,52,0.26)",
+      ].join(";"),
+      resultIcon: [
+        "width: 40px",
+        "height: 40px",
+        "border-radius: 13px",
+        "flex: none",
+        "display: flex",
+        "align-items: center",
+        "justify-content: center",
+        "background: " + toneMark[k.tone] + "26",
+        "box-shadow: inset 0 0 0 3px " + toneMark[k.tone] + "",
+      ].join(";"),
+      resultTitle: k.title,
+      resultBody: k.body,
+      resultTime: "returned in 1.4s",
+      showAttributes: showAttributes && scenario !== "Unavailable" && scenario !== "Record restricted",
+      attributes: attributes.map((a) => ({
+        label: a.label,
+        value: a.value,
+        dot: "width: 8px; height: 8px; border-radius: 50%; flex: none; background: " +
+          (a.ok === true ? "#35946c" : a.ok === false ? "#c98a1e" : "rgba(20,60,70,0.28)"),
+        valueStyle: "font-size: 12.5px; white-space: nowrap; " +
+          (a.mono ? "font-family: 'IBM Plex Mono', monospace; font-size: 12px; " : "") +
+          (a.ok ? "color: #14232a" : "color: #4f676e"),
+      })),
+      outcomes: outcomes.map((o) => ({
+        label: o.label,
+        note: o.note,
+        dot: "width: 9px; height: 9px; border-radius: 50%; flex: none; margin-top: 4px; background: " + dotColor[o.state],
+      })),
+      recent: recent.map((r) => ({
+        nsn: r.nsn,
+        purpose: r.purpose,
+        result: r.result,
+        dot: "width: 7px; height: 7px; border-radius: 50%; flex: none; background: " + dotColor[r.state],
+        resultStyle: "font-size: 11.5px; white-space: nowrap; color: " + (r.state === "ok" ? "#24685a" : "#7a5312"),
+      })),
+    };
+  }
+}
+</script>
+</body>
+</html>

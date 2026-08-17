@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin: 0; padding: 0; }
+  body { background: #eef4f4; -webkit-font-smoothing: antialiased; }
+  a { color: #1f8a86; text-decoration: none; }
+  a:hover { color: #14615e; text-decoration: underline; }
+  ::selection { background: #cfe9e5; }
+  input, select { font-family: inherit; }
+</style>
+</helmet>
+<div style="min-height: 100vh; min-width: 1280px; display: flex; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #14232a; background: linear-gradient(135deg, #e9f4f1 0%, #f2f5fb 46%, #f7f1f7 100%);">
+
+  <aside style="width: {{ railWidth }}; flex: 0 0 {{ railWidth }}; background: linear-gradient(180deg, #123035 0%, #10262c 100%); display: flex; flex-direction: column; padding: 26px 16px 18px; box-sizing: border-box;">
+    <div onClick="{{ toggleRail }}" style="display: flex; justify-content: flex-end; margin-bottom: 10px; {{ railRowExtra }}">
+      <div style="width: 30px; height: 30px; border-radius: 9px; background: rgba(255,255,255,0.06); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3.5px; cursor: pointer;" style-hover="background: rgba(255,255,255,0.15);">
+        <div style="width: 13px; height: 1.5px; border-radius: 2px; background: #9dbcc2;"></div>
+        <div style="width: 13px; height: 1.5px; border-radius: 2px; background: #9dbcc2;"></div>
+        <div style="width: 13px; height: 1.5px; border-radius: 2px; background: #9dbcc2;"></div>
+      </div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 11px; padding: 0 8px 24px; {{ railRowExtra }}">
+      <div style="width: 32px; height: 32px; border-radius: 10px; background: linear-gradient(140deg, #5ec9bd, #4a9ec9); display: flex; align-items: center; justify-content: center;">
+        <div style="width: 11px; height: 11px; border-radius: 50%; border: 2.5px solid rgba(255,255,255,0.95); box-sizing: border-box;"></div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 1px; {{ hideLabel }}">
+        <div style="font-family: 'Jost', sans-serif; font-size: 17px; font-weight: 500; letter-spacing: 0.2px; color: #f2fbfa;">NovaID</div>
+        <div style="font-size: 9.5px; letter-spacing: 1.1px; text-transform: uppercase; color: #6f9299;">NICRS Console</div>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 3px;">
+      <div style="font-size: 9.5px; letter-spacing: 1.1px; text-transform: uppercase; color: #55787f; padding: 0 10px 9px; {{ hideLabel }}">Operations</div>
+      <div style="display: flex; align-items: center; gap: 11px; padding: 9px 10px; border-radius: 10px; color: #b6cdd1; font-size: 13.5px; {{ railRowExtra }}" style-hover="background: rgba(255,255,255,0.06); color: #e6f3f2;">
+        <div style="width: 16px; height: 16px; border-radius: 5px; background: rgba(255,255,255,0.13); display: flex; align-items: center; justify-content: center;"><div style="width: 6px; height: 6px; border-radius: 2px; background: currentColor; opacity: 0.7;"></div></div><span style="{{ hideLabel }} font-size: 13.5px;">Dashboard</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 11px; padding: 9px 10px; border-radius: 10px; color: #b6cdd1; font-size: 13.5px; {{ railRowExtra }}" style-hover="background: rgba(255,255,255,0.06); color: #e6f3f2;">
+        <div style="width: 16px; height: 16px; border-radius: 5px; background: rgba(255,255,255,0.13); display: flex; align-items: center; justify-content: center;"><div style="width: 6px; height: 6px; border-radius: 2px; background: currentColor; opacity: 0.7;"></div></div><span style="{{ hideLabel }} font-size: 13.5px;">Birth registration</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 10px; background: linear-gradient(100deg, rgba(94,201,189,0.22), rgba(94,201,189,0.08)); box-shadow: inset 0 0 0 1px rgba(140,226,215,0.28); color: #f0fbfa; font-size: 13.5px; font-weight: 500; {{ railRowExtra }}">
+        <div style="width: 16px; height: 16px; border-radius: 4px; background: #5ec9bd; display: flex; align-items: center; justify-content: center;"><div style="width: 5px; height: 5px; border-radius: 50%; background: #10262c;"></div></div>
+        <span style="flex: 1; {{ hideLabel }}">Naturalization</span>
+        <span style="{{ hideLabel }} font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; padding: 2px 6px; border-radius: 20px; background: #5ec9bd; color: #0d2226;">4</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 11px; padding: 9px 10px; border-radius: 10px; color: #b6cdd1; font-size: 13.5px; {{ railRowExtra }}" style-hover="background: rgba(255,255,255,0.06); color: #e6f3f2;">
+        <div style="width: 16px; height: 16px; border-radius: 5px; background: rgba(255,255,255,0.13); display: flex; align-items: center; justify-content: center;"><div style="width: 6px; height: 6px; border-radius: 2px; background: currentColor; opacity: 0.7;"></div></div><span style="{{ hideLabel }} font-size: 13.5px;">Resident numbers</span>
+      </div>
+      <div style="font-size: 9.5px; letter-spacing: 1.1px; text-transform: uppercase; color: #55787f; padding: 18px 10px 9px; {{ hideLabel }}">Centre</div>
+      <div style="display: flex; align-items: center; gap: 11px; padding: 9px 10px; border-radius: 10px; color: #b6cdd1; font-size: 13.5px; {{ railRowExtra }}" style-hover="background: rgba(255,255,255,0.06); color: #e6f3f2;">
+        <div style="width: 16px; height: 16px; border-radius: 5px; background: rgba(255,255,255,0.13); display: flex; align-items: center; justify-content: center;"><div style="width: 6px; height: 6px; border-radius: 2px; background: currentColor; opacity: 0.7;"></div></div><span style="{{ hideLabel }} font-size: 13.5px;">My activity</span>
+      </div>
+    </div>
+
+    <div style="margin-top: auto; padding: 14px 12px; border-radius: 14px; background: rgba(255,255,255,0.055); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.07); display: flex; gap: 11px; align-items: center; {{ railRowExtra }}">
+      <div style="width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(140deg, #7c8fd6, #5ec9bd); display: flex; align-items: center; justify-content: center; font-family: 'Jost', sans-serif; font-size: 13px; color: #0d2226; font-weight: 500;">PN</div>
+      <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0; {{ hideLabel }}">
+        <div style="font-size: 12.5px; color: #e9f5f4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">P. Neruda</div>
+        <div style="font-size: 10.5px; color: #7d9ea4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Registration Officer</div>
+      </div>
+    </div>
+  </aside>
+
+  <main style="flex: 1; min-width: 0; display: flex; flex-direction: column;">
+
+    <header style="display: flex; align-items: center; gap: 20px; padding: 18px 32px; background: rgba(255,255,255,0.55); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255,255,255,0.8);">
+      <div style="display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: #4f6a72;">
+        <span>Naturalization</span>
+        <span style="color: #a8bcc1;">/</span>
+        <span>Kandova Central Centre</span>
+        <span style="color: #a8bcc1;">/</span>
+        <span style="font-family: 'IBM Plex Mono', monospace; color: #14232a;">NAT-2026-00874</span>
+      </div>
+      <div style="flex: 1;"></div>
+      <div style="{{ immStatusStyle }}"><span style="{{ immDot }}"></span>{{ immStatusLabel }}</div>
+      <div style="display: flex; align-items: center; gap: 7px; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: #4f6a72;">08/13/2026 14:22</div>
+    </header>
+
+    <div style="flex: 1; padding: 26px 32px 44px; display: flex; flex-direction: column; gap: 20px;">
+
+      <div style="display: flex; align-items: flex-start; flex-wrap: wrap; gap: 24px;">
+        <div style="display: flex; flex-direction: column; gap: 10px; flex: 1; min-width: 340px;">
+          <div style="display: flex; align-items: center; gap: 9px; flex-wrap: wrap;">
+            <span style="display: inline-flex; align-items: center; gap: 7px; padding: 5px 11px; border-radius: 20px; background: #dff1ee; color: #14615e; font-size: 11.5px; font-weight: 500;">
+              <span style="width: 6px; height: 6px; border-radius: 50%; background: #1f8a86;"></span>Citizenship already approved
+            </span>
+            <span style="{{ nrnPill }}">{{ nrnLabel }}</span>
+            <span style="padding: 5px 11px; border-radius: 20px; background: rgba(255,255,255,0.75); box-shadow: inset 0 0 0 1px rgba(20,60,70,0.09); color: #4f6a72; font-size: 11.5px;">Adult enrolment</span>
+          </div>
+          <h1 style="font-family: 'Jost', sans-serif; font-size: 30px; font-weight: 500; letter-spacing: -0.2px; margin: 0; line-height: 1.2;">Naturalized citizen registration</h1>
+          <p style="margin: 0; font-size: 13.5px; line-height: 1.55; color: #4f6a72; max-width: 700px; text-wrap: pretty;">NovaID does not decide citizenship. Immigration has approved this application; your job is to enrol the identity, confirm no record already exists, and submit for approval so an NSN can be issued.</p>
+        </div>
+        <div style="padding: 15px 17px; border-radius: 16px; background: rgba(255,255,255,0.72); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.9), 0 10px 26px -14px rgba(16,45,52,0.22); min-width: 224px;">
+          <div style="font-size: 10px; letter-spacing: 0.9px; text-transform: uppercase; color: #4f676e; margin-bottom: 9px;">Immigration approval</div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px;">IMM-NAT-2026-51840</div>
+          <div style="font-size: 11.5px; color: #4f6a72; margin-top: 5px; line-height: 1.45;">{{ immMeta }}</div>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: minmax(0, 1fr) 348px; gap: 20px; align-items: start;">
+
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+
+          <section style="border-radius: 20px; background: rgba(255,255,255,0.78); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.9), 0 16px 40px -22px rgba(16,45,52,0.26); overflow: hidden;">
+            <div style="display: flex; align-items: center; gap: 12px; padding: 17px 22px; border-bottom: 1px solid rgba(20,60,70,0.08);">
+              <span style="width: 22px; height: 22px; border-radius: 7px; background: #dff1ee; color: #14615e; font-family: 'IBM Plex Mono', monospace; font-size: 11px; display: flex; align-items: center; justify-content: center;">1</span>
+              <div style="font-family: 'Jost', sans-serif; font-size: 16px; font-weight: 500; flex: 1;">From Immigration</div>
+              <span style="font-size: 11.5px; color: #4f676e;">Read-only · NovaID stores the reference, not the case file</span>
+            </div>
+            <div style="padding: 18px 22px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px;">
+              <div><div style="font-size: 11px; color: #4f676e;">Legal name approved</div><div style="font-size: 13.5px; margin-top: 4px;">Anjali Rukmini Devanshi</div></div>
+              <div><div style="font-size: 11px; color: #4f676e;">Date of birth</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; margin-top: 4px;">1989-11-03</div></div>
+              <div><div style="font-size: 11px; color: #4f676e;">Country of birth</div><div style="font-size: 13.5px; margin-top: 4px;">Outside Novaria</div></div>
+              <div><div style="font-size: 11px; color: #4f676e;">Previous nationality</div><div style="font-size: 13.5px; margin-top: 4px;">Recorded by Immigration</div></div>
+              <div><div style="font-size: 11px; color: #4f676e;">Approval date</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; margin-top: 4px;">07/29/2026</div></div>
+              <div><div style="font-size: 11px; color: #4f676e;">Approval status</div><div style="{{ approvalValueStyle }}">{{ approvalValue }}</div></div>
+              <div><div style="font-size: 11px; color: #4f676e;">Basis of citizenship</div><div style="font-size: 13.5px; margin-top: 4px;">Naturalization</div></div>
+              <div><div style="font-size: 11px; color: #4f676e;">Held resident number</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; margin-top: 4px;">{{ heldNrn }}</div></div>
+              <div><div style="font-size: 11px; color: #4f676e;">Immigration unit</div><div style="font-size: 13.5px; margin-top: 4px;">Kandova Immigration Office</div></div>
+            </div>
+            <div style="{{ immNoteStyle }}">{{ immNote }}</div>
+          </section>
+
+          <section style="border-radius: 20px; background: rgba(255,255,255,0.78); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.9), 0 16px 40px -22px rgba(16,45,52,0.26); overflow: hidden;">
+            <div style="display: flex; align-items: center; gap: 12px; padding: 17px 22px; border-bottom: 1px solid rgba(20,60,70,0.08);">
+              <span style="width: 22px; height: 22px; border-radius: 7px; background: #dff1ee; color: #14615e; font-family: 'IBM Plex Mono', monospace; font-size: 11px; display: flex; align-items: center; justify-content: center;">2</span>
+              <div style="font-family: 'Jost', sans-serif; font-size: 16px; font-weight: 500; flex: 1;">Identity details you capture</div>
+            </div>
+            <div style="padding: 18px 22px; display: flex; flex-direction: column; gap: 16px;">
+              <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px;">
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                  <label style="font-size: 11.5px; color: #4f676e; font-weight: 500;">Previous legal names</label>
+                  <input value="Anjali Rukmini Sethi" style="padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(20,60,70,0.16); background: rgba(255,255,255,0.92); font-size: 13px; color: #14232a; outline: none; box-sizing: border-box; width: 100%;" style-focus="border-color: #1f8a86; box-shadow: 0 0 0 3px rgba(31,138,134,0.12);" />
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                  <label style="font-size: 11.5px; color: #4f676e; font-weight: 500;">State of residence</label>
+                  <select style="padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(20,60,70,0.16); background: rgba(255,255,255,0.92); font-size: 13px; color: #14232a; outline: none; width: 100%; box-sizing: border-box;" style-focus="border-color: #1f8a86;">
+                    <option>Kandova State</option>
+                    <option>Arinana State</option>
+                    <option>Novaria Capital Territory</option>
+                  </select>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                  <label style="font-size: 11.5px; color: #4f676e; font-weight: 500;">Local Government Area</label>
+                  <select style="padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(20,60,70,0.16); background: rgba(255,255,255,0.92); font-size: 13px; color: #14232a; outline: none; width: 100%; box-sizing: border-box;" style-focus="border-color: #1f8a86;">
+                    <option>Kandova (KD-01)</option>
+                    <option>Varanta (KD-02)</option>
+                    <option>Tavren (KD-03)</option>
+                  </select>
+                </div>
+                <div style="grid-column: span 2; display: flex; flex-direction: column; gap: 6px;">
+                  <label style="font-size: 11.5px; color: #4f676e; font-weight: 500;">Residential address</label>
+                  <input value="8 Perrin Walk, Kandova" style="padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(20,60,70,0.16); background: rgba(255,255,255,0.92); font-size: 13px; color: #14232a; outline: none; box-sizing: border-box; width: 100%;" style-focus="border-color: #1f8a86; box-shadow: 0 0 0 3px rgba(31,138,134,0.12);" />
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                  <label style="font-size: 11.5px; color: #4f676e; font-weight: 500;">Phone</label>
+                  <input value="884 617 2205" style="padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(20,60,70,0.16); background: rgba(255,255,255,0.92); font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #14232a; outline: none; box-sizing: border-box; width: 100%;" style-focus="border-color: #1f8a86; box-shadow: 0 0 0 3px rgba(31,138,134,0.12);" />
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section style="border-radius: 20px; background: rgba(255,255,255,0.78); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.9), 0 16px 40px -22px rgba(16,45,52,0.26); overflow: hidden;">
+            <div style="display: flex; align-items: center; gap: 12px; padding: 17px 22px; border-bottom: 1px solid rgba(20,60,70,0.08);">
+              <span style="width: 22px; height: 22px; border-radius: 7px; background: #dff1ee; color: #14615e; font-family: 'IBM Plex Mono', monospace; font-size: 11px; display: flex; align-items: center; justify-content: center;">3</span>
+              <div style="font-family: 'Jost', sans-serif; font-size: 16px; font-weight: 500; flex: 1;">Photograph and biometrics</div>
+              <span style="font-size: 11.5px; color: #4f676e;">Adults: facial template and available fingerprints</span>
+            </div>
+            <div style="padding: 18px 22px; display: grid; grid-template-columns: 170px 170px minmax(0, 1fr); gap: 18px;">
+              <div style="display: flex; flex-direction: column; gap: 9px;">
+                <div style="height: 150px; border-radius: 12px; background-color: #e7eef0; background-image: repeating-linear-gradient(135deg, rgba(20,60,70,0.055) 0 8px, transparent 8px 16px); display: flex; align-items: flex-end; padding: 10px; box-sizing: border-box;">
+                  <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #4f676e; background: rgba(255,255,255,0.85); padding: 3px 6px; border-radius: 5px;">facial capture</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 7px; font-size: 11.5px; color: #24685a;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #35946c;"></span>Captured, quality passed</div>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 9px;">
+                <div style="height: 150px; border-radius: 12px; background-color: #e7eef0; background-image: repeating-linear-gradient(90deg, rgba(20,60,70,0.06) 0 6px, transparent 6px 12px); display: flex; align-items: flex-end; padding: 10px; box-sizing: border-box;">
+                  <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #4f676e; background: rgba(255,255,255,0.85); padding: 3px 6px; border-radius: 5px;">fingerprints</span>
+                </div>
+                <div style="{{ printStatusStyle }}"><span style="{{ printDot }}"></span>{{ printStatus }}</div>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 11px;">
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                  <label style="font-size: 11.5px; color: #4f676e; font-weight: 500;">Fingerprint capture outcome</label>
+                  <select onChange="{{ onPrints }}" style="padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(20,60,70,0.16); background: rgba(255,255,255,0.92); font-size: 13px; color: #14232a; outline: none; width: 100%; box-sizing: border-box;" style-focus="border-color: #1f8a86;">
+                    <option value="all">All ten captured</option>
+                    <option value="partial">Partial — some fingers unusable</option>
+                    <option value="none">None capturable — exception required</option>
+                  </select>
+                </div>
+                <sc-if value="{{ needsException }}" hint-placeholder-val="{{ false }}">
+                  <div style="display: flex; flex-direction: column; gap: 6px;">
+                    <label style="font-size: 11.5px; color: #4f676e; font-weight: 500;">Reason for the exception <span style="color: #7a5312;">required</span></label>
+                    <select onChange="{{ onReason }}" style="padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(20,60,70,0.16); background: rgba(255,255,255,0.92); font-size: 13px; color: #14232a; outline: none; width: 100%; box-sizing: border-box;" style-focus="border-color: #1f8a86;">
+                      <option value="">Select…</option>
+                      <option value="injury">Injury or scarring</option>
+                      <option value="disability">Disability</option>
+                      <option value="age">Age-related wear</option>
+                      <option value="temporary">Temporary condition — recapture later</option>
+                    </select>
+                    <div style="padding: 10px 12px; border-radius: 11px; background: rgba(201,138,30,0.12); font-size: 11.5px; color: #7a5312; line-height: 1.5;">Exceptions route the application for enhanced review and alternative verification. Missing fingerprints never block an eligible person from an NSN.</div>
+                  </div>
+                </sc-if>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+
+          <section style="border-radius: 20px; background: rgba(255,255,255,0.8); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.92), 0 16px 40px -22px rgba(16,45,52,0.26); padding: 19px;">
+            <div style="font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 500; margin-bottom: 14px;">System checks</div>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+              <sc-for list="{{ checks }}" as="c" hint-placeholder-count="5">
+                <div style="display: flex; align-items: flex-start; gap: 10px;">
+                  <span style="{{ c.dot }}"></span>
+                  <div><div style="font-size: 12.5px;">{{ c.label }}</div><div style="{{ c.noteStyle }}">{{ c.note }}</div></div>
+                </div>
+              </sc-for>
+            </div>
+          </section>
+
+          <sc-if value="{{ pending }}" hint-placeholder-val="{{ true }}">
+            <section style="border-radius: 20px; background: rgba(255,255,255,0.82); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.95), 0 16px 40px -22px rgba(16,45,52,0.28); padding: 19px; display: flex; flex-direction: column; gap: 13px;">
+              <div style="font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 500;">Submit</div>
+              <div onClick="{{ toggleConfirm }}" style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer;">
+                <span style="{{ checkStyle }}"></span>
+                <span style="font-size: 12px; color: #4f6a72; line-height: 1.5;">I have verified this person against the Immigration approval and captured their biometrics in person.</span>
+              </div>
+              <div style="padding: 11px 13px; border-radius: 11px; background: rgba(31,138,134,0.07); font-size: 11.5px; color: #14615e; line-height: 1.5;">{{ submitNote }}</div>
+              <div onClick="{{ submit }}" style="{{ submitStyle }}">{{ submitLabel }}</div>
+              <sc-if value="{{ blocked }}" hint-placeholder-val="{{ false }}">
+                <div style="padding: 11px 13px; border-radius: 11px; background: rgba(244,230,230,0.7); font-size: 11.5px; color: #8d3232; line-height: 1.5;">{{ blockedNote }}</div>
+              </sc-if>
+            </section>
+          </sc-if>
+
+          <sc-if value="{{ done }}" hint-placeholder-val="{{ false }}">
+            <section style="border-radius: 20px; background: linear-gradient(155deg, rgba(226,241,232,0.9), rgba(255,255,255,0.85)); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.95), 0 16px 40px -22px rgba(16,45,52,0.28); padding: 21px; display: flex; flex-direction: column; gap: 12px;">
+              <div style="width: 36px; height: 36px; border-radius: 12px; background: #cfe7d8; display: flex; align-items: center; justify-content: center;"><div style="width: 12px; height: 12px; border-radius: 50%; background: #24685a;"></div></div>
+              <div style="font-family: 'Jost', sans-serif; font-size: 17px; font-weight: 500; line-height: 1.3;">Sent for verification</div>
+              <div style="font-size: 12.5px; color: #4f6a72; line-height: 1.55;">{{ doneBody }}</div>
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: #5a7178;">NAT-2026-00874 · submitted 08/13/2026 14:22 · P. Neruda</div>
+              <div onClick="{{ reset }}" style="align-self: flex-start; padding: 9px 14px; border-radius: 10px; background: rgba(255,255,255,0.85); box-shadow: inset 0 0 0 1px rgba(20,60,70,0.12); font-size: 12.5px; cursor: pointer;" style-hover="background: #fff;">Back to form</div>
+            </section>
+          </sc-if>
+
+          <section style="border-radius: 20px; background: rgba(255,255,255,0.7); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.9), 0 16px 40px -22px rgba(16,45,52,0.2); padding: 19px;">
+            <div style="font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 500; margin-bottom: 13px;">Where the boundary sits</div>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+              <div style="display: flex; align-items: flex-start; gap: 10px;">
+                <span style="width: 9px; height: 9px; border-radius: 50%; background: rgba(20,60,70,0.28); flex: none; margin-top: 4px;"></span>
+                <div style="font-size: 12px; color: #4f6a72; line-height: 1.5;">Immigration decides citizenship. NICRA cannot approve or reverse that decision.</div>
+              </div>
+              <div style="display: flex; align-items: flex-start; gap: 10px;">
+                <span style="width: 9px; height: 9px; border-radius: 50%; background: rgba(20,60,70,0.28); flex: none; margin-top: 4px;"></span>
+                <div style="font-size: 12px; color: #4f6a72; line-height: 1.5;">NovaID keeps the approval reference, never the immigration case file.</div>
+              </div>
+              <div style="display: flex; align-items: flex-start; gap: 10px;">
+                <span style="width: 9px; height: 9px; border-radius: 50%; background: #35946c; flex: none; margin-top: 4px;"></span>
+                <div style="font-size: 12px; color: #4f6a72; line-height: 1.5;">A new NSN is issued and the resident number is retired, with the change recorded and the prior record linked, not deleted.</div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;immigrationReference&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Verified&quot;,&quot;Cannot be verified&quot;],&quot;default&quot;:&quot;Verified&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;label&quot;:&quot;Immigration reference status&quot;,&quot;section&quot;:&quot;Scenario&quot;},&quot;heldResidentNumber&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;label&quot;:&quot;Applicant already holds an NRN&quot;,&quot;section&quot;:&quot;Scenario&quot;}}">
+class Component extends DCLogic {
+  state = { collapsed: false, prints: "all", reason: "", confirmed: false, done: false, tried: false };
+
+  renderVals() {
+    const immOk = (this.props.immigrationReference ?? "Verified") === "Verified";
+    const heldNrn = this.props.heldResidentNumber ?? true;
+    const { prints, reason, confirmed, done, tried } = this.state;
+
+    const needsException = prints !== "all";
+    const exceptionOk = !needsException || !!reason;
+    const ready = immOk && confirmed && exceptionOk;
+
+    const dotColor = { ok: "#35946c", warn: "#c98a1e", bad: "#b04545", info: "rgba(20,60,70,0.35)" };
+    const noteColor = { ok: "#4f676e", warn: "#7a5312", bad: "#8d3232", info: "#4f676e" };
+
+    const checks = [
+      immOk
+        ? { label: "Immigration approval validated", note: "Active, not withdrawn", state: "ok" }
+        : { label: "Immigration approval cannot be verified", note: "Application paused pending confirmation", state: "bad" },
+      { label: "Demographic duplicate screening", note: "No existing identity matches these details", state: "ok" },
+      { label: "Facial biometric screening", note: heldNrn ? "Matches the resident record held under the NRN" : "No match against existing records", state: heldNrn ? "info" : "ok" },
+      needsException
+        ? { label: "Fingerprint exception", note: reason ? "Reason recorded — enhanced review applies" : "Reason required before submission", state: reason ? "warn" : "bad" }
+        : { label: "Fingerprints captured", note: "All ten, quality passed", state: "ok" },
+      heldNrn
+        ? { label: "Existing resident number found", note: "NRN 6180-2947-3310 will be retired on approval", state: "info" }
+        : { label: "No prior NovaID identifier", note: "First enrolment for this person", state: "info" },
+    ];
+
+    return {
+      railWidth: this.state.collapsed ? "76px" : "244px",
+      hideLabel: this.state.collapsed ? "display: none;" : "",
+      railRowExtra: this.state.collapsed ? "justify-content: center;" : "",
+      toggleRail: () => this.setState({ collapsed: !this.state.collapsed }),
+      immStatusStyle: "display: flex; align-items: center; gap: 8px; padding: 7px 13px; border-radius: 20px; font-size: 12px; font-weight: 500; " +
+        (immOk ? "background: rgba(47,125,85,0.14); color: #24685a" : "background: rgba(176,69,69,0.14); color: #8d3232"),
+      immDot: "width: 7px; height: 7px; border-radius: 50%; background: " + (immOk ? "#35946c" : "#b04545"),
+      immStatusLabel: immOk ? "Immigration reference verified" : "Immigration reference unverified",
+      immMeta: immOk ? "Confirmed active 08/13/2026 09:14" : "Confirmation requested 08/13/2026 09:14 — no response",
+      nrnLabel: heldNrn ? "Holds a resident number" : "No prior identifier",
+      nrnPill: "display: inline-flex; align-items: center; gap: 7px; padding: 5px 11px; border-radius: 20px; font-size: 11.5px; font-weight: 500; " +
+        (heldNrn ? "background: #e9e7f7; color: #4a4590" : "background: rgba(255,255,255,0.75); color: #4f6a72"),
+      approvalValue: immOk ? "Active" : "Cannot be verified",
+      approvalValueStyle: "font-size: 13.5px; margin-top: 4px; color: " + (immOk ? "#24685a" : "#8d3232"),
+      heldNrn: heldNrn ? "6180-2947-3310" : "None",
+      immNote: immOk
+        ? "The approval reference is retained on the identity record. Restricted immigration records are never exposed to NovaID."
+        : "Immigration has not confirmed this reference. The application is paused and cannot proceed to an NSN until confirmation arrives.",
+      immNoteStyle: "padding: 13px 22px; border-top: 1px solid rgba(20,60,70,0.06); font-size: 12px; line-height: 1.5; " +
+        (immOk ? "background: rgba(223,241,238,0.4); color: #14615e" : "background: rgba(244,230,230,0.5); color: #8d3232"),
+      onPrints: (e) => this.setState({ prints: e.target.value, reason: "" }),
+      onReason: (e) => this.setState({ reason: e.target.value }),
+      needsException,
+      printStatus: prints === "all" ? "All ten captured" : prints === "partial" ? "Partial capture" : "No usable prints",
+      printStatusStyle: "display: flex; align-items: center; gap: 7px; font-size: 11.5px; color: " +
+        (prints === "all" ? "#24685a" : "#7a5312"),
+      printDot: "width: 7px; height: 7px; border-radius: 50%; background: " + (prints === "all" ? "#35946c" : "#c98a1e"),
+      checks: checks.map((c) => ({
+        label: c.label,
+        note: c.note,
+        dot: "width: 9px; height: 9px; border-radius: 50%; flex: none; margin-top: 4px; background: " + dotColor[c.state],
+        noteStyle: "font-size: 11px; margin-top: 2px; line-height: 1.4; color: " + noteColor[c.state],
+      })),
+      pending: !done,
+      done,
+      toggleConfirm: () => this.setState({ confirmed: !confirmed }),
+      checkStyle: [
+        "width: 17px",
+        "height: 17px",
+        "border-radius: 5px",
+        "flex: none",
+        "margin-top: 1px",
+        "box-sizing: border-box",
+        confirmed
+          ? "background: #1f8a86; box-shadow: inset 0 0 0 4px #fff, inset 0 0 0 5px #1f8a86"
+          : "background: transparent; border: 1.5px solid rgba(20,60,70,0.3)",
+      ].join(";"),
+      submitNote: heldNrn
+        ? "On final approval a new NSN is issued and the NRN is retired. The two records stay linked so the person's history is not lost."
+        : "An NSN is generated only after a Verification Officer and, where required, a Senior Approver approve this application.",
+      submitStyle: [
+        "padding: 12px",
+        "border-radius: 11px",
+        "text-align: center",
+        "font-size: 13px",
+        "font-weight: 600",
+        ready
+          ? "cursor: pointer; color: #fff; background: linear-gradient(100deg, #1f8a86, #2f7d9b); box-shadow: 0 8px 20px -10px rgba(31,138,134,0.7)"
+          : "cursor: not-allowed; color: #90a7ad; background: rgba(20,60,70,0.07)",
+      ].join(";"),
+      submitLabel: immOk ? "Submit for verification" : "Blocked — awaiting Immigration",
+      submit: () => { if (ready) this.setState({ done: true }); else this.setState({ tried: true }); },
+      blocked: tried && !ready,
+      blockedNote: !immOk
+        ? "Immigration must confirm the approval reference before this application can be submitted."
+        : !exceptionOk
+          ? "Record a reason for the fingerprint exception before submitting."
+          : "Confirm you verified this person in place before submitting.",
+      doneBody: heldNrn
+        ? "A Verification Officer will review the enrolment against the Immigration approval. On final approval, an NSN is issued and NRN 6180-2947-3310 is retired."
+        : "A Verification Officer will review the enrolment against the Immigration approval. An NSN is issued only after final approval.",
+      reset: () => this.setState({ done: false, tried: false }),
+    };
+  }
+}
+</script>
+</body>
+</html>

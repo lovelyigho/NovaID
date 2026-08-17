@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin: 0; padding: 0; }
+  body { background: #eef4f4; -webkit-font-smoothing: antialiased; }
+  a { color: #1f8a86; text-decoration: none; }
+  a:hover { color: #14615e; text-decoration: underline; }
+  ::selection { background: #cfe9e5; }
+  select { font-family: inherit; }
+</style>
+</helmet>
+<div style="min-height: 100vh; min-width: 1600px; display: flex; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #14232a; background: linear-gradient(135deg, #e9f4f1 0%, #f2f5fb 46%, #f7f1f7 100%);">
+
+  <aside style="width: {{ railWidth }}; flex: 0 0 {{ railWidth }}; background: linear-gradient(180deg, #123035 0%, #10262c 100%); display: flex; flex-direction: column; padding: 26px 16px 18px; box-sizing: border-box;">
+    <div onClick="{{ toggleRail }}" style="display: flex; justify-content: flex-end; margin-bottom: 10px; {{ railRowExtra }}">
+      <div style="width: 30px; height: 30px; border-radius: 9px; background: rgba(255,255,255,0.06); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3.5px; cursor: pointer;" style-hover="background: rgba(255,255,255,0.15);">
+        <div style="width: 13px; height: 1.5px; border-radius: 2px; background: #9dbcc2;"></div>
+        <div style="width: 13px; height: 1.5px; border-radius: 2px; background: #9dbcc2;"></div>
+        <div style="width: 13px; height: 1.5px; border-radius: 2px; background: #9dbcc2;"></div>
+      </div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 11px; padding: 0 8px 24px; {{ railRowExtra }}">
+      <div style="width: 32px; height: 32px; border-radius: 10px; background: linear-gradient(140deg, #5ec9bd, #4a9ec9); display: flex; align-items: center; justify-content: center;">
+        <div style="width: 11px; height: 11px; border-radius: 50%; border: 2.5px solid rgba(255,255,255,0.95); box-sizing: border-box;"></div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 1px; {{ hideLabel }}">
+        <div style="font-family: 'Jost', sans-serif; font-size: 17px; font-weight: 500; letter-spacing: 0.2px; color: #f2fbfa;">NovaID</div>
+        <div style="font-size: 9.5px; letter-spacing: 1.1px; text-transform: uppercase; color: #6f9299;">NICRS Console</div>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 3px;">
+      <div style="font-size: 9.5px; letter-spacing: 1.1px; text-transform: uppercase; color: #55787f; padding: 0 10px 9px; {{ hideLabel }}">Operations</div>
+      <div style="display: flex; align-items: center; gap: 11px; padding: 9px 10px; border-radius: 10px; color: #b6cdd1; font-size: 13.5px; {{ railRowExtra }}" style-hover="background: rgba(255,255,255,0.06); color: #e6f3f2;">
+        <div style="width: 16px; height: 16px; border-radius: 5px; background: rgba(255,255,255,0.13); display: flex; align-items: center; justify-content: center;"><div style="width: 6px; height: 6px; border-radius: 2px; background: currentColor; opacity: 0.7;"></div></div><span style="{{ hideLabel }} font-size: 13.5px;">Dashboard</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 10px; background: linear-gradient(100deg, rgba(94,201,189,0.22), rgba(94,201,189,0.08)); box-shadow: inset 0 0 0 1px rgba(140,226,215,0.28); color: #f0fbfa; font-size: 13.5px; font-weight: 500; {{ railRowExtra }}">
+        <div style="width: 16px; height: 16px; border-radius: 4px; background: #5ec9bd; display: flex; align-items: center; justify-content: center;"><div style="width: 5px; height: 5px; border-radius: 50%; background: #10262c;"></div></div>
+        <span style="flex: 1; {{ hideLabel }}">Verification</span>
+        <span style="{{ hideLabel }} font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; padding: 2px 6px; border-radius: 20px; background: #5ec9bd; color: #0d2226;">96</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 11px; padding: 9px 10px; border-radius: 10px; color: #b6cdd1; font-size: 13.5px; {{ railRowExtra }}" style-hover="background: rgba(255,255,255,0.06); color: #e6f3f2;">
+        <div style="width: 16px; height: 16px; border-radius: 5px; background: rgba(255,255,255,0.13); display: flex; align-items: center; justify-content: center;"><div style="width: 6px; height: 6px; border-radius: 2px; background: currentColor; opacity: 0.7;"></div></div><span style="{{ hideLabel }} font-size: 13.5px;">Duplicate review</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 11px; padding: 9px 10px; border-radius: 10px; color: #b6cdd1; font-size: 13.5px; {{ railRowExtra }}" style-hover="background: rgba(255,255,255,0.06); color: #e6f3f2;">
+        <div style="width: 16px; height: 16px; border-radius: 5px; background: rgba(255,255,255,0.13); display: flex; align-items: center; justify-content: center;"><div style="width: 6px; height: 6px; border-radius: 2px; background: currentColor; opacity: 0.7;"></div></div><span style="{{ hideLabel }} font-size: 13.5px;">Corrections</span>
+      </div>
+      <div style="font-size: 9.5px; letter-spacing: 1.1px; text-transform: uppercase; color: #55787f; padding: 18px 10px 9px; {{ hideLabel }}">Records</div>
+      <div style="display: flex; align-items: center; gap: 11px; padding: 9px 10px; border-radius: 10px; color: #b6cdd1; font-size: 13.5px; {{ railRowExtra }}" style-hover="background: rgba(255,255,255,0.06); color: #e6f3f2;">
+        <div style="width: 16px; height: 16px; border-radius: 5px; background: rgba(255,255,255,0.13); display: flex; align-items: center; justify-content: center;"><div style="width: 6px; height: 6px; border-radius: 2px; background: currentColor; opacity: 0.7;"></div></div><span style="{{ hideLabel }} font-size: 13.5px;">Identity search</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 11px; padding: 9px 10px; border-radius: 10px; color: #b6cdd1; font-size: 13.5px; {{ railRowExtra }}" style-hover="background: rgba(255,255,255,0.06); color: #e6f3f2;">
+        <div style="width: 16px; height: 16px; border-radius: 5px; background: rgba(255,255,255,0.13); display: flex; align-items: center; justify-content: center;"><div style="width: 6px; height: 6px; border-radius: 2px; background: currentColor; opacity: 0.7;"></div></div><span style="{{ hideLabel }} font-size: 13.5px;">My decisions</span>
+      </div>
+    </div>
+
+    <div style="margin-top: auto; padding: 14px 12px; border-radius: 14px; background: rgba(255,255,255,0.055); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.07); display: flex; gap: 11px; align-items: center;">
+      <div style="width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(140deg, #7c8fd6, #5ec9bd); display: flex; align-items: center; justify-content: center; font-family: 'Jost', sans-serif; font-size: 13px; color: #0d2226; font-weight: 500;">VS</div>
+      <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0; {{ hideLabel }}">
+        <div style="font-size: 12.5px; color: #e9f5f4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">V. Solano</div>
+        <div style="font-size: 10.5px; color: #7d9ea4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Verification Officer</div>
+      </div>
+    </div>
+  </aside>
+
+  <div style="width: 280px; flex: 0 0 280px; background: rgba(255,255,255,0.5); border-right: 1px solid rgba(255,255,255,0.8); display: flex; flex-direction: column;">
+    <div style="padding: 20px 20px 14px;">
+      <div style="font-family: 'Jost', sans-serif; font-size: 18px; font-weight: 500; margin-bottom: 4px;">Review queue</div>
+      <div style="font-size: 11.5px; color: #4f676e;">{{ queueSubtitle }}</div>
+      <div style="font-size: 11px; color: #5a7178; margin-top: 4px;">{{ queueShowing }}</div>
+    </div>
+    <div style="display: flex; gap: 5px; padding: 0 20px 14px; flex-wrap: wrap;">
+      <div onClick="{{ fAll }}" style="{{ chipAll }}">{{ cAll }}</div>
+      <div onClick="{{ fRisk }}" style="{{ chipRisk }}">{{ cRisk }}</div>
+      <div onClick="{{ fLate }}" style="{{ chipLate }}">{{ cLate }}</div>
+    </div>
+    <div style="flex: 1; overflow: auto;">
+      <sc-for list="{{ queue }}" as="q" hint-placeholder-count="4">
+        <div onClick="{{ q.select }}" style="{{ q.rowStyle }}">
+          <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 7px;">
+            <span style="{{ q.dot }}"></span>
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #4f676e; flex: 1;">{{ q.ref }}</span>
+            <span style="{{ q.agePill }}">{{ q.age }}</span>
+          </div>
+          <div style="font-size: 13.5px; font-weight: 500; margin-bottom: 5px;">{{ q.name }}</div>
+          <div style="font-size: 11.5px; color: #4f6a72; line-height: 1.4;">{{ q.type }}</div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="padding: 15px 20px; border-top: 1px solid rgba(20,60,70,0.08); font-size: 11.5px; color: #4f676e; line-height: 1.5;">You reviewed 302 applications this month, returning 28 for more information.</div>
+  </div>
+
+  <main style="flex: 1; min-width: 0; display: flex; flex-direction: column;">
+
+    <header style="display: flex; align-items: center; gap: 20px; padding: 18px 32px; background: rgba(255,255,255,0.55); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255,255,255,0.8);">
+      <div style="display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: #4f6a72;">
+        <span>Verification</span>
+        <span style="color: #a8bcc1;">/</span>
+        <span style="font-family: 'IBM Plex Mono', monospace; color: #14232a;">{{ ref }}</span>
+      </div>
+      <div style="flex: 1;"></div>
+      <div style="display: flex; align-items: center; gap: 7px; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: #4f6a72;">
+        <div style="width: 6px; height: 6px; border-radius: 50%; background: #35946c;"></div>08/13/2026 14:22
+      </div>
+    </header>
+
+    <div style="flex: 1; padding: 26px 32px 44px; display: flex; flex-direction: column; gap: 18px;">
+
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="display: flex; align-items: center; gap: 9px; flex-wrap: wrap;">
+          <span style="{{ typePill }}">{{ typeLabel }}</span>
+          <span style="{{ riskPill }}">{{ riskLabel }}</span>
+          <span style="padding: 5px 11px; border-radius: 20px; background: rgba(255,255,255,0.75); box-shadow: inset 0 0 0 1px rgba(20,60,70,0.09); color: #4f6a72; font-size: 11.5px;">{{ sourceLabel }}</span>
+        </div>
+        <h1 style="font-family: 'Jost', sans-serif; font-size: 30px; font-weight: 500; letter-spacing: -0.2px; margin: 0; line-height: 1.2;">{{ name }}</h1>
+        <p style="margin: 0; font-size: 13.5px; line-height: 1.55; color: #4f6a72; max-width: 680px; text-wrap: pretty;">{{ summary }}</p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: minmax(0, 1fr) 348px; gap: 20px; align-items: start;">
+
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+
+          <section style="border-radius: 20px; background: rgba(255,255,255,0.78); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.9), 0 16px 40px -22px rgba(16,45,52,0.26); overflow: hidden;">
+            <div style="padding: 17px 22px; border-bottom: 1px solid rgba(20,60,70,0.08); font-family: 'Jost', sans-serif; font-size: 16px; font-weight: 500;">Application</div>
+            <div style="padding: 18px 22px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px;">
+              <div><div style="font-size: 11px; color: #4f676e;">Date of birth</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; margin-top: 4px;">{{ dob }}</div></div>
+              <div><div style="font-size: 11px; color: #4f676e;">Place of birth</div><div style="font-size: 13.5px; margin-top: 4px;">{{ pob }}</div></div>
+              <div><div style="font-size: 11px; color: #4f676e;">Sex recorded</div><div style="font-size: 13.5px; margin-top: 4px;">{{ sex }}</div></div>
+              <div><div style="font-size: 11px; color: #4f676e;">Mother</div><div style="font-size: 13.5px; margin-top: 4px;">{{ mother }}</div></div>
+              <div><div style="font-size: 11px; color: #4f676e;">Father</div><div style="font-size: 13.5px; margin-top: 4px;">{{ father }}</div></div>
+              <div><div style="font-size: 11px; color: #4f676e;">Registration centre</div><div style="font-size: 13.5px; margin-top: 4px;">{{ centre }}</div></div>
+              <div><div style="font-size: 11px; color: #4f676e;">Created by</div><div style="font-size: 13.5px; margin-top: 4px;">{{ officer }}</div></div>
+              <div><div style="font-size: 11px; color: #4f676e;">Submitted</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; margin-top: 4px;">{{ submitted }}</div></div>
+              <div><div style="font-size: 11px; color: #4f676e;">Statutory position</div><div style="font-size: 13.5px; margin-top: 4px;">{{ statutory }}</div></div>
+            </div>
+          </section>
+
+          <section style="border-radius: 20px; background: rgba(255,255,255,0.78); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.9), 0 16px 40px -22px rgba(16,45,52,0.26); overflow: hidden;">
+            <div style="display: flex; align-items: center; gap: 12px; padding: 17px 22px; border-bottom: 1px solid rgba(20,60,70,0.08);">
+              <div style="font-family: 'Jost', sans-serif; font-size: 16px; font-weight: 500; flex: 1;">Evidence</div>
+              <div style="font-size: 11.5px; color: #4f676e;">Every item you open is recorded</div>
+            </div>
+            <div style="padding: 18px 22px; display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 20px;">
+              <div style="height: 168px; border-radius: 12px; background-color: #e7eef0; background-image: repeating-linear-gradient(135deg, rgba(20,60,70,0.055) 0 8px, transparent 8px 16px); display: flex; align-items: flex-end; padding: 10px; box-sizing: border-box;">
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #4f676e; background: rgba(255,255,255,0.85); padding: 3px 6px; border-radius: 5px;">evidence viewer</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 9px;">
+                <sc-for list="{{ evidence }}" as="d" hint-placeholder-count="3">
+                  <div style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 12px; background: rgba(255,255,255,0.72); box-shadow: inset 0 0 0 1px rgba(20,60,70,0.08); cursor: pointer;" style-hover="background: #fff;">
+                    <span style="width: 26px; height: 26px; border-radius: 8px; background: #e7eef0; flex: none;"></span>
+                    <div style="flex: 1; min-width: 0;">
+                      <div style="font-size: 12.5px;">{{ d.title }}</div>
+                      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: #5a7178; margin-top: 3px;">{{ d.meta }}</div>
+                    </div>
+                    <span style="{{ d.tagStyle }}">{{ d.tag }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+
+          <section style="border-radius: 20px; background: rgba(255,255,255,0.8); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.92), 0 16px 40px -22px rgba(16,45,52,0.26); padding: 19px;">
+            <div style="font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 500; margin-bottom: 14px;">System checks</div>
+            <div style="display: flex; flex-direction: column; gap: 11px;">
+              <sc-for list="{{ checks }}" as="c" hint-placeholder-count="4">
+                <div style="display: flex; align-items: flex-start; gap: 10px;">
+                  <span style="{{ c.dot }}"></span>
+                  <div><div style="font-size: 12.5px;">{{ c.label }}</div><div style="{{ c.noteStyle }}">{{ c.note }}</div></div>
+                </div>
+              </sc-for>
+            </div>
+          </section>
+
+          <sc-if value="{{ pending }}" hint-placeholder-val="{{ true }}">
+            <section style="border-radius: 20px; background: rgba(255,255,255,0.82); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.95), 0 16px 40px -22px rgba(16,45,52,0.28); padding: 19px; display: flex; flex-direction: column; gap: 13px;">
+              <div style="font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 500;">Your decision</div>
+
+              <sc-if value="{{ canApprove }}" hint-placeholder-val="{{ true }}">
+                <div onClick="{{ approve }}" style="padding: 12px; border-radius: 11px; text-align: center; font-size: 13px; font-weight: 600; color: #fff; background: linear-gradient(100deg, #1f8a86, #2f7d9b); box-shadow: 0 8px 20px -10px rgba(31,138,134,0.7); cursor: pointer;">Approve — issues the NSN</div>
+              </sc-if>
+
+              <sc-if value="{{ mustEscalate }}" hint-placeholder-val="{{ false }}">
+                <div>
+                  <div style="padding: 11px 13px; border-radius: 11px; background: rgba(201,138,30,0.13); font-size: 11.5px; color: #7a5312; line-height: 1.5; margin-bottom: 11px;">{{ escalateReason }}</div>
+                  <div onClick="{{ escalate }}" style="padding: 12px; border-radius: 11px; text-align: center; font-size: 13px; font-weight: 600; color: #fff; background: linear-gradient(100deg, #a9701a, #c98a1e); box-shadow: 0 8px 20px -10px rgba(169,112,26,0.7); cursor: pointer;">Send to Senior Approver</div>
+                </div>
+              </sc-if>
+
+              <sc-if value="{{ locked }}" hint-placeholder-val="{{ false }}">
+                <div style="padding: 12px 14px; border-radius: 11px; background: rgba(244,230,230,0.7); font-size: 11.5px; color: #8d3232; line-height: 1.55;">{{ lockedReason }}</div>
+              </sc-if>
+
+              <sc-if value="{{ canReturn }}" hint-placeholder-val="{{ true }}">
+                <div style="display: flex; flex-direction: column; gap: 9px; padding-top: 13px; border-top: 1px solid rgba(20,60,70,0.09);">
+                  <label style="font-size: 12px; color: #4f6a72; font-weight: 500;">Return for more information</label>
+                  <select onChange="{{ onReason }}" style="padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(20,60,70,0.18); background: rgba(255,255,255,0.95); font-size: 12.5px; color: #14232a; outline: none; width: 100%; box-sizing: border-box;" style-focus="border-color: #1f8a86;">
+                    <option value="">Select what is missing…</option>
+                    <option value="evidence">Supporting evidence is illegible</option>
+                    <option value="conflict">Names conflict with the notification</option>
+                    <option value="parent">Parent information incomplete</option>
+                    <option value="affidavit">Affidavit not properly sworn</option>
+                  </select>
+                  <div onClick="{{ ret }}" style="{{ returnStyle }}">Return to the officer</div>
+                </div>
+              </sc-if>
+
+              <div style="font-size: 11px; color: #4f676e; line-height: 1.5;">You cannot approve an application you created, and material changes always need a second approver.</div>
+            </section>
+          </sc-if>
+
+          <sc-if value="{{ decided }}" hint-placeholder-val="{{ false }}">
+            <section style="border-radius: 20px; background: linear-gradient(155deg, rgba(226,241,232,0.9), rgba(255,255,255,0.85)); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.95), 0 16px 40px -22px rgba(16,45,52,0.28); padding: 21px; display: flex; flex-direction: column; gap: 12px;">
+              <div style="width: 36px; height: 36px; border-radius: 12px; background: #cfe7d8; display: flex; align-items: center; justify-content: center;"><div style="width: 12px; height: 12px; border-radius: 50%; background: #24685a;"></div></div>
+              <div style="font-family: 'Jost', sans-serif; font-size: 17px; font-weight: 500; line-height: 1.3;">{{ doneTitle }}</div>
+              <div style="font-size: 12.5px; color: #4f6a72; line-height: 1.55;">{{ doneBody }}</div>
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: #5a7178;">{{ doneMeta }}</div>
+              <div onClick="{{ next }}" style="align-self: flex-start; padding: 9px 14px; border-radius: 10px; background: rgba(255,255,255,0.85); box-shadow: inset 0 0 0 1px rgba(20,60,70,0.12); font-size: 12.5px; cursor: pointer;" style-hover="background: #fff;">Next in queue</div>
+            </section>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;queueRegion&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Kandova region&quot;,&quot;Nationwide&quot;],&quot;default&quot;:&quot;Kandova region&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;label&quot;:&quot;Queue scope&quot;,&quot;section&quot;:&quot;Scope&quot;}}">
+class Component extends DCLogic {
+  state = { collapsed: false, id: "a", filter: "all", reason: "", outcome: null };
+
+  items = {
+    a: {
+      ref: "APP-2026-118641", name: "Teodor Sorevic", kind: "standard", age: 2,
+      type: "Birth — facility notified", source: "OneHealth · Varanta General",
+      risk: "Standard review", dob: "2026-08-01", pob: "Varanta General Hospital", sex: "Male",
+      mother: "Ivanna Sorevic · NSN verified", father: "Not recorded — reason on file",
+      centre: "Varanta Registration Centre", officer: "K. Dane", submitted: "08/13/2026 14:22",
+      statutory: "Day 12 of 60",
+      summary: "A hospital-notified birth with a verified maternal NSN and a recorded exception for the father's information. Nothing here requires escalation.",
+      evidence: [
+        { title: "Hospital birth record", meta: "VGH-BR-20826.pdf · from OneHealth", tag: "Verified", ok: true },
+        { title: "Mother's identity", meta: "Matched to NSN 4820-7731-9044", tag: "Verified", ok: true },
+        { title: "Father's information exception", meta: "Reason: unknown to the mother", tag: "Recorded", ok: null },
+      ],
+      checks: [
+        { label: "Duplicate screening", note: "No possible match found", state: "ok" },
+        { label: "Mother's NSN validated", note: "Active record, relationship consistent", state: "ok" },
+        { label: "Facility and officer authorised", note: "Connected facility, active credentials", state: "ok" },
+        { label: "Twin sibling registered separately", note: "APP-2026-118640 · consistent record reference", state: "info" },
+      ],
+      approve: true, escalate: false, locked: null,
+    },
+    b: {
+      ref: "APP-2026-117993", name: "Anaya Ferelli", kind: "late", age: 6,
+      type: "Late birth registration", source: "Varanta Registration Centre",
+      risk: "Enhanced review", dob: "2026-05-19", pob: "Varanta, Kandova State", sex: "Female",
+      mother: "Rina Ferelli · NSN verified", father: "Josip Ferelli · NSN verified",
+      centre: "Varanta Registration Centre", officer: "K. Dane", submitted: "08/07/2026 11:04",
+      statutory: "Day 86 — past the 60-day period",
+      summary: "Submitted 26 days after the statutory period. The delay reason and a corroborating document are on file, so this is complete — but a late registration cannot be approved on your authority alone.",
+      evidence: [
+        { title: "Sworn affidavit of age declaration", meta: "Commissioner for Oaths, 08/05/2026", tag: "Verified", ok: true },
+        { title: "Religious record of naming", meta: "Uploaded 08/07/2026", tag: "Verified", ok: true },
+        { title: "Stated reason for delay", meta: "Family relocated between states", tag: "Recorded", ok: null },
+      ],
+      checks: [
+        { label: "Duplicate screening", note: "Enhanced check — no match found", state: "ok" },
+        { label: "Both parent NSNs validated", note: "Active records", state: "ok" },
+        { label: "Late registration classification", note: "Requires senior approval (Sec. 7.4)", state: "warn" },
+        { label: "Evidence set complete", note: "Affidavit plus one corroborating document", state: "ok" },
+      ],
+      approve: false, escalate: true, locked: null,
+    },
+    c: {
+      ref: "APP-2026-118204", name: "Mirela Anneke Sorevic", kind: "late", age: 2,
+      type: "Late adult registration", source: "Varanta Registration Centre",
+      risk: "Duplicate paused", dob: "1998-03-14", pob: "Varanta, Kandova State", sex: "Female",
+      mother: "Ivanna Sorevic · NSN verified", father: "Not recorded",
+      centre: "Varanta Registration Centre", officer: "K. Dane", submitted: "08/11/2026 09:14",
+      statutory: "Adult registration — no statutory period",
+      summary: "A possible duplicate was detected above the medium-confidence threshold, so NSN issuance is paused and the case sits with a Duplicate Review Officer. You cannot act on it until that decision is approved.",
+      evidence: [
+        { title: "Sworn affidavit of age declaration", meta: "Commissioner for Oaths, 08/09/2026", tag: "Verified", ok: true },
+        { title: "School enrolment record, 2004", meta: "Uploaded 08/11/2026", tag: "Verified", ok: true },
+        { title: "Facial biometric capture", meta: "0.91 against an existing record", tag: "Flagged", ok: false },
+      ],
+      checks: [
+        { label: "Duplicate screening", note: "1 possible match — NSN issuance paused", state: "bad" },
+        { label: "Case with Duplicate Review", note: "DR-2026-04417 · T. Ravel", state: "warn" },
+        { label: "Mother's NSN validated", note: "Same parent as the matched record", state: "ok" },
+        { label: "Fingerprints", note: "Biometric exception — no usable prints", state: "info" },
+      ],
+      approve: false, escalate: false,
+      locked: "This application is paused pending duplicate resolution. Approving or returning it now would bypass an independent decision, so both actions are unavailable to you.",
+    },
+    d: {
+      ref: "APP-2026-118512", name: "Kiril Vantis", kind: "risk", age: 4,
+      type: "Birth outside a health facility", source: "Varanta Registration Centre",
+      risk: "Enhanced review", dob: "2026-07-22", pob: "Astrivo, Kolvira State", sex: "Male",
+      mother: "Danika Orelle Vantis · NSN verified", father: "Marek Vantis · NSN verified",
+      centre: "Varanta Registration Centre", officer: "H. Marek", submitted: "08/09/2026 15:37",
+      statutory: "Day 22 of 60",
+      summary: "No hospital notification exists. A traditional birth attendant's signed statement and community verification are on file. Births outside a facility carry a higher review level than hospital-notified births.",
+      evidence: [
+        { title: "Attendant's signed statement", meta: "Traditional birth attendant, Astrivo", tag: "Verified", ok: true },
+        { title: "Community verification", meta: "Two witnesses, LGA officer countersigned", tag: "Verified", ok: true },
+        { title: "Reason no notification exists", meta: "Home birth, no facility attended", tag: "Recorded", ok: null },
+      ],
+      checks: [
+        { label: "Duplicate screening", note: "No possible match found", state: "ok" },
+        { label: "Both parent NSNs validated", note: "Active records", state: "ok" },
+        { label: "Evidence for non-facility birth", note: "Attendant statement plus witnesses (Sec. 7.3)", state: "ok" },
+        { label: "Enhanced review level applied", note: "Higher than a hospital-notified birth", state: "warn" },
+      ],
+      approve: true, escalate: false, locked: null,
+    },
+  };
+
+  order = ["a", "b", "c", "d"];
+
+  chip(key) {
+    const on = this.state.filter === key;
+    return [
+      "padding: 6px 11px",
+      "border-radius: 20px",
+      "font-size: 11.5px",
+      "cursor: pointer",
+      "white-space: nowrap",
+      "font-weight: " + (on ? "600" : "400"),
+      "color: " + (on ? "#14615e" : "#4f6a72"),
+      "background: " + (on ? "rgba(31,138,134,0.14)" : "rgba(255,255,255,0.7)"),
+      "box-shadow: inset 0 0 0 1px " + (on ? "rgba(31,138,134,0.2)" : "rgba(20,60,70,0.08)"),
+    ].join(";");
+  }
+
+  pill(bg, fg) {
+    return "display: inline-flex; align-items: center; gap: 7px; padding: 5px 11px; border-radius: 20px; font-size: 11.5px; font-weight: 500; background: " + bg + "; color: " + fg;
+  }
+
+  renderVals() {
+    const { id, filter, reason, outcome } = this.state;
+    const region = this.props.queueRegion ?? "Kandova region";
+    const seniorForNonFacility = this.props.nonFacilityNeedsSenior ?? false;
+    const base = this.items[id];
+    const it = (seniorForNonFacility && base.ref === "APP-2026-118512")
+      ? Object.assign({}, base, { approve: false, escalate: true })
+      : base;
+    const dotColor = { ok: "#35946c", warn: "#c98a1e", bad: "#b04545", info: "rgba(20,60,70,0.35)" };
+    const noteColor = { ok: "#4f676e", warn: "#7a5312", bad: "#8d3232", info: "#4f676e" };
+
+    const queue = this.order
+      .filter((k) => filter === "all" || this.items[k].kind === filter || (filter === "risk" && this.items[k].risk === "Enhanced review"))
+      .map((k) => {
+        const q = this.items[k];
+        const on = k === id;
+        const hot = q.age >= 5;
+        return {
+          ref: q.ref,
+          name: q.name,
+          type: q.type,
+          age: q.age + (q.age === 1 ? " day" : " days"),
+          select: () => this.setState({ id: k, reason: "", outcome: null }),
+          rowStyle: [
+            "padding: 14px 20px",
+            "cursor: pointer",
+            "border-left: 3px solid " + (on ? "#1f8a86" : "transparent"),
+            "background: " + (on ? "rgba(255,255,255,0.85)" : "transparent"),
+            "border-bottom: 1px solid rgba(20,60,70,0.06)",
+          ].join(";"),
+          dot: "width: 7px; height: 7px; border-radius: 50%; flex: none; background: " +
+            (q.locked ? "#b04545" : q.escalate ? "#c98a1e" : "#35946c"),
+          agePill: [
+            "font-family: 'IBM Plex Mono', monospace",
+            "font-size: 10.5px",
+            "padding: 3px 8px",
+            "border-radius: 20px",
+            hot ? "background: #f4e6e6; color: #8d3232" : "background: rgba(20,60,70,0.06); color: #4f6a72",
+          ].join(";"),
+        };
+      });
+
+    const isEnhanced = (q) => q.risk === "Enhanced review";
+    return {
+      railWidth: this.state.collapsed ? "76px" : "244px",
+      hideLabel: this.state.collapsed ? "display: none;" : "",
+      railRowExtra: this.state.collapsed ? "justify-content: center;" : "",
+      toggleRail: () => this.setState({ collapsed: !this.state.collapsed }),
+      queue,
+      cAll: "All " + this.order.length,
+      cRisk: "Enhanced " + this.order.filter((k) => isEnhanced(this.items[k])).length,
+      cLate: "Late " + this.order.filter((k) => this.items[k].kind === "late").length,
+      queueShowing: "Showing " + queue.length + " of 96 — oldest and highest risk first",
+      chipAll: this.chip("all"),
+      chipRisk: this.chip("risk"),
+      chipLate: this.chip("late"),
+      fAll: () => this.setState({ filter: "all" }),
+      fRisk: () => this.setState({ filter: "risk" }),
+      fLate: () => this.setState({ filter: "late" }),
+      ref: it.ref,
+      name: it.name,
+      summary: it.summary,
+      typeLabel: it.type,
+      typePill: this.pill("#dff1ee", "#14615e"),
+      riskLabel: it.risk,
+      riskPill: it.locked
+        ? this.pill("#f4e6e6", "#8d3232")
+        : it.escalate || it.risk === "Enhanced review"
+          ? this.pill("#fbeeda", "#7a5312")
+          : this.pill("#e2f1e8", "#24685a"),
+      sourceLabel: it.source,
+      dob: it.dob, pob: it.pob, sex: it.sex, mother: it.mother, father: it.father,
+      centre: it.centre, officer: it.officer, submitted: it.submitted, statutory: it.statutory,
+      evidence: it.evidence.map((d) => ({
+        title: d.title,
+        meta: d.meta,
+        tag: d.tag,
+        tagStyle: "font-size: 11px; white-space: nowrap; color: " +
+          (d.ok === true ? "#24685a" : d.ok === false ? "#8d3232" : "#4f676e"),
+      })),
+      checks: it.checks.map((c) => ({
+        label: c.label,
+        note: c.note,
+        dot: "width: 9px; height: 9px; border-radius: 50%; flex: none; margin-top: 4px; background: " + dotColor[c.state],
+        noteStyle: "font-size: 11px; margin-top: 2px; color: " + noteColor[c.state],
+      })),
+      pending: !outcome,
+      decided: !!outcome,
+      canApprove: !outcome && it.approve,
+      mustEscalate: !outcome && it.escalate,
+      locked: !outcome && !!it.locked,
+      lockedReason: it.locked || "",
+      queueSubtitle: region + " · oldest first",
+      escalateReason: it.ref === "APP-2026-118512"
+        ? "Under current policy a birth outside a health facility is approved by a senior officer, so your review completes it but does not issue the NSN."
+        : "A late registration must be approved by an authorised senior officer, so your review completes it but does not issue the NSN.",
+      canReturn: !outcome && !it.locked,
+      returnStyle: [
+        "padding: 11px",
+        "border-radius: 11px",
+        "text-align: center",
+        "font-size: 12.5px",
+        "font-weight: 500",
+        reason
+          ? "cursor: pointer; color: #7a5312; background: rgba(201,138,30,0.16)"
+          : "cursor: not-allowed; color: #90a7ad; background: rgba(20,60,70,0.06)",
+      ].join(";"),
+      onReason: (e) => this.setState({ reason: e.target.value }),
+      approve: () => this.setState({ outcome: "approved" }),
+      escalate: () => this.setState({ outcome: "escalated" }),
+      ret: () => { if (reason) this.setState({ outcome: "returned" }); },
+      doneTitle: outcome === "approved" ? "Approved — NSN issued"
+        : outcome === "escalated" ? "Sent to Senior Approver"
+        : "Returned to the officer",
+      doneBody: outcome === "approved"
+        ? "The identity record is created and an NSN has been generated. The parent or guardian is notified, and OneHealth receives confirmation that the birth is registered."
+        : outcome === "escalated"
+          ? "A. Meshko, Senior Approver, North has the application. No NSN is issued until that approval completes."
+          : "K. Dane can supply what is missing and resubmit. The application keeps its reference, and your reason is recorded.",
+      doneMeta: it.ref + " · " + (outcome === "approved" ? "approved" : outcome === "escalated" ? "escalated" : "returned") + " 08/13/2026 14:22 · V. Solano",
+      next: () => {
+        const i = this.order.indexOf(id);
+        this.setState({ id: this.order[(i + 1) % this.order.length], outcome: null, reason: "" });
+      },
+    };
+  }
+}
+</script>
+</body>
+</html>

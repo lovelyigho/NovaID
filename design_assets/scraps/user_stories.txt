@@ -1,0 +1,2326 @@
+USER STORY SUITE — NOVAID
+National Identity and Civil Registration System
+Component Name NovaID (NICRS) — National Identity and Civil Registration System
+BRD/User Story
+Document Number
+NID-US-001
+General Description Details the user stories for NovaID's four foundational journeys: account
+provisioning, activation and login for every user type (from the initial NICRA
+National Administrator bootstrap through staff, institutional and citizen access),
+birth registration via a OneHealth-connected facility, naturalized citizen
+registration, and identity correction / material change. Written from the NovaID
+PRD (Working Draft 0.6) for developers, QA testers and product managers.
+Target Audience Developers | QA Testers | Product Managers
+REVIEW AND APPROVAL
+Created By: Gio (Product Manager, NovaID)
+SECTION 1 | Account Provisioning, Activation, and Login
+S/
+N Actor User Story Details
+1 NICRA IT /
+System
+Deploymen
+t
+Bootstrap the Initial
+National
+Administrator
+Account
+As the NICRA IT team
+responsible for
+deploying NovaID, I
+want to create the very
+first National
+Administrator account
+through a secure, one-
+time setup process, so
+that there is a trusted
+root account able to
+provision every other
+user without relying on
+the normal sign-up
+flow.
+Precondition
+s
+● The NovaID environment has been
+deployed and is not yet in
+production use, or is in a controlled
+cutover window.
+● NICRA IT holds the authority to run
+the one-time bootstrap process (e.g.
+a secure deployment script or sealed
+setup ceremony), separate from the
+ordinary product UI.
+Process Flow
+1. NICRA IT runs the one-time bootstrap
+process outside the standard NovaID
+login screen.
+2. The process creates exactly one National
+Administrator account with Nationwide
+access scope (Section 6).
+3. NICRA IT sets the account's initial
+credentials and enrols its multi-factor
+authentication factor.
+4. The bootstrap process is disabled or
+locked immediately after the first
+National Administrator account is
+created.
+
+-- 1 of 29 --
+
+S/
+N Actor User Story Details
+Postconditio
+ns
+● Exactly one active National
+Administrator account exists.
+● The bootstrap mechanism cannot be
+invoked again without a separate,
+explicitly authorised break-glass
+procedure.
+Acceptance
+Criteria
+● No public or in-product sign-up form
+can create a National Administrator
+account.
+● The bootstrap event, including who
+ran it and when, is recorded in the
+audit log (Section 11).
+● A second attempt to run the
+bootstrap process after the first
+Administrator exists is blocked.
+Error Path
+● Bootstrap re-run attempted – “A
+National Administrator account
+already exists. Contact NICRA to
+add additional administrators.”
+Blocked and logged as a security
+event.
+● Bootstrap interrupted before MFA
+enrolment completes – account
+remains inactive until MFA
+enrolment is completed; cannot sign
+in without it.
+2 NICRA
+Administra
+tor
+(National
+or
+Regional)
+Provision a Staff
+Account
+As a NICRA National
+or Regional
+Administrator, I want
+to create and assign a
+staff account with a
+defined role and scope,
+so that Registration
+Officers, Verification
+Officers, Senior
+Approvers, Duplicate
+Review Officers, Birth
+Notification Officers,
+Registration Centre
+Administrators, and
+Regional
+Administrators only
+gain access once
+someone above them
+has approved it.
+Precondition
+s
+● The provisioning administrator is
+authenticated and holds an
+appropriate scope: Nationwide for a
+National Administrator, or their own
+region for a Regional Administrator.
+● The new staff member's role,
+centre/region/queue assignment,
+and identity have been confirmed
+through NICRA's own employment
+or verification process, outside
+NovaID.
+Process Flow
+1. Administrator opens “Add Staff
+Account.”
+2. Selects the role — Registration Officer,
+Verification Officer, Senior Approver,
+Duplicate Review Officer, Birth
+Notification Officer, Registration Centre
+Administrator, or Regional Administrator
+— and the corresponding centre, region,
+or queue assignment.
+3. Enters the staff member's name and
+work contact details.
+4. Submits the request, which sends an
+activation invite to the staff member.
+
+-- 2 of 29 --
+
+S/
+N Actor User Story Details
+Postconditio
+ns
+● A Pending Activation account exists,
+scoped to the assigned role and
+centre/region/queue, but cannot yet
+sign in.
+● The provisioning action is recorded
+in the audit log, including who
+created the account and with what
+scope.
+Acceptance
+Criteria
+● A Regional Administrator can only
+assign roles and scopes within their
+own region; a National
+Administrator can assign any role or
+scope.
+● An account cannot be created with a
+role broader than the provisioning
+administrator's own scope (Section
+6, Access Scope).
+● The account is unusable until the
+invited staff member completes
+activation (Story 3).
+Error Path
+● Regional Administrator attempts to
+assign a Nationwide-scope role –
+“You are not authorised to assign
+this scope.” Blocked.
+● A duplicate account for the same
+staff member already exists – “An
+account already exists for this
+person.” Creation blocked; the
+existing account is surfaced instead.
+3 Invited
+Staff
+Member
+Activate Account and
+Enrol Multi-Factor
+Authentication
+As a newly provisioned
+NICRA staff member, I
+want to activate my
+account and enrol my
+second authentication
+factor, so that I can
+securely sign in and
+begin working within
+my assigned role and
+scope.
+Precondition
+s
+● An administrator has provisioned a
+Pending Activation account for this
+staff member (Story 2).
+● The staff member has received the
+activation invite through an
+approved channel.
+Process Flow
+1. Staff member opens the activation link
+or invite.
+2. Confirms their identity against the
+details the administrator entered.
+3. Sets their account password, meeting
+NovaID's password policy.
+4. Enrols a second authentication factor —
+multi-factor authentication is required
+for privileged users (Section 10).
+5. Account status changes from Pending
+Activation to Active.
+Postconditio
+ns
+● The staff member can now sign in
+via the standard NICRA back-office
+login (Story 5).
+
+-- 3 of 29 --
+
+S/
+N Actor User Story Details
+● The activation event is recorded in
+the audit log.
+Acceptance
+Criteria
+● Activation cannot complete without
+a successfully enrolled second
+factor.
+● An expired, unused invite cannot be
+used to activate the account.
+● The account's role and scope exactly
+match what the administrator
+assigned in Story 2 — the staff
+member cannot change these
+themselves.
+Error Path
+● Invite expired – “This activation link
+has expired. Contact your
+administrator for a new invite.”
+● Identity confirmation fails –
+activation blocked; flagged to the
+provisioning administrator for
+review.
+● MFA enrolment abandoned mid-
+process – account remains Pending
+Activation; the staff member can
+resume later using the same invite
+until it expires.
+4 NICRA
+(Institutio
+nal Access
+Manageme
+nt)
+Register and
+Onboard a
+Connected
+Institution
+As NICRA, I want to
+register a connected
+institution and issue it
+scoped integration
+credentials, so that
+OneHealth,
+Immigration, Police
+Services, Social
+Services, and other
+approved institutions
+can only access
+NovaID within an
+approved business
+purpose.
+Precondition
+s
+● The institution has completed
+NICRA's business-purpose approval,
+data-protection review, and security
+assessment (Section 7.18).
+Process Flow
+1. NICRA registers the institution and
+records its approved business
+purpose(s).
+2. Defines the identity attributes the
+institution may access, and sets
+transaction and search limits.
+3. Issues integration credentials with a
+defined expiry date.
+4. Configures at least one initial
+Government Verification User (or, for
+Immigration, an Immigration Officer)
+account scoped to that institution,
+following the same provisioning pattern
+as Story 2.
+Postconditio
+ns
+● The institution is Active with defined
+scope, limits, and credential expiry.
+● At least one institutional user
+account exists in Pending Activation
+status, ready to complete activation
+(Story 3-equivalent).
+
+-- 4 of 29 --
+
+S/
+N Actor User Story Details
+Acceptance
+Criteria
+● An institution cannot be onboarded
+without completing all required
+approvals: business purpose, data
+protection, and security.
+● Credentials issued always carry an
+expiry date — indefinite credentials
+are not permitted.
+● Institution activity becomes subject
+to periodic access certification from
+the moment onboarding completes
+(Section 7.18).
+Error Path
+● Required approval missing –
+onboarding blocked; NICRA
+prompted to complete the
+outstanding review before
+credentials can be issued.
+● Institution submits a business
+purpose broader than what was
+approved – onboarding rejected;
+institution asked to resubmit within
+the approved purpose.
+5 Citizen Activate Self-Service
+Access Using an
+Existing NSN or
+NRN
+As a citizen or resident
+with an existing NSN
+or NRN, I want to
+activate self-service
+access to my own
+identity record, so that
+I can use Log in with
+NovaID and the citizen
+portal without anyone
+creating a new identity
+on my behalf.
+Precondition
+s
+● An identity record and NSN (or
+NRN) already exist, issued via birth
+registration, naturalized citizen
+registration, or resident registration.
+This flow never creates a new
+identity (Section 3.1: One Person,
+One Identity).
+Process Flow
+1. Citizen opens “Activate My NovaID
+Account” and enters their NSN or NRN.
+2. Provides additional verification: date of
+birth plus a one-time code sent to the
+phone number or email address already
+on file, or, where no contact details are
+on file, completes in-person activation at
+an approved Registration Centre.
+3. Sets their account password and enrols
+an authentication method (Section 7.10:
+password/OTP, NovaID PIN,
+authenticator app, device-based, or on-
+device biometric).
+4. Account activation completes.
+Postconditio
+ns
+● The citizen can now sign in via Log
+in with NovaID (Story 6) and access
+their self-service dashboard.
+● The activation event is recorded in
+the audit log.
+Acceptance
+Criteria
+● Activation always requires proof of
+ownership of an existing NSN/NRN
+
+-- 5 of 29 --
+
+S/
+N Actor User Story Details
+— no path in this flow creates a new
+identity record.
+● Where contact details on file are
+outdated or unavailable, in-person
+activation at a centre is always
+offered as a fallback, so a citizen is
+never permanently locked out of
+self-service.
+● Multiple failed verification attempts
+trigger a temporary lock and a
+security log entry, not unlimited
+retries.
+Error Path
+● NSN/NRN not found or does not
+match the verification details – “We
+could not verify your identity. Please
+visit an approved Registration
+Centre to activate your account.”
+● OTP delivery fails because contact
+details are outdated – citizen
+redirected to in-person activation.
+● Repeated failed attempts – “Too
+many attempts. Try again later or
+visit a Registration Centre.”
+Temporary lock applied and logged.
+6 Citizen Log In with NovaID
+As a citizen, I want to
+authenticate using
+“Log in with NovaID,”
+so that I can securely
+access my identity
+information and
+NovaID-connected
+government services
+without creating a
+separate identity for
+each one.
+Precondition
+s
+● Citizen holds an active NSN (or
+NRN) and has completed NovaID
+enrolment.
+● The requesting government platform
+is an approved, connected service.
+Process Flow
+1. Citizen selects “Log in with NovaID” on
+an approved government platform.
+2. The platform redirects the citizen to
+NovaID.
+3. NovaID displays the name of the
+requesting service and the information it
+is requesting.
+4. Citizen authenticates using an approved
+method: password and one-time
+password, NovaID PIN, an approved
+authenticator application, device-based
+authentication, or biometric
+authentication performed on the citizen's
+device.
+5. NovaID confirms the requesting service
+is authorised.
+6. NovaID returns an authentication result
+and only the approved identity attributes
+to the requesting service.
+7. The authentication event is recorded in
+the audit log.
+
+-- 6 of 29 --
+
+S/
+N Actor User Story Details
+8. Citizen is returned to the requesting
+service, signed in.
+Postconditio
+ns
+● Citizen is authenticated on the
+requesting service without a
+separate credential.
+● Only the approved identity attributes
+are shared; the citizen's NovaID
+password, PIN, or biometric data are
+never sent to the connected service.
+Acceptance
+Criteria
+● The requesting service and the exact
+information it is requesting are
+displayed before authentication
+proceeds.
+● No unapproved service can trigger a
+Log in with NovaID request.
+● Every login attempt, successful or
+failed, is captured in the audit log
+(Section 11).
+Error Path
+● Requesting service not authorised –
+“This service is not approved to use
+Log in with NovaID.” Authentication
+blocked.
+● Authentication method fails, e.g.
+wrong PIN/OTP or biometric
+mismatch – “Authentication failed —
+please try again,” with lockout after
+repeated failures.
+● NovaID unavailable – “Service
+temporarily unavailable — please try
+again later.” Citizen is not returned
+to the requesting service.
+7 Citizen View Profile and
+Self-Service
+Dashboard
+As a citizen, I want to
+land on my personal
+profile after logging in,
+so that I can view my
+identity information,
+NSN, and the status of
+any requests I've
+submitted.
+Precondition
+s
+● Citizen has successfully
+authenticated via Log in with
+NovaID or the citizen self-service
+portal (Story 1).
+Process Flow
+1. Citizen is directed to their self-service
+dashboard.
+2. Dashboard displays permitted identity
+information, the NSN, and the virtual
+identity card.
+3. Citizen can view registration and
+correction request status, submit minor
+update requests, submit correction
+requests with evidence, report suspected
+identity misuse, and view selected access
+history where permitted (Section 7.16).
+Postconditio
+ns
+● Citizen views their own data only; no
+other citizen's record is ever visible.
+
+-- 7 of 29 --
+
+S/
+N Actor User Story Details
+Acceptance
+Criteria
+● Material identity fields are visible
+but not directly editable (Section
+7.16).
+● The access-history view is limited to
+what NICRA has approved for
+citizen visibility.
+● Every profile view is logged (Section
+11: “Records viewed”).
+Error Path
+● Session expires mid-view – citizen
+prompted to re-authenticate; any
+unsaved in-progress request is
+preserved as a draft where possible.
+8 NICRA
+Staff
+(Registrati
+on Officer,
+Verificatio
+n Officer,
+Senior
+Approver,
+Duplicate
+Review
+Officer,
+NICRA
+Administra
+tor)
+Log In to the NICRA
+Back-Office Console
+As a NICRA staff
+member, I want to log
+in to the NICRA
+console with multi-
+factor authentication,
+so that only verified,
+authorised staff can
+access citizen identity
+data.
+Precondition
+s
+● Staff member holds an active
+NovaID staff account, assigned to a
+specific role, centre, region, or
+queue (Section 6).
+Process Flow
+1. Staff member enters credentials
+(username and password).
+2. System prompts for a second
+authentication factor — multi-factor
+authentication is required for all
+privileged users (Section 10).
+3. System validates the account is active,
+not suspended, and matches the
+assigned role and scope.
+4. Staff member is signed in.
+Postconditio
+ns
+● Session established, scoped to the
+staff member's assigned role, centre,
+region, or queue (Section 6, Access
+Scope).
+● The login event is recorded in the
+audit log.
+Acceptance
+Criteria
+● Login is blocked without a valid
+second factor — no exceptions for
+any role.
+● A suspended user is denied login
+immediately, even with valid
+credentials (Section 6.1).
+● Session and role scope match
+exactly what is defined for that
+officer's role in Section 6.
+Error Path
+● Invalid credentials – “Login failed —
+check your username and
+password.”
+● MFA challenge fails – login blocked;
+repeated failures escalate to a
+security alert.
+● Account suspended – “This account
+
+-- 8 of 29 --
+
+S/
+N Actor User Story Details
+has been suspended. Contact your
+administrator.” Login denied and
+logged.
+9 Registratio
+n Officer /
+Registratio
+n Centre
+Administra
+tor
+View Profile and
+Registration Centre
+Queue
+As a Registration
+Officer, I want to land
+on my centre's
+operational queue
+after logging in, so
+that I can immediately
+see the registrations
+and exceptions
+assigned to me.
+Precondition
+s
+● Officer authenticated (Story 3),
+assigned to a specific Registration
+Centre.
+Process Flow
+1. Officer is directed to the Registration
+Centre Dashboard.
+2. Dashboard displays applications created
+by the centre, pending reviews,
+applications returned for more
+information, approved and rejected
+applications, average processing time,
+officer activity, and unresolved
+exceptions (Section 12.3).
+Postconditio
+ns
+● Officer sees only their assigned
+centre's data — no visibility into
+other centres.
+Acceptance
+Criteria
+● Metrics match the Registration
+Centre Dashboard definition in
+Section 12.3, each with a stated data
+source and update frequency
+(Section 12.4).
+● A Registration Centre Administrator
+sees centre-wide activity; a
+Registration Officer's queue is
+scoped to their own submissions and
+assignments.
+Error Path
+● Centre has been suspended or
+deactivated – “Your centre is
+currently inactive.” Officer
+redirected to a read-only historical
+view (Section 7.17).
+10 Verificatio
+n Officer /
+Senior
+Approver /
+Duplicate
+Review
+Officer
+View Profile and
+Assigned Review
+Queue
+As a Verification
+Officer, Senior
+Approver, or Duplicate
+Review Officer, I want
+to land on my assigned
+review queue after
+logging in, so that I
+can immediately see
+the applications,
+material changes, or
+duplicate cases waiting
+Precondition
+s
+● Officer authenticated (Story 3),
+assigned to a specific queue or
+region matching their role (Section
+6).
+Process Flow
+1. Officer is directed to their role-specific
+queue: standard applications for a
+Verification Officer, escalated/high-
+risk/material-change decisions for a
+Senior Approver, or flagged duplicate
+matches for a Duplicate Review Officer.
+2. Queue displays pending items, priority
+and age, and the evidence attached to
+each.
+Postconditio ● Officer sees only items within their
+
+-- 9 of 29 --
+
+S/
+N Actor User Story Details
+on my decision.
+ns
+assigned queue or region scope —
+never another officer's personal
+queue or an unrelated region.
+Acceptance
+Criteria
+● A Verification Officer never sees
+applications they submitted
+themselves (Section 6.1 conflict-of-
+interest rule).
+● Queue composition matches the
+officer's defined Access Scope in
+Section 6 exactly.
+Error Path
+● Officer's queue assignment changes
+mid-session, e.g. reassigned to a
+different region – active queue
+refreshes to the new scope on next
+load; in-progress reviews are not
+lost.
+11 NICRA
+National
+Administra
+tor /
+NICRA
+Regional
+Administra
+tor
+View Profile and
+National or Regional
+Dashboard
+As a NICRA National
+or Regional
+Administrator, I want
+to land on the
+appropriate
+operational dashboard
+after logging in, so
+that I can monitor
+registration activity
+across my scope of
+authority.
+Precondition
+s
+● Administrator authenticated (Story
+3), assigned Nationwide (National
+Administrator) or to a specific region
+(Regional Administrator).
+Process Flow
+1. A National Administrator is directed to
+the National Dashboard (Section 12.1):
+total registered citizens, NSNs issued,
+birth/naturalized/death registrations,
+pending and rejected applications, late
+birth registrations, potential duplicates,
+correction requests, active centres and
+institutions, system availability, and
+security/compliance alerts.
+2. A Regional Administrator is directed to
+the same operational categories, filtered
+to their assigned region (Section 12.2).
+Postconditio
+ns
+● Dashboard reflects the
+administrator's exact scope of
+authority — national or regional,
+never broader than assigned.
+Acceptance
+Criteria
+● A Regional Administrator can never
+view another region's detail beyond
+what national roll-ups permit.
+● Each metric states its data source,
+calculation method, reporting
+period, and whether it includes
+personally identifiable information
+(Section 12.4).
+Error Path
+● Underlying data source unavailable
+– dashboard shows a stale-data
+warning rather than silently
+displaying outdated or partial
+
+-- 10 of 29 --
+
+S/
+N Actor User Story Details
+figures.
+12 Immigratio
+n Officer /
+Governmen
+t
+Verificatio
+n User
+Authenticate via
+Institutional
+Credentials and
+Access the
+Verification Console
+As an Immigration
+Officer or another
+approved institution's
+Government
+Verification User, I
+want to authenticate
+with my institution's
+NovaID-issued
+credentials, so that I
+can submit
+naturalization
+references or verify a
+citizen's identity within
+my approved purpose.
+Precondition
+s
+● The institution is registered and
+approved by NICRA (Section 7.18),
+with defined accessible identity
+attributes, transaction/search limits,
+and active integration credentials.
+● The user holds a valid account
+scoped to their approved
+Immigration unit or institution.
+Process Flow
+1. User authenticates with institutional
+credentials issued and managed by
+NICRA.
+2. NovaID validates the credential has not
+expired or been revoked.
+3. User is directed to a scoped console:
+Immigration Officers see naturalization-
+reference submission and tracking; other
+Government Verification Users see an
+identity-verification request form.
+4. Every verification or reference action
+requires the user to state or select an
+approved purpose before proceeding
+(Section 6.1).
+Postconditio
+ns
+● Session scoped exactly to the
+institution's approved business
+purpose and accessible attributes
+(Section 7.18).
+Acceptance
+Criteria
+● No institution can access identity
+attributes beyond what NICRA has
+explicitly approved for it.
+● Credential expiry and revocation are
+enforced immediately — an expired
+or revoked credential cannot
+authenticate.
+● Institution activity is monitored, and
+periodic access certification is
+required to retain access (Section
+7.18).
+Error Path
+● Credential expired or revoked –
+“This integration credential is no
+longer valid — contact NICRA.”
+Authentication denied.
+● Verification purpose not provided –
+“Select an approved purpose before
+continuing.” Request blocked
+(Section 6.1).
+
+-- 11 of 29 --
+
+SECTION 2 | Birth Registration via a OneHealth-Connected Facility
+S/
+N Actor User Story Details
+1 OneHealth
+(System)
+Submit Birth
+Notification to
+NovaID
+As OneHealth, I want
+to submit a birth
+notification to NovaID
+at the point of care, so
+that the birth event is
+captured centrally and
+a reference is created
+for civil registration to
+follow.
+Precondition
+s
+● OneHealth–NovaID birth-notification
+integration is active and reachable.
+● The submitting health facility and
+officer are authorised in NovaID.
+● The birth event has been recorded in
+OneHealth.
+Process Flow
+1. OneHealth captures the required birth
+fields: child's first name (where known),
+surname or proposed surname, date and
+time of birth, place of birth, sex recorded
+at birth, birth type and order,
+mother's/father's name and NSN where
+available, guardian information,
+attending healthcare professional, health
+facility, and supporting birth record
+reference.
+2. OneHealth submits the notification to
+NovaID via the birth-notification API.
+3. NovaID validates that all required fields
+are present.
+4. NovaID checks that the health facility
+and submitting officer are authorised.
+5. NovaID checks for a possible earlier
+notification of the same birth.
+6. NovaID generates a unique birth-
+notification reference.
+7. NovaID returns the notification status to
+OneHealth.
+Postconditio
+ns
+● A birth-notification reference exists
+in NovaID, linked to the OneHealth
+record.
+● Notification status is Received, or
+the notification sits in the exception
+queue.
+● No NSN is generated at this stage.
+Acceptance
+Criteria
+● A notification with all required fields
+present is accepted and returned a
+unique reference.
+● Facility/officer authorisation is
+checked on every submission, not
+only the first.
+● Incomplete or conflicting
+notifications are routed to an
+exception queue, never silently
+dropped.
+
+-- 12 of 29 --
+
+S/
+N Actor User Story Details
+● A birth notification alone never
+triggers NSN generation.
+Error Path
+● Missing mandatory fields –
+“Notification incomplete — missing
+fields: [list].” Submission rejected;
+OneHealth prompted to resubmit.
+● Facility or officer not authorised –
+“Facility or officer not authorised to
+submit notifications.”
+● Possible earlier notification detected
+– “Possible duplicate notification —
+routed for review.” Notification
+placed in the exception queue rather
+than auto-accepted.
+● NovaID unreachable – “Unable to
+reach NovaID — notification queued
+for retry” (Section 14: Failed
+connected-system verification).
+2 Parent /
+Guardian
+Initiate Civil
+Registration at a
+Registration Centre
+As a parent or
+guardian, I want to
+bring my child's birth
+notification to an
+approved Registration
+Centre, so that the
+birth can be formally
+registered and my
+child issued an NSN.
+Precondition
+s
+● A birth-notification reference exists
+(Story 1), or the birth occurred
+outside a connected facility and the
+parent/guardian is registering in
+person.
+● The Registration Centre is approved
+and open for civil registration
+services.
+Process Flow
+1. Parent or guardian visits an approved
+Registration Centre within the 60-day
+statutory period.
+2. Provides the birth-notification reference,
+if available, or reports the birth directly.
+3. Provides identity and contact details and
+supporting evidence for civil registration.
+4. Registration Officer retrieves the
+matching birth notification, or opens a
+new registration if none exists.
+Postconditio
+ns
+● A registration application is opened,
+either linked to a notification
+reference or created fresh.
+● Application status is Draft or In
+Progress.
+Acceptance
+Criteria
+● A valid notification reference is
+correctly retrieved and pre-fills
+known birth details.
+● Registration can proceed even
+where no notification reference
+exists.
+● The 60-day statutory window is
+checked and displayed to the officer.
+
+-- 13 of 29 --
+
+S/
+N Actor User Story Details
+Error Path
+● Notification reference not found –
+officer prompted to search by
+child/parent details or begin a fresh
+registration.
+● Centre not approved for civil
+registration – “This centre is not
+authorised to process birth
+registrations.”
+3 Registratio
+n Officer
+Capture and Submit
+the Registration
+Application
+As a Registration
+Officer, I want to
+confirm the family's
+details, capture
+supporting
+information, and
+submit the application
+for validation, so that
+the birth can proceed
+through duplicate and
+identity checks.
+Precondition
+s
+● A registration application (linked or
+fresh) is open (Story 2).
+● Officer is authenticated and
+assigned to the centre.
+Process Flow
+1. Confirm parent or guardian information.
+2. Capture required residential and contact
+information.
+3. Review supporting evidence.
+4. Capture a child photograph where
+required by policy.
+5. Submit the application for validation.
+Postconditio
+ns
+● Application status changes to
+Submitted.
+● Application is queued for NovaID's
+duplicate and consistency checks
+(Story 4).
+Acceptance
+Criteria
+● Application cannot be submitted
+with required fields missing.
+● Registration source and all
+supporting evidence are preserved
+against the application.
+● The submitting officer is recorded
+and cannot later approve their own
+application (Section 6.1).
+Error Path
+● Required evidence missing –
+submission blocked; officer
+prompted for the missing item.
+● Officer attempts to approve their
+own application at a later stage –
+blocked; reassigned to another
+Verification Officer.
+4 System
+(NovaID)
+Run Duplicate and
+Consistency Checks
+As NovaID, I want to
+check every submitted
+application against
+existing identity
+records and flag
+Precondition
+s
+● Application status is Submitted
+(Story 3).
+Process Flow
+1. Check for possible duplicate births or
+identities using name, date/place of
+birth, parent information, contact
+information, and biometric matching
+where available.
+2. Validate parent or guardian NSNs where
+
+-- 14 of 29 --
+
+S/
+N Actor User Story Details
+inconsistencies, so
+that duplicate or
+conflicting identities
+are caught before an
+NSN is generated.
+provided.
+3. Flag conflicting names, dates, or parent
+information.
+4. Route standard, consistent applications
+to a Verification Officer.
+5. Route high-risk, late, or flagged
+applications for additional (Senior
+Approver) review.
+Postconditio
+ns
+● Application is routed to either the
+standard Verification Officer queue
+or the escalated review queue.
+● Any potential duplicate match is
+placed in the Duplicate Review
+queue and NSN issuance is paused.
+Acceptance
+Criteria
+● Every application is screened before
+reaching a human reviewer — none
+bypass this check.
+● A match above the medium-
+confidence threshold pauses NSN
+issuance and routes to a Duplicate
+Review Officer, not to auto-approval
+or auto-rejection.
+● Conflicting parent information is
+routed for enhanced review, never
+silently accepted.
+Error Path
+● Conflicting parent information –
+“Route the application for enhanced
+review” (Section 14).
+● Potential duplicate detected –
+“Pause NSN issuance and send the
+application for review” (Section 14).
+5 Verificatio
+n Officer
+Review the
+Registration
+Application
+As a Verification
+Officer, I want to
+review a standard
+registration
+application and its
+evidence, so that only
+accurate, consistent
+applications proceed to
+approval.
+Precondition
+s
+● Application has cleared
+duplicate/consistency checks and is
+in the standard review queue (Story
+4).
+Process Flow
+1. Open the application and review
+captured information against supporting
+evidence.
+2. Request clarification or additional
+evidence where needed.
+3. Approve the application, or return it to
+the Registration Officer / reject with
+reason.
+Postconditio
+ns
+● Application status changes to
+Approved, Returned, or Rejected.
+● Decision, reviewing officer, and
+timestamp are recorded.
+
+-- 15 of 29 --
+
+S/
+N Actor User Story Details
+Acceptance
+Criteria
+● A Verification Officer cannot
+approve an application they created
+(Section 6.1).
+● Every decision
+(approve/return/reject) is logged
+with a reason.
+● Approved applications proceed
+automatically to NSN generation
+(Story 7); no manual handoff step is
+needed.
+Error Path
+● Evidence insufficient – application
+returned to the Registration Officer
+with the specific gap noted.
+● Officer attempts self-approval –
+blocked by the permission rule;
+reassigned to another Verification
+Officer.
+6 Senior
+Approver
+Approve an
+Escalated, Late, or
+High-Risk
+Registration
+As a Senior Approver, I
+want to independently
+review registrations
+flagged as late, high-
+risk, or otherwise
+escalated, so that only
+appropriately
+scrutinised
+applications result in
+an identity record.
+Precondition
+s
+● Application was routed for additional
+review by NovaID (Story 4) — e.g.
+submitted more than 60 days after
+birth, or flagged high-risk.
+Process Flow
+1. Review the application, the Verification
+Officer's notes, and all supporting
+evidence (for late registration: e.g. a
+school enrolment record, a religious or
+baptismal record, or a sworn affidavit of
+age).
+2. Request further evidence where
+necessary.
+3. Approve or reject the application.
+Postconditio
+ns
+● Application status changes to
+Approved or Rejected at the senior
+level.
+● The applicant may appeal a
+rejection.
+Acceptance
+Criteria
+● Every late registration is routed
+through this step — none bypass
+senior approval regardless of queue
+volume.
+● Rejections include a stated reason
+and a documented appeal path.
+● Decision, reviewer, and evidence
+reviewed are all recorded in the
+audit log.
+Error Path
+● Insufficient evidence for a late
+registration – returned with the
+specific evidence requested, not
+rejected outright.
+
+-- 16 of 29 --
+
+S/
+N Actor User Story Details
+● Applicant disputes rejection –
+“Create a formal review or appeal
+case” (Section 14).
+7 System
+(NovaID)
+Generate the NSN
+and Create the
+Identity Record
+As NovaID, I want to
+generate a unique
+NSN and create the
+citizen's identity
+record only after final
+approval, so that every
+issued NSN
+corresponds to a
+verified, approved
+registration.
+Precondition
+s
+● Application has received final
+approval (Story 5 or Story 6).
+Process Flow
+1. Generate a 12-digit NSN using the
+secure random-number process.
+2. Apply the Luhn (mod-10) check digit.
+3. Check the complete number against all
+existing NSNs; regenerate on collision.
+4. Create the identity record, preserving
+registration source and evidence.
+5. Record the date, time, and system event
+responsible for generation.
+Postconditio
+ns
+● Identity record exists with status
+Active and a unique NSN (format
+XXXX-XXXX-XXXX).
+● The NSN generation event is
+recorded in the audit log.
+Acceptance
+Criteria
+● No NSN is generated before final
+approval, under any path.
+● No two citizens ever hold the same
+NSN.
+● The NSN does not encode date of
+birth, sex, state, registration centre,
+citizenship type, or registration date.
+● Users cannot manually enter or
+select an NSN.
+Error Path
+● Generated number collides with an
+existing NSN – discarded and
+regenerated automatically, without
+officer involvement.
+● Approval received but registration
+source data is incomplete – identity-
+record creation blocked, flagged to
+NICRA operations for investigation.
+8 OneHealth
+(System)
+Receive Birth
+Registration
+Confirmation
+As OneHealth, I want
+to receive confirmation
+once a notified birth
+has been formally
+registered, so that the
+patient record can be
+updated with the
+Precondition
+s
+● Identity record and NSN created
+(Story 7), linked to the originating
+OneHealth birth notification.
+Process Flow
+1. NovaID sends a registration-confirmed
+callback to OneHealth, referencing the
+original notification reference.
+2. OneHealth updates the patient record's
+registration status.
+Postconditio
+ns
+● OneHealth's record reflects “Birth
+Registered” status.
+
+-- 17 of 29 --
+
+S/
+N Actor User Story Details
+confirmed registration
+status.
+● Per the OneHealth integration
+approach, the NSN is not bulk-
+migrated into OneHealth's own
+patient identifier field — it becomes
+available for future verification calls.
+Acceptance
+Criteria
+● Confirmation is delivered and logged
+on both sides.
+● Failure to deliver the callback does
+not reverse or invalidate the
+completed registration (Section 14:
+Failed notification).
+Error Path
+● Callback delivery fails – retried per
+configured rules and placed in an
+operational failure queue; the
+underlying registration remains
+valid and unaffected.
+9 Parent /
+Guardian
+Receive
+Confirmation and
+View the Child's
+NovaID Record
+As a parent or
+guardian, I want to be
+notified when
+registration is
+complete and be able
+to view my child's NSN
+and identity summary,
+so that I have
+confirmation and a
+reference for future
+use.
+Precondition
+s
+● Identity record and NSN created
+(Story 7).
+Process Flow
+1. NovaID sends a notification (in-platform,
+email, SMS, or an approved government
+channel) confirming registration and
+NSN issuance.
+2. Parent/guardian, or the citizen later via
+self-service, can view the identity
+summary and NSN.
+Postconditio
+ns
+● Notification delivered and logged.
+● NSN viewable via approved citizen
+self-service channels going forward.
+Acceptance
+Criteria
+● The notification does not include
+unsecured sensitive personal
+information (Section 7.19).
+● The NSN and identity summary are
+viewable only by the authenticated
+citizen/guardian, not exposed
+elsewhere.
+Error Path
+● Notification channel fails – retried
+automatically; placed in the
+operational failure queue; does not
+block or reverse the registration.
+10 NICRA
+National
+Administra
+tor
+Monitor Birth
+Registration
+Volumes and
+Exceptions
+As a NICRA National
+Administrator, I want
+Precondition
+s
+● Birth registrations are being
+processed through NovaID.
+Process Flow
+1. Administrator opens the National
+Dashboard.
+2. Reviews birth registrations, pending
+applications, late registrations, and
+potential duplicates for the reporting
+
+-- 18 of 29 --
+
+S/
+N Actor User Story Details
+to see birth
+registration volumes,
+pending applications,
+and exceptions on a
+national dashboard, so
+that I can track
+coverage and
+intervene where
+processing is stalled.
+period.
+3. Drills into flagged exceptions or centres
+with unusual volumes.
+Postconditio
+ns
+● Dashboard metrics reflect near-real-
+time registration activity.
+Acceptance
+Criteria
+● Metrics match Section 4 Year-One
+targets, e.g. 85% of new births
+registered within the statutory
+period.
+● Each metric states its data source,
+calculation method, and update
+frequency (Section 12.4).
+Error Path
+● Dashboard data source unavailable –
+a stale-data warning is displayed
+rather than silently showing
+outdated figures.
+
+-- 19 of 29 --
+
+SECTION 3 | Naturalized Citizen Registration
+S/
+N Actor User Story Details
+1 Immigratio
+n Officer
+Submit the
+Naturalization
+Approval Reference
+As an Immigration
+Officer, I want to
+submit a confirmed
+naturalization approval
+reference to NovaID,
+so that the approved
+individual can begin
+identity enrolment.
+Precondition
+s
+● Immigration has approved the
+individual's citizenship application.
+● The Immigration Officer is
+authorised in NovaID for their
+approved Immigration unit.
+Process Flow
+1. Immigration Officer submits the
+approval reference, the individual's
+details, and the citizenship basis to
+NovaID.
+2. NovaID records the reference as
+Pending Enrolment.
+Postconditio
+ns
+● A naturalization approval reference
+exists in NovaID, awaiting identity
+enrolment.
+Acceptance
+Criteria
+● Only Immigration Officers from an
+approved unit can submit a
+reference.
+● NovaID does not decide citizenship
+eligibility — it only records and later
+validates the reference.
+Error Path
+● Submitting officer/unit not
+authorised – “Not authorised to
+submit naturalization references.”
+2 Citizen
+(naturalize
+d
+applicant)
+Complete Identity
+Enrolment
+As a newly naturalized
+citizen, I want to
+complete identity
+enrolment with
+NovaID, so that a
+formal identity record
+and NSN can be
+created for me.
+Precondition
+s
+● A naturalization approval reference
+exists (Story 1).
+Process Flow
+1. Citizen attends an approved enrolment
+channel and provides the approval
+reference.
+2. Officer captures legal name, previous
+names, date and place of birth, previous
+nationality where required, and contact
+and residential information.
+3. Officer captures photograph and
+approved biometrics: facial template;
+fingerprints where they can be reliably
+captured.
+4. Application submitted for validation.
+Postconditio
+ns
+● Enrolment application status is
+Submitted.
+Acceptance
+Criteria
+● Where fingerprints cannot be
+captured (disability, injury, age, or
+another valid reason), the exception
+
+-- 20 of 29 --
+
+S/
+N Actor User Story Details
+is recorded, not treated as a
+blocking failure.
+● All mandatory fields are enforced
+before submission.
+Error Path
+● Fingerprints cannot be captured –
+exception recorded; application
+routed for enhanced review with
+alternative verification methods
+(Section 7.8).
+● Mandatory field missing –
+submission blocked, field identified.
+3 System
+(NovaID)
+Validate the
+Naturalization
+Approval
+As NovaID, I want to
+validate the
+naturalization approval
+reference before
+proceeding, so that
+only genuinely
+approved individuals
+can be enrolled.
+Precondition
+s
+● Enrolment application submitted
+(Story 2).
+Process Flow
+1. Validate the naturalization approval
+reference against Immigration's record.
+2. Confirm the approval is active and has
+not been withdrawn.
+3. Retain the Immigration reference
+without exposing restricted immigration
+records to NovaID users.
+Postconditio
+ns
+● Application proceeds to duplicate
+checks if the reference is valid;
+paused if not.
+Acceptance
+Criteria
+● An application never proceeds past
+this step on an unconfirmed or
+withdrawn approval.
+● NovaID stores only the reference,
+not the underlying immigration case
+file.
+Error Path
+● Reference cannot be verified –
+“Pause the application and request
+confirmation from Immigration”
+(Section 14).
+● Reference has been withdrawn –
+application rejected; Immigration
+and applicant notified.
+4 System
+(NovaID)
+Run Demographic
+and Biometric
+Duplicate Checks
+As NovaID, I want to
+check the enrolment
+application against
+existing identity
+records, so that a
+naturalized citizen is
+Precondition
+s
+● Naturalization approval validated
+(Story 3).
+Process Flow
+1. Check name, date/place of birth, contact
+information, and biometrics against
+existing NSN and NRN records (in case
+the individual previously held resident
+status).
+2. Route clean applications to a
+Verification Officer.
+3. Route possible matches to a Duplicate
+
+-- 21 of 29 --
+
+S/
+N Actor User Story Details
+never issued a second,
+duplicate identity.
+Review Officer.
+Postconditio
+ns
+● Application routed to the standard
+review queue or the duplicate
+review queue.
+Acceptance
+Criteria
+● Where the applicant previously held
+an NRN (Novaria Resident Number)
+as a lawful resident, the match is
+surfaced so the NRN can be retired
+and linked once the NSN is issued
+(Section 7.20), not treated as an
+unrelated duplicate.
+● No automatic merge or rejection
+occurs on biometric score alone.
+Error Path
+● Possible duplicate or prior-NRN
+match found – routed to a Duplicate
+Review Officer; NSN issuance
+paused.
+5 Verificatio
+n Officer
+Review the
+Naturalization
+Application
+As a Verification
+Officer, I want to
+review a naturalization
+enrolment application
+against Immigration's
+reference and
+supporting evidence,
+so that only complete,
+consistent applications
+are approved.
+Precondition
+s
+● Application cleared duplicate checks
+and is in the standard queue (Story
+4).
+Process Flow
+1. Review captured identity information
+against evidence and the Immigration
+reference.
+2. Approve, return, or reject.
+Postconditio
+ns
+● Application status updated; decision
+and reviewer recorded.
+Acceptance
+Criteria
+● The reviewer cannot be the same
+officer who captured the enrolment.
+● Approved applications proceed
+directly to NSN generation (Story 8).
+Error Path
+● Information inconsistent with the
+Immigration reference – returned for
+correction or escalated.
+6 Duplicate
+Review
+Officer
+Investigate a
+Possible Match
+Against an Existing
+Record
+As a Duplicate Review
+Officer, I want to
+investigate a
+naturalization
+application flagged as
+a possible match, so
+that separate identities
+are not merged
+Precondition
+s
+● Application routed to duplicate
+review (Story 4).
+Process Flow
+1. Compare the flagged records side by
+side, including demographic and
+biometric match factors.
+2. Request additional evidence where
+necessary.
+3. Recommend: separate identities, link to
+an existing NRN (retire and convert),
+merge, or suspected fraud.
+4. Send the recommendation to a Senior
+Approver.
+
+-- 22 of 29 --
+
+S/
+N Actor User Story Details
+incorrectly and
+genuine duplicates or
+prior NRNs are
+resolved correctly.
+Postconditio
+ns
+● Recommendation recorded; both
+original records preserved
+regardless of outcome.
+Acceptance
+Criteria
+● No merge or fraud classification is
+finalised without independent Senior
+Approver sign-off.
+● The affected individual can dispute
+an incorrect match.
+Error Path
+● Evidence insufficient to resolve the
+match – case held open; additional
+evidence requested.
+7 Senior
+Approver
+Approve the
+Duplicate Resolution
+or Naturalization
+Registration
+As a Senior Approver, I
+want to independently
+approve the Duplicate
+Review Officer's
+recommendation, so
+that identity merges,
+links, or fraud
+classifications are
+never made on a single
+officer's judgment
+alone.
+Precondition
+s
+● Duplicate Review Officer
+recommendation submitted (Story
+6).
+Process Flow
+1. Review the recommendation and
+underlying evidence independently.
+2. Approve, request further investigation,
+or override with a documented reason.
+Postconditio
+ns
+● Decision recorded; application
+proceeds (merge/link/separate) or is
+rejected as fraud.
+Acceptance
+Criteria
+● Decision, reviewer, and full evidence
+trail are preserved in the audit log
+regardless of outcome.
+Error Path
+● Senior Approver disagrees with the
+recommendation – returned to the
+Duplicate Review Officer with
+reason, not silently overridden
+without a logged rationale.
+8 System
+(NovaID)
+Generate NSN and
+Create the
+Naturalized Citizen's
+Identity Record
+As NovaID, I want to
+generate an NSN and
+create the identity
+record once the
+naturalization
+application is fully
+approved, so that the
+naturalized citizen has
+the same identity
+foundation as a citizen
+registered at birth.
+Precondition
+s
+● Application approved (Story 5), or
+duplicate resolution approved (Story
+7).
+Process Flow
+1. Generate a unique NSN (same
+generation and check-digit process as
+Section 1, Story 7).
+2. Create the identity record, linking the
+Immigration approval reference.
+3. Where a prior NRN existed, retire it and
+link the prior identity record (Section
+7.20) — not delete it.
+Postconditio
+ns
+● Identity record is Active with a
+unique NSN; a prior NRN, if any, is
+retired and linked, not deleted.
+Acceptance ● NSN generation only occurs after
+
+-- 23 of 29 --
+
+S/
+N Actor User Story Details
+Criteria
+full approval, with no exceptions.
+● A retired NRN remains traceable in
+the audit history.
+Error Path ● NSN collision – regenerated
+automatically.
+9 Citizen
+(naturalize
+d)
+Receive
+Confirmation and
+NSN
+As a newly naturalized
+citizen, I want to be
+notified when my
+registration is
+complete and receive
+my NSN, so that I can
+begin using it to
+access government
+services.
+Precondition
+s
+● Identity record and NSN created
+(Story 8).
+Process Flow
+1. NovaID sends a confirmation
+notification.
+2. Citizen can view the NSN and identity
+summary via self-service.
+Postconditio
+ns
+● Notification delivered and logged.
+Acceptance
+Criteria
+● NSN and summary are accessible
+only to the authenticated citizen.
+Error Path
+● Notification delivery fails – retried;
+does not affect the validity of the
+issued NSN.
+
+-- 24 of 29 --
+
+SECTION 4 | Identity Correction and Material Change
+S/
+N Actor User Story Details
+1 Citizen Submit a Minor
+Update via Self-
+Service
+As a citizen, I want to
+update my phone
+number, email
+address, or residential
+address through self-
+service, so that my
+contact details stay
+current without
+needing an office visit.
+Precondition
+s
+● Citizen is authenticated via Log in
+with NovaID or the citizen self-
+service portal.
+Process Flow
+1. Citizen opens “Update My Details.”
+2. Selects the field to update (phone, email,
+or residential address) and enters the
+new value.
+3. Completes standard
+authentication/validation, e.g. an OTP
+confirmation.
+4. Submits the update.
+Postconditio
+ns
+● The field is updated immediately; no
+officer review is required.
+● The update is logged with previous
+and new value.
+Acceptance
+Criteria
+● Only minor-update fields (phone,
+email, address) are directly editable
+by the citizen; material fields are
+never exposed for direct edit
+(Section 7.16).
+● The previous value is preserved in
+history even for minor updates.
+Error Path
+● Standard authentication fails –
+update blocked; citizen prompted to
+re-authenticate.
+● Invalid format, e.g. a malformed
+phone number – inline validation
+error; update not submitted.
+2 Citizen /
+Registratio
+n or
+Verificatio
+n Officer
+Submit a Material
+Change Request with
+Evidence
+As a citizen (or an
+authorised officer
+acting on a citizen's
+behalf), I want to
+submit a request to
+correct a material
+identity field with
+supporting evidence,
+so that legitimate
+corrections can be
+made without letting
+Precondition
+s
+● Citizen or officer is authenticated.
+● The field being changed is material:
+legal name, date of birth, place of
+birth, parentage, citizenship
+information, sex recorded in the
+identity record, deceased status, or
+record linking/merging.
+Process Flow
+1. Select the field to correct and provide
+the new value.
+2. Provide evidence appropriate to the
+change — e.g. a court order, marriage
+certificate, or government gazette notice
+for a legal-name change; medical or
+school records plus a sworn affidavit for
+a date-of-birth correction.
+
+-- 25 of 29 --
+
+S/
+N Actor User Story Details
+anyone silently alter
+core identity data.
+3. Submit the request.
+Postconditio
+ns
+● Request status is Submitted,
+classified as Material.
+● The previous value remains active
+and unchanged pending review.
+Acceptance
+Criteria
+● The system correctly classifies the
+request as material; it is never
+processed as a minor update.
+● A request cannot be submitted
+without the evidence type
+appropriate to that specific field.
+Error Path
+● Evidence type doesn't match the
+change requested – submission
+blocked, with guidance on the
+required evidence.
+3 System
+(NovaID)
+Classify the Request
+as Minor or Material
+As NovaID, I want to
+automatically classify
+every update or
+correction request as
+minor or material, so
+that each request
+follows the correct
+level of review before
+it can change the
+active record.
+Precondition
+s
+● A request has been submitted (Story
+1 or Story 2).
+Process Flow
+1. Evaluate the field(s) being changed
+against the minor/material classification.
+2. Route minor updates for immediate
+processing (Story 1); route material
+changes to the Verification Officer
+queue.
+Postconditio
+ns
+● The request is correctly tagged and
+routed.
+Acceptance
+Criteria
+● Classification is deterministic and
+based on the field list defined in
+Section 7.13 — never left to
+reviewer judgment.
+Error Path
+● Request touches both a minor and a
+material field – the entire request is
+treated as material and routed for
+full review.
+4 Verificatio
+n Officer
+Review a Material
+Change Request
+As a Verification
+Officer, I want to
+review a material
+change request and its
+evidence, so that only
+well-supported
+corrections proceed to
+senior approval.
+Precondition
+s
+● Request classified as Material (Story
+3).
+Process Flow
+1. Review the requested change against
+the submitted evidence.
+2. Request clarification or additional
+evidence where needed.
+3. Recommend approval or rejection, with
+reason.
+4. Send the recommendation to a Senior
+Approver.
+Postconditio ● Recommendation recorded; the
+
+-- 26 of 29 --
+
+S/
+N Actor User Story Details
+ns request is still pending final
+decision.
+Acceptance
+Criteria
+● A Verification Officer cannot
+independently approve a material
+change (Section 6.1) — only
+recommend.
+● Every recommendation includes a
+documented reason.
+Error Path
+● Evidence insufficient – request
+returned to the citizen/officer for
+more information, not rejected
+outright.
+5 Senior
+Approver
+Approve or Reject a
+Material Change
+As a Senior Approver, I
+want to independently
+approve or reject a
+material identity
+change, so that no
+single officer can alter
+a citizen's core identity
+data unilaterally.
+Precondition
+s
+● Verification Officer recommendation
+submitted (Story 4).
+Process Flow
+1. Independently review the request,
+evidence, and the Verification Officer's
+recommendation.
+2. Approve, reject, or return for more
+information.
+Postconditio
+ns
+● Final decision recorded, with
+reviewing officer, approving officer,
+and reason.
+Acceptance
+Criteria
+● The approver is always a different
+individual from the Verification
+Officer who reviewed it.
+● Rejections include a reason and a
+citizen appeal path.
+Error Path
+● Approver rejects the request –
+citizen notified with reason; may
+dispute per Section 14 (“Citizen
+disputes an identity decision”).
+6 System
+(NovaID)
+Apply the Approved
+Change and Preserve
+History
+As NovaID, I want to
+apply an approved
+change to the active
+identity record while
+preserving the
+previous value, so that
+the record's full
+correction history
+remains available for
+audit.
+Precondition
+s
+● Material change approved (Story 5),
+or minor update submitted (Story 1).
+Process Flow
+1. Update the active identity record with
+the new value.
+2. Preserve the previous value, reason for
+change, and initiating/approving officers
+in record history.
+3. Leave the NSN itself unchanged,
+regardless of what field was corrected.
+Postconditio
+ns
+● The active record reflects the new
+value; the full history is retained and
+viewable to authorised roles.
+Acceptance ● The NSN never changes as a result
+
+-- 27 of 29 --
+
+S/
+N Actor User Story Details
+Criteria
+of a correction, including a legal-
+name or date-of-birth correction.
+● Every previous value remains
+retrievable in the audit trail.
+Error Path
+● Update conflicts with a change made
+concurrently by another process –
+routed to the exception queue for
+manual reconciliation rather than
+silently overwritten.
+7 Citizen Receive Correction
+Outcome
+Notification
+As a citizen, I want to
+be notified of the
+outcome of my
+correction request, so
+that I know whether
+my identity record has
+been updated.
+Precondition
+s
+● Correction request has reached a
+final decision (Story 5) or been
+applied (Story 6).
+Process Flow
+1. NovaID sends a notification of the
+outcome: approved, rejected, or applied.
+2. Citizen can view the updated record and
+correction history via self-service.
+Postconditio
+ns
+● Notification delivered and logged.
+Acceptance
+Criteria
+● Sensitive details of the change are
+not included in unsecured
+notification channels (Section 7.19).
+Error Path
+● Notification fails to deliver – retried
+per configured rules; does not affect
+the validity of the already-applied
+change.
+8 System
+(NovaID)
+Propagate the
+Approved Update to
+Connected Systems
+As NovaID, I want to
+send approved identity
+updates to affected
+connected systems, so
+that OneHealth and
+other services reflect
+the citizen's current,
+correct information.
+Precondition
+s
+● Change applied to the active record
+(Story 6).
+Process Flow
+1. Identify connected systems holding a
+reference to this citizen, e.g. OneHealth
+via the NSN.
+2. Send the approved update to each
+affected system.
+3. Log delivery status per system.
+Postconditio
+ns
+● Connected systems' records reflect
+the update, or the failure is queued
+for retry.
+Acceptance
+Criteria
+● Only the approved, changed fields
+are propagated — not the citizen's
+full record.
+● A propagation failure does not roll
+back the already-approved change in
+NovaID.
+Error Path ● Connected system unreachable –
+“Display a temporary failure and
+
+-- 28 of 29 --
+
+S/
+N Actor User Story Details
+allow controlled retry” (Section 14);
+failure logged and retried,
+underlying NovaID record remains
+correct.
+
+-- 29 of 29 --
+
