@@ -35,6 +35,125 @@ import {
 } from 'lucide-react';
 import { NOVARIA_STATES, getLGAsByState } from '@/lib/data/novaria-admin-reference';
 
+function StatCounterSection() {
+  const sectionRef = React.useRef<HTMLDivElement>(null);
+  const val1Ref = React.useRef<HTMLDivElement>(null);
+  const val2Ref = React.useRef<HTMLDivElement>(null);
+  const val3Ref = React.useRef<HTMLDivElement>(null);
+  const val4Ref = React.useRef<HTMLDivElement>(null);
+
+  const hasAnimatedRef = React.useRef(false);
+
+  React.useEffect(() => {
+    const element = sectionRef.current;
+    if (!element) return;
+
+    const prefersReducedMotion =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (entry.isIntersecting && !hasAnimatedRef.current) {
+          hasAnimatedRef.current = true;
+          observer.unobserve(element);
+
+          if (prefersReducedMotion) {
+            if (val1Ref.current) val1Ref.current.textContent = '38,000,000+';
+            if (val2Ref.current) val2Ref.current.textContent = '1,942,850+';
+            if (val3Ref.current) val3Ref.current.textContent = '99.94%';
+            if (val4Ref.current) val4Ref.current.textContent = '<5 Seconds';
+            console.log('[StatCounter] prefers-reduced-motion active: set final values immediately');
+            return;
+          }
+
+          const startTime = performance.now();
+          const durationPerStat = 3000; // Hardcoded exact 3000ms (3.0s) duration per number
+          const staggerDelay = 150; // 150ms stagger delay between each stat
+          const totalDuration = durationPerStat + (3 * staggerDelay); // 3450ms total sequence
+
+          const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+
+          const animate = (currentTime: number) => {
+            const elapsed = currentTime - startTime;
+
+            // Stat 1: 38,000,000+ (0ms delay)
+            const elapsed1 = Math.max(0, elapsed);
+            const progress1 = Math.min(elapsed1 / durationPerStat, 1);
+            const ease1 = easeOutCubic(progress1);
+            const current1 = Math.floor(ease1 * 38000000);
+            if (val1Ref.current) val1Ref.current.textContent = current1.toLocaleString('en-US') + '+';
+
+            // Stat 2: 1,942,850+ (150ms delay)
+            const elapsed2 = Math.max(0, elapsed - staggerDelay);
+            const progress2 = Math.min(elapsed2 / durationPerStat, 1);
+            const ease2 = easeOutCubic(progress2);
+            const current2 = Math.floor(ease2 * 1942850);
+            if (val2Ref.current) val2Ref.current.textContent = current2.toLocaleString('en-US') + '+';
+
+            // Stat 3: 99.94% (300ms delay)
+            const elapsed3 = Math.max(0, elapsed - (2 * staggerDelay));
+            const progress3 = Math.min(elapsed3 / durationPerStat, 1);
+            const ease3 = easeOutCubic(progress3);
+            const current3 = (ease3 * 99.94).toFixed(2);
+            if (val3Ref.current) val3Ref.current.textContent = current3 + '%';
+
+            // Stat 4: <5 Seconds (450ms delay)
+            const elapsed4 = Math.max(0, elapsed - (3 * staggerDelay));
+            const progress4 = Math.min(elapsed4 / durationPerStat, 1);
+            const ease4 = easeOutCubic(progress4);
+            const current4 = Math.floor(ease4 * 5);
+            if (val4Ref.current) val4Ref.current.textContent = '<' + current4 + ' Seconds';
+
+            if (elapsed < totalDuration) {
+              requestAnimationFrame(animate);
+            } else {
+              if (val1Ref.current) val1Ref.current.textContent = '38,000,000+';
+              if (val2Ref.current) val2Ref.current.textContent = '1,942,850+';
+              if (val3Ref.current) val3Ref.current.textContent = '99.94%';
+              if (val4Ref.current) val4Ref.current.textContent = '<5 Seconds';
+              console.log('[StatCounter] Animation complete! Total elapsed time:', Math.round(elapsed), 'ms (duration per stat: 3000ms, total sequence: 3450ms)');
+            }
+          };
+
+          requestAnimationFrame(animate);
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(element);
+
+    return () => {
+      if (element) observer.unobserve(element);
+    };
+  }, []);
+
+  return (
+    <section ref={sectionRef} style={{ background: 'var(--bg-nav)', color: '#ffffff', padding: '58px 40px', marginTop: '24px' }}>
+      <div style={{ maxWidth: '1320px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: '32px', textAlign: 'center' }}>
+        <div>
+          <div ref={val1Ref} style={{ fontFamily: 'var(--font-heading)', fontSize: '44px', fontWeight: 600, color: 'var(--accent-tint)' }}>0+</div>
+          <div style={{ fontSize: '16px', fontWeight: 600, color: '#ffffff', marginTop: '6px' }}>National Population Baseline</div>
+        </div>
+        <div>
+          <div ref={val2Ref} style={{ fontFamily: 'var(--font-heading)', fontSize: '44px', fontWeight: 600, color: '#3ce09b' }}>0+</div>
+          <div style={{ fontSize: '16px', fontWeight: 600, color: '#ffffff', marginTop: '6px' }}>Unique NSNs Issued Year-One</div>
+        </div>
+        <div>
+          <div ref={val3Ref} style={{ fontFamily: 'var(--font-heading)', fontSize: '44px', fontWeight: 600, color: '#68c4f0' }}>0.00%</div>
+          <div style={{ fontSize: '16px', fontWeight: 600, color: '#ffffff', marginTop: '6px' }}>Platform Core Uptime SLA</div>
+        </div>
+        <div>
+          <div ref={val4Ref} style={{ fontFamily: 'var(--font-heading)', fontSize: '44px', fontWeight: 600, color: '#ffffff' }}>&lt;0 Seconds</div>
+          <div style={{ fontSize: '16px', fontWeight: 600, color: '#ffffff', marginTop: '6px' }}>Instant Inter-Agency Verification</div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function WorldClassLandingPage() {
   // Search Bar State (NSN-only public lookup for privacy & security)
   const [searchQuery, setSearchQuery] = useState('');
@@ -164,7 +283,7 @@ export default function WorldClassLandingPage() {
 
             {/* Quick Status / NSN Search Widget */}
             <div className="glass-officer-card" style={{ padding: '24px 26px', display: 'flex', flexDirection: 'column', gap: '16px', marginTop: '6px' }}>
-              <div style={{ fontSize: '15.5px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--accent-deep)' }}>
+              <div style={{ fontSize: '16px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1.2px', color: 'var(--accent-deep)' }}>
                 Public NSN Status Lookup
               </div>
 
@@ -225,43 +344,24 @@ export default function WorldClassLandingPage() {
           </div>
 
           {/* Right Column: Framed Hero Photo & Clean Authentic Virtual Card Preview */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '22px', alignItems: 'center' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'center', width: '100%' }}>
             {/* Framed Hero Citizens Photo Banner */}
             <div
+              className="rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden w-full"
               style={{
-                width: '100%',
                 height: '240px',
-                borderRadius: '20px',
-                overflow: 'hidden',
-                boxShadow: '0 16px 40px -15px rgba(16, 45, 52, 0.25)',
-                border: '3px solid #ffffff',
                 position: 'relative'
               }}
             >
               <img
-                src="/novaid_hero_citizens_framed.jpg"
-                alt="Novaria Citizens Enrolling & Using Digital Identity"
+                src="/hero_modern_identity_center.jpg"
+                alt="Ultra-Modern World-Class National Identity Headquarters"
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
-              <div
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  background: 'gradient(to top, rgba(20, 35, 42, 0.75) 0%, transparent 60%)',
-                  display: 'flex',
-                  alignItems: 'flex-end',
-                  padding: '16px 20px',
-                  color: '#ffffff',
-                  fontSize: '15px',
-                  fontWeight: 600
-                }}
-              >
-                Novarian citizens enrolling and accessing digital identity services seamlessly
-              </div>
             </div>
 
             {/* Header Eyebrow */}
-            <div style={{ fontSize: '16px', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 600, color: 'var(--accent-deep)' }}>
+            <div style={{ fontSize: '16px', textTransform: 'uppercase', letterSpacing: '1.2px', fontWeight: 700, color: 'var(--accent-deep)', width: '100%', textAlign: 'center', marginTop: '4px' }}>
               Interactive Virtual Identity Card Preview
             </div>
 
@@ -291,7 +391,7 @@ export default function WorldClassLandingPage() {
                     <Shield size={22} color="#ffffff" />
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                    <div style={{ fontSize: '13px', textTransform: 'uppercase', letterSpacing: '0.8px', fontWeight: 600, color: 'var(--accent-deep)', lineHeight: 1.2 }}>
+                    <div style={{ fontSize: '14px', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 700, color: 'var(--accent-deep)', lineHeight: 1.2 }}>
                       Federal Republic of Novaria
                     </div>
                     <div style={{ fontSize: '16px', fontWeight: 600, color: 'var(--ink)', lineHeight: 1.2 }}>
@@ -304,23 +404,22 @@ export default function WorldClassLandingPage() {
 
               {/* Card Body Row: Razor-Sharp Photo + Straight Text Column */}
               <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
-                <img
-                  src="/tashara_ultra_crisp.jpg"
-                  alt="Citizen Passport Photo - Tashara Zahra Vashira"
-                  style={{
-                    width: '96px',
-                    height: '116px',
-                    borderRadius: '8px',
-                    objectFit: 'cover',
-                    border: '1px solid rgba(20, 60, 70, 0.2)',
-                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
-                    flexShrink: 0,
-                    imageRendering: 'crisp-edges'
-                  }}
-                />
+                <div className="rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden flex-shrink-0" style={{ width: '96px', height: '128px', aspectRatio: '3 / 4' }}>
+                  <img
+                    src="/passport_portrait_long_braids.jpg"
+                    alt="Citizen Biometric Passport Photo"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      objectPosition: 'center',
+                      display: 'block'
+                    }}
+                  />
+                </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
                   <div>
-                    <div style={{ fontSize: '13px', color: 'var(--accent-deep)', textTransform: 'uppercase', fontWeight: 600, letterSpacing: '0.5px' }}>Citizen Full Name</div>
+                    <div style={{ fontSize: '14px', color: 'var(--accent-deep)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '1px' }}>Citizen Full Name</div>
                     <div style={{ fontSize: '19.5px', fontWeight: 600, color: 'var(--ink)', marginTop: '2px', lineHeight: 1.2 }}>Tashara Zahra Vashira</div>
                   </div>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px', marginTop: '4px', borderTop: '1px dashed rgba(20, 60, 70, 0.12)', paddingTop: '8px' }}>
@@ -339,7 +438,7 @@ export default function WorldClassLandingPage() {
               {/* Card Footer Row */}
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid rgba(20, 60, 70, 0.12)', paddingTop: '14px' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                  <div style={{ fontSize: '13px', textTransform: 'uppercase', letterSpacing: '0.8px', color: 'var(--accent-deep)', fontWeight: 600 }}>
+                  <div style={{ fontSize: '14px', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--accent-deep)', fontWeight: 700 }}>
                     Novaria Social Number (NSN)
                   </div>
                   <div className="mono-text" style={{ fontSize: '21px', fontWeight: 600, color: 'var(--accent-deep)' }}>
@@ -363,32 +462,13 @@ export default function WorldClassLandingPage() {
         </div>
       </section>
 
-      {/* LIVE STATS IMPACT COUNTER (e-Estonia style - High Contrast 16px Bold Captions) */}
-      <section style={{ background: 'var(--bg-nav)', color: '#ffffff', padding: '58px 40px', marginTop: '24px' }}>
-        <div style={{ maxWidth: '1320px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: '32px', textAlign: 'center' }}>
-          <div>
-            <div style={{ fontFamily: 'var(--font-heading)', fontSize: '44px', fontWeight: 600, color: 'var(--accent-tint)' }}>38,000,000+</div>
-            <div style={{ fontSize: '16px', fontWeight: 600, color: '#ffffff', marginTop: '6px' }}>National Population Baseline</div>
-          </div>
-          <div>
-            <div style={{ fontFamily: 'var(--font-heading)', fontSize: '44px', fontWeight: 600, color: '#3ce09b' }}>1,942,850+</div>
-            <div style={{ fontSize: '16px', fontWeight: 600, color: '#ffffff', marginTop: '6px' }}>Unique NSNs Issued Year-One</div>
-          </div>
-          <div>
-            <div style={{ fontFamily: 'var(--font-heading)', fontSize: '44px', fontWeight: 600, color: '#68c4f0' }}>99.94%</div>
-            <div style={{ fontSize: '16px', fontWeight: 600, color: '#ffffff', marginTop: '6px' }}>Platform Core Uptime SLA</div>
-          </div>
-          <div>
-            <div style={{ fontFamily: 'var(--font-heading)', fontSize: '44px', fontWeight: 600, color: '#ffffff' }}>&lt;5 Seconds</div>
-            <div style={{ fontSize: '16px', fontWeight: 600, color: '#ffffff', marginTop: '6px' }}>Instant Inter-Agency Verification</div>
-          </div>
-        </div>
-      </section>
+      {/* LIVE STATS IMPACT COUNTER (Count-Up Animated on Viewport Intersection) */}
+      <StatCounterSection />
 
       {/* INTERACTIVE MOBILE APP & VIRTUAL CARD SHOWCASE (Singpass style with REAL SMARTPHONE APP INTERFACE UI) */}
       <section id="app-showcase" style={{ padding: '76px 40px', maxWidth: '1320px', margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-          <div style={{ fontSize: '16px', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 600, color: 'var(--accent-deep)' }}>
+          <div style={{ fontSize: '16px', textTransform: 'uppercase', letterSpacing: '1.2px', fontWeight: 700, color: 'var(--accent-deep)' }}>
             Everyday Digital Convenience
           </div>
           <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '36px', fontWeight: 600, letterSpacing: '-0.3px', margin: '8px 0 12px' }}>
@@ -402,10 +482,10 @@ export default function WorldClassLandingPage() {
         {/* Feature Tabs */}
         <div style={{ display: 'flex', justifyContent: 'center', gap: '14px', marginBottom: '36px', flexWrap: 'wrap' }}>
           {[
-            { id: 'CARD', label: 'Virtual ID Card', icon: ShieldCheck },
-            { id: 'BIOMETRIC', label: 'Biometric Face Sign-In', icon: UserCheck },
-            { id: 'OAUTH', label: 'Log in with NovaID QR', icon: QrCode },
-            { id: 'NOTIFICATIONS', label: 'Birth &amp; Civil Alerts', icon: FileCheck }
+            { id: 'CARD', label: 'Wallet Pass', icon: ShieldCheck },
+            { id: 'OAUTH', label: 'Scan / QR Verification', icon: QrCode },
+            { id: 'BIOMETRIC', label: 'Security & Biometrics', icon: UserCheck },
+            { id: 'NOTIFICATIONS', label: 'Account & Civil Feeds', icon: FileCheck }
           ].map(tab => {
             const Icon = tab.icon;
             const isActive = activeAppFeature === tab.id;
@@ -435,89 +515,141 @@ export default function WorldClassLandingPage() {
           })}
         </div>
 
-        {/* REAL SMARTPHONE APP UI MOCKUP (Light App Theme + Real Status Bar & Bottom Nav) */}
+        {/* REAL SMARTPHONE APP UI MOCKUP (Enterprise Modern Mobile Identity Wallet) */}
         <div
           className="glass-officer-card"
           style={{
-            maxWidth: '860px',
+            maxWidth: '880px',
             margin: '0 auto',
-            padding: '44px',
+            padding: '52px',
             display: 'flex',
             alignItems: 'center',
-            gap: '48px',
-            background: 'linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(226, 243, 240, 0.8))'
+            gap: '52px',
+            background: 'linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(226, 243, 240, 0.82))'
           }}
         >
-          {/* Real Smartphone Frame Chassis */}
+          {/* Real Smartphone Frame Chassis (Spacious Enterprise Proportions) */}
           <div
             style={{
-              width: '290px',
-              height: '550px',
-              borderRadius: '40px',
+              width: '330px',
+              height: '610px',
+              borderRadius: '44px',
               background: '#162329',
-              border: '8px solid #283740',
-              boxShadow: '0 28px 65px rgba(10, 30, 35, 0.4)',
-              padding: '14px 10px',
+              border: '9px solid #283740',
+              boxShadow: '0 32px 75px rgba(10, 30, 35, 0.42)',
+              padding: '16px 12px',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
               position: 'relative',
-              overflow: 'hidden'
+              overflow: 'hidden',
+              flexShrink: 0
             }}
           >
             {/* Real Smartphone Status Bar & Camera Notch */}
-            <div style={{ background: '#f5faf9', borderTopLeftRadius: '28px', borderTopRightRadius: '28px', padding: '8px 14px 4px', borderBottom: '1px solid rgba(20,60,70,0.08)' }}>
-              <div style={{ width: '64px', height: '4px', background: '#283740', borderRadius: '2px', margin: '0 auto 6px' }} />
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '11.5px', fontWeight: 600, color: 'var(--ink)' }}>
+            <div style={{ background: '#f5faf9', borderTopLeftRadius: '32px', borderTopRightRadius: '32px', padding: '10px 16px 6px', borderBottom: '1px solid rgba(20,60,70,0.08)' }}>
+              <div style={{ width: '68px', height: '4px', background: '#283740', borderRadius: '2px', margin: '0 auto 8px' }} />
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '12px', fontWeight: 600, color: 'var(--ink)' }}>
                 <span>09:41</span>
                 <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
-                  <Wifi size={12} color="var(--ink)" />
-                  <Battery size={13} color="var(--ink)" />
+                  <Wifi size={13} color="var(--ink)" />
+                  <Battery size={14} color="var(--ink)" />
                 </div>
               </div>
             </div>
 
-            {/* REAL MOBILE APP LIGHT UI CONTAINER */}
-            <div style={{ flex: 1, background: '#f5faf9', padding: '14px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', overflowY: 'auto' }}>
+            {/* REAL MOBILE APP LIGHT UI CONTAINER (Spacious Inner Layout) */}
+            <div style={{ flex: 1, background: '#f5faf9', padding: '18px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', overflowY: 'auto' }}>
               
-              {/* TAB 1: VIRTUAL ID CARD MOBILE APP VIEW (Kalaia Mirova Vashira with Locs Hairstyle) */}
+              {/* TAB 1: VIRTUAL ID CARD MOBILE APP VIEW */}
               {activeAppFeature === 'CARD' && (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                       <Shield size={18} color="var(--accent-deep)" />
-                      <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--ink)' }}>NovaID Wallet</span>
+                      <span style={{ fontSize: '15px', fontWeight: 700, color: 'var(--ink)' }}>NovaID Wallet</span>
                     </div>
-                    <span style={{ fontSize: '11px', background: 'var(--success-tint)', color: 'var(--success-deep)', padding: '2px 8px', borderRadius: '10px', fontWeight: 600 }}>Active</span>
+                    <span style={{ fontSize: '11.5px', background: 'var(--success-tint)', color: 'var(--success-deep)', padding: '3px 10px', borderRadius: '12px', fontWeight: 700 }}>Active</span>
                   </div>
 
-                  {/* Wallet Pass Card */}
-                  <div style={{ background: 'linear-gradient(135deg, #1f8a86 0%, #155d5b 100%)', borderRadius: '16px', padding: '16px', color: '#ffffff', boxShadow: '0 8px 20px rgba(31,138,134,0.3)' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
-                      <div>
-                        <div style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.8px', color: 'rgba(255,255,255,0.8)', fontWeight: 600 }}>REPUBLIC OF NOVARIA</div>
-                        <div style={{ fontSize: '13px', fontWeight: 600 }}>National Identity Pass</div>
-                      </div>
-                      <span style={{ fontSize: '10px', background: 'rgba(255,255,255,0.2)', padding: '2px 6px', borderRadius: '4px', fontWeight: 600 }}>NSN</span>
+                  {/* Modern Wallet Pass Card with Emblem Watermark & Crisp Contrast */}
+                  <div
+                    style={{
+                      position: 'relative',
+                      overflow: 'hidden',
+                      background: 'linear-gradient(135deg, #103c39 0%, #1a6e6b 50%, #145956 100%)',
+                      borderRadius: '20px',
+                      padding: '18px 20px',
+                      color: '#ffffff',
+                      boxShadow: '0 12px 28px rgba(16, 75, 72, 0.35)',
+                      border: '1px solid rgba(255, 255, 255, 0.2)'
+                    }}
+                  >
+                    {/* Subtle National Emblem Background Watermark */}
+                    <div style={{ position: 'absolute', right: '-24px', bottom: '-24px', opacity: 0.08, pointerEvents: 'none', transform: 'rotate(-12deg)' }}>
+                      <Shield size={160} color="#ffffff" />
                     </div>
 
-                    <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-                      <img src="/kalaia_real_photo.jpg" alt="Kalaia Vashira (Styled Locs)" style={{ width: '56px', height: '68px', borderRadius: '8px', objectFit: 'cover', border: '2px solid #ffffff' }} />
+                    {/* Card Header Row */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '14px', position: 'relative', zIndex: 1 }}>
                       <div>
-                        <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.8)' }}>CITIZEN NAME</div>
-                        <div style={{ fontSize: '13.5px', fontWeight: 600 }}>Kalaia M. Vashira</div>
-                        <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.8)', marginTop: '4px' }}>NSN NUMBER</div>
-                        <div className="mono-text" style={{ fontSize: '13px', fontWeight: 600 }}>7204-••••-9050</div>
+                        <div style={{ fontSize: '10.5px', textTransform: 'uppercase', letterSpacing: '1px', color: 'rgba(255,255,255,0.85)', fontWeight: 700 }}>REPUBLIC OF NOVARIA</div>
+                        <div style={{ fontSize: '13.5px', fontWeight: 600, marginTop: '2px', color: '#ffffff' }}>National Identity Credential</div>
+                      </div>
+                      <span style={{ fontSize: '10.5px', background: 'rgba(255,255,255,0.22)', padding: '3px 8px', borderRadius: '6px', fontWeight: 700, letterSpacing: '0.5px' }}>NSN</span>
+                    </div>
+
+                    {/* Card Body: High-Definition Framed Portrait + Bold Name + Single-Line Masked NSN */}
+                    <div style={{ display: 'flex', gap: '12px', alignItems: 'center', position: 'relative', zIndex: 1 }}>
+                      <div className="rounded-xl overflow-hidden border border-white/20 shadow-sm flex-shrink-0" style={{ width: '68px', height: '88px', aspectRatio: '3 / 4', background: 'transparent' }}>
+                        <img
+                          src="/passport_portrait_long_braids.jpg"
+                          alt="Tashara Zahra Vashira"
+                          className="w-full h-full object-cover"
+                          style={{
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover',
+                            objectPosition: 'center',
+                            display: 'block',
+                            imageRendering: '-webkit-optimize-contrast'
+                          }}
+                        />
+                      </div>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', flex: 1, minWidth: 0 }}>
+                        <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.85)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.8px' }}>CITIZEN FULL NAME</div>
+                        <div style={{ fontSize: '16px', fontWeight: 700, color: '#ffffff', lineHeight: 1.2 }}>Tashara Z. Vashira</div>
+
+                        <div style={{ marginTop: '6px' }}>
+                          <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.85)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.8px' }}>NOVARIA SOCIAL NUMBER</div>
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '6px', marginTop: '2px', width: '100%' }}>
+                            <span className="mono-text" style={{ fontSize: '13.5px', fontWeight: 700, letterSpacing: '0.3px', whiteSpace: 'nowrap' }}>
+                              {isNsnRevealed ? '7204-3318-9050' : '•••• •••• 9050'}
+                            </span>
+                            <button
+                              onClick={() => setIsNsnRevealed(!isNsnRevealed)}
+                              style={{ background: 'rgba(255,255,255,0.22)', border: 'none', borderRadius: '6px', padding: '3px 6px', fontSize: '10.5px', color: '#ffffff', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '3px', flexShrink: 0 }}
+                            >
+                              {isNsnRevealed ? <EyeOff size={12} /> : <Eye size={12} />}
+                            </button>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  <div style={{ background: '#ffffff', borderRadius: '14px', padding: '12px', border: '1px solid rgba(20,60,70,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <div>
-                      <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--ink)' }}>Verified QR Credential</div>
-                      <div style={{ fontSize: '11px', color: 'var(--ink-muted)' }}>Scan for instant status check</div>
+                  {/* Clean Separated Interactive QR Action Tile Below Card */}
+                  <div className="flex items-center justify-between" style={{ background: '#ffffff', borderRadius: '16px', padding: '14px 16px', border: '1px solid rgba(20,60,70,0.12)', boxShadow: '0 4px 14px rgba(10,30,35,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <div style={{ width: '42px', height: '42px', borderRadius: '12px', background: 'var(--accent-tint)', color: 'var(--accent-deep)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <QrCode size={22} />
+                      </div>
+                      <div>
+                        <div style={{ fontSize: '13.5px', fontWeight: 700, color: 'var(--ink)' }}>Quick-Scan Identity QR</div>
+                        <div style={{ fontSize: '11.5px', color: 'var(--ink-muted)', fontWeight: 500, whiteSpace: 'nowrap' }}>Tap to present official pass</div>
+                      </div>
                     </div>
-                    <QrCode size={26} color="var(--accent-deep)" />
+                    <ChevronRight size={18} color="var(--ink-disabled)" />
                   </div>
                 </div>
               )}
@@ -577,23 +709,23 @@ export default function WorldClassLandingPage() {
               )}
             </div>
 
-            {/* REAL MOBILE BOTTOM APP TAB NAVIGATION BAR */}
-            <div style={{ background: '#f5faf9', borderBottomLeftRadius: '28px', borderBottomRightRadius: '28px', padding: '8px 12px 10px', borderTop: '1px solid rgba(20,60,70,0.12)', display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px', color: activeAppFeature === 'CARD' ? 'var(--accent-deep)' : 'var(--ink-muted)', cursor: 'pointer' }} onClick={() => setActiveAppFeature('CARD')}>
-                <ShieldCheck size={18} />
-                <span style={{ fontSize: '10px', fontWeight: 600 }}>Wallet</span>
+            {/* REAL MOBILE BOTTOM APP TAB NAVIGATION BAR (Citizen-Friendly Labels: Wallet, Scan / QR, Security, Account) */}
+            <div style={{ background: '#f5faf9', borderBottomLeftRadius: '32px', borderBottomRightRadius: '32px', padding: '10px 14px 12px', borderTop: '1px solid rgba(20,60,70,0.12)', display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px', color: activeAppFeature === 'CARD' ? 'var(--accent-deep)' : 'var(--ink-muted)', cursor: 'pointer' }} onClick={() => setActiveAppFeature('CARD')}>
+                <ShieldCheck size={20} />
+                <span style={{ fontSize: '11px', fontWeight: 600 }}>Wallet</span>
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px', color: activeAppFeature === 'BIOMETRIC' ? 'var(--accent-deep)' : 'var(--ink-muted)', cursor: 'pointer' }} onClick={() => setActiveAppFeature('BIOMETRIC')}>
-                <UserCheck size={18} />
-                <span style={{ fontSize: '10px', fontWeight: 600 }}>Biometric</span>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px', color: activeAppFeature === 'OAUTH' ? 'var(--accent-deep)' : 'var(--ink-muted)', cursor: 'pointer' }} onClick={() => setActiveAppFeature('OAUTH')}>
+                <QrCode size={20} />
+                <span style={{ fontSize: '11px', fontWeight: 600 }}>Scan / QR</span>
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px', color: activeAppFeature === 'OAUTH' ? 'var(--accent-deep)' : 'var(--ink-muted)', cursor: 'pointer' }} onClick={() => setActiveAppFeature('OAUTH')}>
-                <QrCode size={18} />
-                <span style={{ fontSize: '10px', fontWeight: 600 }}>OAuth</span>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px', color: activeAppFeature === 'BIOMETRIC' ? 'var(--accent-deep)' : 'var(--ink-muted)', cursor: 'pointer' }} onClick={() => setActiveAppFeature('BIOMETRIC')}>
+                <UserCheck size={20} />
+                <span style={{ fontSize: '11px', fontWeight: 600 }}>Security</span>
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px', color: activeAppFeature === 'NOTIFICATIONS' ? 'var(--accent-deep)' : 'var(--ink-muted)', cursor: 'pointer' }} onClick={() => setActiveAppFeature('NOTIFICATIONS')}>
-                <Bell size={18} />
-                <span style={{ fontSize: '10px', fontWeight: 600 }}>Alerts</span>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px', color: activeAppFeature === 'NOTIFICATIONS' ? 'var(--accent-deep)' : 'var(--ink-muted)', cursor: 'pointer' }} onClick={() => setActiveAppFeature('NOTIFICATIONS')}>
+                <User size={20} />
+                <span style={{ fontSize: '11px', fontWeight: 600 }}>Account</span>
               </div>
             </div>
           </div>
@@ -626,7 +758,7 @@ export default function WorldClassLandingPage() {
       <section id="services" style={{ background: 'rgba(255, 255, 255, 0.65)', padding: '76px 40px', borderTop: '1px solid rgba(20,60,70,0.12)' }}>
         <div style={{ maxWidth: '1320px', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: '52px' }}>
-            <div style={{ fontSize: '16px', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 600, color: 'var(--accent-deep)' }}>
+            <div style={{ fontSize: '16px', textTransform: 'uppercase', letterSpacing: '1.2px', fontWeight: 700, color: 'var(--accent-deep)' }}>
               National Identity Core Capabilities
             </div>
             <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '36px', fontWeight: 600, letterSpacing: '-0.3px', margin: '8px 0 12px' }}>
@@ -704,7 +836,7 @@ export default function WorldClassLandingPage() {
       {/* REGISTRATION CENTRE LOCATOR (NIA Ghana style) */}
       <section id="centres" style={{ padding: '76px 40px', maxWidth: '1320px', margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: '44px' }}>
-          <div style={{ fontSize: '16px', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 600, color: 'var(--accent-deep)' }}>
+          <div style={{ fontSize: '16px', textTransform: 'uppercase', letterSpacing: '1.2px', fontWeight: 700, color: 'var(--accent-deep)' }}>
             Nationwide Coverage across 30 States &amp; NCT
           </div>
           <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '36px', fontWeight: 600, letterSpacing: '-0.3px', margin: '8px 0 12px' }}>
