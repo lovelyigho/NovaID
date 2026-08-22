@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   Shield,
   ShieldCheck,
@@ -31,9 +32,48 @@ import {
   Bell,
   Check,
   Wifi,
-  Battery
+  Battery,
+  UserPlus,
+  Copy,
+  X
 } from 'lucide-react';
 import { NOVARIA_STATES, getLGAsByState } from '@/lib/data/novaria-admin-reference';
+import { generateIdentityNumber, formatIdentityNumber } from '@/lib/id-generator';
+
+interface EnrolledDemoRecord {
+  nsn: string;
+  cleanNsn: string;
+  legalFirstName: string;
+  middleName?: string;
+  surname: string;
+  dateOfBirth: string;
+  placeOfBirth: string;
+  sex: string;
+  citizenshipBasis: string;
+  stateCode: string;
+  centreName: string;
+  registrationDate: string;
+}
+
+function getStoredEnrolledRecords(): EnrolledDemoRecord[] {
+  if (typeof window === 'undefined') return [];
+  try {
+    const raw = localStorage.getItem('novaid_demo_enrolled_nsns');
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveEnrolledRecord(record: EnrolledDemoRecord) {
+  if (typeof window === 'undefined') return;
+  try {
+    const existing = getStoredEnrolledRecords();
+    localStorage.setItem('novaid_demo_enrolled_nsns', JSON.stringify([record, ...existing]));
+  } catch (err) {
+    console.error('Failed to save demo record to localStorage', err);
+  }
+}
 
 function StatCounterSection() {
   const sectionRef = React.useRef<HTMLDivElement>(null);
@@ -143,7 +183,7 @@ function StatCounterSection() {
         </div>
         <div>
           <div ref={val3Ref} style={{ fontFamily: 'var(--font-heading)', fontSize: '44px', fontWeight: 600, color: '#68c4f0' }}>0.00%</div>
-          <div style={{ fontSize: '16px', fontWeight: 600, color: '#ffffff', marginTop: '6px' }}>Platform Core Uptime SLA</div>
+          <div style={{ fontSize: '16px', fontWeight: 600, color: '#ffffff', marginTop: '6px' }}>System Uptime</div>
         </div>
         <div>
           <div ref={val4Ref} style={{ fontFamily: 'var(--font-heading)', fontSize: '44px', fontWeight: 600, color: '#ffffff' }}>&lt;0 Seconds</div>
@@ -168,7 +208,94 @@ export default function WorldClassLandingPage() {
   // Centre Locator Filter State
   const [selectedState, setSelectedState] = useState('KD');
 
+  // Demo Registration Modal State
+  const [isRegModalOpen, setIsRegModalOpen] = useState(false);
+  const [regStep, setRegStep] = useState<1 | 2 | 3 | 4>(1);
+  const [regFirstName, setRegFirstName] = useState('Amina');
+  const [regMiddleName, setRegMiddleName] = useState('Fatima');
+  const [regSurname, setRegSurname] = useState('Bello');
+  const [regDob, setRegDob] = useState('1998-06-15');
+  const [regPob, setRegPob] = useState('Kandova City Hospital, Kandova State');
+  const [regSex, setRegSex] = useState<'FEMALE' | 'MALE'>('FEMALE');
+  const [regCitizenshipBasis, setRegCitizenshipBasis] = useState('Naturalization');
+  const [regStateCode, setRegStateCode] = useState('KD');
+  const [regCentreName, setRegCentreName] = useState('Kandova Central Enrolment Hub');
+  const [issuedNsn, setIssuedNsn] = useState('');
+  const [isCopied, setIsCopied] = useState(false);
+
   const lgas = getLGAsByState(selectedState);
+
+  const handleRegStateChange = (code: string) => {
+    setRegStateCode(code);
+    const stateLgas = getLGAsByState(code);
+    if (stateLgas.length > 0) {
+      setRegCentreName(`${stateLgas[0].name} Enrolment Hub`);
+    }
+  };
+
+  const handleCompleteRegistration = () => {
+    let rawNsn = '';
+    try {
+      rawNsn = generateIdentityNumber('NSN');
+    } catch {
+      rawNsn = `7204${Math.floor(10000000 + Math.random() * 90000000)}`;
+    }
+    const formatted = formatIdentityNumber(rawNsn);
+    const now = new Date().toLocaleDateString('en-GB');
+
+    const newRecord: EnrolledDemoRecord = {
+      nsn: formatted,
+      cleanNsn: rawNsn,
+      legalFirstName: regFirstName,
+      middleName: regMiddleName,
+      surname: regSurname,
+      dateOfBirth: regDob,
+      placeOfBirth: regPob,
+      sex: regSex,
+      citizenshipBasis: regCitizenshipBasis,
+      stateCode: regStateCode,
+      centreName: regCentreName,
+      registrationDate: now
+    };
+
+    saveEnrolledRecord(newRecord);
+    setIssuedNsn(formatted);
+    setRegStep(4);
+  };
+
+  const handleCopyNsn = () => {
+    if (!issuedNsn) return;
+    navigator.clipboard.writeText(issuedNsn);
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 2500);
+  };
+
+  const handleTryLookupWithNsn = () => {
+    setSearchQuery(issuedNsn);
+    setIsRegModalOpen(false);
+    const lookupEl = document.getElementById('public-lookup');
+    if (lookupEl) {
+      lookupEl.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const resetRegModal = () => {
+    setIsRegModalOpen(false);
+    setRegStep(1);
+    setIsCopied(false);
+  };
+
+  const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value;
+    const digits = raw.replace(/\D/g, '').slice(0, 12);
+    let formatted = digits;
+    if (digits.length > 8) {
+      formatted = `${digits.slice(0, 4)}-${digits.slice(4, 8)}-${digits.slice(8)}`;
+    } else if (digits.length > 4) {
+      formatted = `${digits.slice(0, 4)}-${digits.slice(4)}`;
+    }
+    setSearchQuery(formatted);
+  };
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -177,13 +304,27 @@ export default function WorldClassLandingPage() {
     // Clean input to 12 digits
     const cleaned = searchQuery.replace(/\D/g, '');
 
+    // Check 1: Seeded Zahra Vashira record
     if (cleaned === '720433189050' || searchQuery.includes('7204-3318-9050')) {
-      setSearchResult('MATCH_FOUND: NSN 7204-••••-9050 · Status: ACTIVE · Registration Centre: Kandova Central (KD-01) · Identity Type: Citizen by Birth');
-    } else if (cleaned.length === 12) {
-      setSearchResult(`MATCH_FOUND: NSN ${cleaned.slice(0, 4)}-••••-${cleaned.slice(8)} · Status: ACTIVE · Registration Centre: Registered Enrolment Centre`);
-    } else {
-      setSearchResult('RECORD_NOT_FOUND: Public verification requires a valid 12-digit NSN. Full name lookup is restricted to authenticated NICRA officers.');
+      setSearchResult('Record Found: NSN 7204-••••-9050 · Status: ACTIVE · Registration Centre: Kandova Central Enrolment Hub (KD-01) · Identity Type: Citizen by Birth');
+      return;
     }
+
+    // Check 2: Records stored in localStorage from completed simulated registrations
+    if (cleaned.length === 12) {
+      const records = getStoredEnrolledRecords();
+      const match = records.find((r) => r.cleanNsn === cleaned);
+
+      if (match) {
+        const formatted = match.nsn;
+        const masked = `${formatted.slice(0, 4)}-••••-${formatted.slice(10)}`;
+        setSearchResult(`Record Found: NSN ${masked} · Status: ACTIVE · Registration Centre: ${match.centreName} (${match.stateCode}) · Identity Type: Citizen by ${match.citizenshipBasis}`);
+        return;
+      }
+    }
+
+    // Error state for any unregistered NSN input
+    setSearchResult('No Record Found — this NSN is not currently enrolled in the National Identity system. If you believe this is an error, contact NICRA or visit a registration centre.');
   };
 
   return (
@@ -282,7 +423,7 @@ export default function WorldClassLandingPage() {
             </p>
 
             {/* Quick Status / NSN Search Widget */}
-            <div className="glass-officer-card" style={{ padding: '24px 26px', display: 'flex', flexDirection: 'column', gap: '16px', marginTop: '6px' }}>
+            <div id="public-lookup" className="glass-officer-card" style={{ padding: '24px 26px', display: 'flex', flexDirection: 'column', gap: '16px', marginTop: '6px' }}>
               <div style={{ fontSize: '16px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1.2px', color: 'var(--accent-deep)' }}>
                 Public NSN Status Lookup
               </div>
@@ -292,9 +433,11 @@ export default function WorldClassLandingPage() {
                   <Search size={20} color="var(--ink-muted)" style={{ position: 'absolute', left: '14px' }} />
                   <input
                     type="text"
+                    inputMode="numeric"
                     value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onChange={handleSearchInputChange}
                     placeholder="Enter 12-digit NSN (e.g. 7204-3318-9050)..."
+                    maxLength={16}
                     style={{ width: '100%', paddingLeft: '44px', fontSize: '16px', height: '52px' }}
                   />
                 </div>
@@ -317,29 +460,42 @@ export default function WorldClassLandingPage() {
                     borderRadius: '10px',
                     fontSize: '15px',
                     lineHeight: 1.5,
-                    background: searchResult.startsWith('MATCH') ? 'var(--success-tint)' : 'var(--attention-tint)',
-                    color: searchResult.startsWith('MATCH') ? 'var(--success-deep)' : 'var(--attention-deep)',
+                    background: searchResult.startsWith('Record Found') ? 'var(--success-tint)' : 'var(--critical-tint)',
+                    color: searchResult.startsWith('Record Found') ? 'var(--success-deep)' : 'var(--critical-deep)',
+                    border: searchResult.startsWith('Record Found') ? '1px solid rgba(53, 148, 108, 0.3)' : '1px solid rgba(176, 69, 69, 0.3)',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '10px'
                   }}
                 >
-                  {searchResult.startsWith('MATCH') ? <CheckCircle2 size={20} /> : <HelpCircle size={20} />}
+                  {searchResult.startsWith('Record Found') ? <CheckCircle2 size={20} style={{ flexShrink: 0 }} /> : <HelpCircle size={20} style={{ flexShrink: 0 }} />}
                   <span className="mono-text" style={{ fontWeight: 600 }}>{searchResult}</span>
                 </div>
               )}
             </div>
 
             {/* CTA Action Buttons */}
-            <div style={{ display: 'flex', gap: '16px', marginTop: '4px' }}>
-              <Link href="/portal" className="btn-primary" style={{ padding: '16px 32px', fontSize: '16.5px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <User size={20} />
-                <span>Activate My NovaID Account</span>
-              </Link>
-              <Link href="/auth/login-consent" className="btn-secondary" style={{ padding: '16px 28px', fontSize: '16.5px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <ShieldCheck size={20} color="var(--accent)" />
-                <span>Demo &quot;Log in with NovaID&quot;</span>
-              </Link>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '4px' }}>
+              <div>
+                <Link href="/portal" className="btn-primary" style={{ padding: '16px 30px', fontSize: '16.5px', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '10px' }}>
+                  <User size={20} />
+                  <span>Activate My NovaID Account</span>
+                </Link>
+              </div>
+              <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
+                <Link href="/auth/login-consent" className="btn-secondary" style={{ padding: '14px 22px', fontSize: '15.5px', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                  <ShieldCheck size={19} color="var(--accent)" />
+                  <span>Demo: Log in with NovaID</span>
+                </Link>
+                <button
+                  onClick={() => setIsRegModalOpen(true)}
+                  className="btn-secondary"
+                  style={{ padding: '14px 22px', fontSize: '15.5px', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                >
+                  <UserPlus size={19} color="var(--accent)" />
+                  <span>Demo: Simulate New Registration</span>
+                </button>
+              </div>
             </div>
           </div>
 
@@ -361,8 +517,8 @@ export default function WorldClassLandingPage() {
             </div>
 
             {/* Header Eyebrow */}
-            <div style={{ fontSize: '16px', textTransform: 'uppercase', letterSpacing: '1.2px', fontWeight: 700, color: 'var(--accent-deep)', width: '100%', textAlign: 'center', marginTop: '4px' }}>
-              Interactive Virtual Identity Card Preview
+            <div suppressHydrationWarning style={{ fontSize: '16px', textTransform: 'uppercase', letterSpacing: '1.2px', fontWeight: 700, color: 'var(--accent-deep)', width: '100%', textAlign: 'center', marginTop: '4px' }}>
+              Virtual Identity Card Preview
             </div>
 
             {/* Authentic National ID Credential Card (100% Straight Horizontal Alignment & Razor-Sharp Photo) */}
@@ -392,7 +548,7 @@ export default function WorldClassLandingPage() {
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
                     <div style={{ fontSize: '14px', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 700, color: 'var(--accent-deep)', lineHeight: 1.2 }}>
-                      Federal Republic of Novaria
+                      Federal State of Novaria
                     </div>
                     <div style={{ fontSize: '16px', fontWeight: 600, color: 'var(--ink)', lineHeight: 1.2 }}>
                       National Identity Credential
@@ -405,9 +561,11 @@ export default function WorldClassLandingPage() {
               {/* Card Body Row: Razor-Sharp Photo + Straight Text Column */}
               <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
                 <div className="rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden flex-shrink-0" style={{ width: '96px', height: '128px', aspectRatio: '3 / 4' }}>
-                  <img
+                  <Image
                     src="/passport_portrait_long_braids.jpg"
                     alt="Citizen Biometric Passport Photo"
+                    width={96}
+                    height={128}
                     style={{
                       width: '100%',
                       height: '100%',
@@ -420,7 +578,7 @@ export default function WorldClassLandingPage() {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
                   <div>
                     <div style={{ fontSize: '14px', color: 'var(--accent-deep)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '1px' }}>Citizen Full Name</div>
-                    <div style={{ fontSize: '19.5px', fontWeight: 600, color: 'var(--ink)', marginTop: '2px', lineHeight: 1.2 }}>Tashara Zahra Vashira</div>
+                    <div style={{ fontSize: '19.5px', fontWeight: 600, color: 'var(--ink)', marginTop: '2px', lineHeight: 1.2 }}>Zahra Vashira</div>
                   </div>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px', marginTop: '4px', borderTop: '1px dashed rgba(20, 60, 70, 0.12)', paddingTop: '8px' }}>
                     <div>
@@ -475,7 +633,7 @@ export default function WorldClassLandingPage() {
             Interactive NovaID Mobile App Showcase
           </h2>
           <p style={{ fontSize: '16.5px', color: 'var(--ink-muted)', maxWidth: '680px', margin: '0 auto', lineHeight: 1.6 }}>
-            Switch between interactive features below to test how citizens manage their virtual card, authenticate with biometric face sign-in, and log into government portals.
+            Switch between the features below to test how citizens manage their virtual card, authenticate with biometric face sign-in, and log into government portals.
           </p>
         </div>
 
@@ -483,7 +641,7 @@ export default function WorldClassLandingPage() {
         <div style={{ display: 'flex', justifyContent: 'center', gap: '14px', marginBottom: '36px', flexWrap: 'wrap' }}>
           {[
             { id: 'CARD', label: 'Wallet Pass', icon: ShieldCheck },
-            { id: 'OAUTH', label: 'Scan / QR Verification', icon: QrCode },
+            { id: 'OAUTH', label: 'Scan/QR Verification', icon: QrCode },
             { id: 'BIOMETRIC', label: 'Security & Biometrics', icon: UserCheck },
             { id: 'NOTIFICATIONS', label: 'Account & Civil Feeds', icon: FileCheck }
           ].map(tab => {
@@ -593,7 +751,7 @@ export default function WorldClassLandingPage() {
                     {/* Card Header Row */}
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '14px', position: 'relative', zIndex: 1 }}>
                       <div>
-                        <div style={{ fontSize: '10.5px', textTransform: 'uppercase', letterSpacing: '1px', color: 'rgba(255,255,255,0.85)', fontWeight: 700 }}>REPUBLIC OF NOVARIA</div>
+                        <div style={{ fontSize: '10.5px', textTransform: 'uppercase', letterSpacing: '1px', color: 'rgba(255,255,255,0.85)', fontWeight: 700 }}>FEDERAL STATE OF NOVARIA</div>
                         <div style={{ fontSize: '13.5px', fontWeight: 600, marginTop: '2px', color: '#ffffff' }}>National Identity Credential</div>
                       </div>
                       <span style={{ fontSize: '10.5px', background: 'rgba(255,255,255,0.22)', padding: '3px 8px', borderRadius: '6px', fontWeight: 700, letterSpacing: '0.5px' }}>NSN</span>
@@ -602,9 +760,11 @@ export default function WorldClassLandingPage() {
                     {/* Card Body: High-Definition Framed Portrait + Bold Name + Single-Line Masked NSN */}
                     <div style={{ display: 'flex', gap: '12px', alignItems: 'center', position: 'relative', zIndex: 1 }}>
                       <div className="rounded-xl overflow-hidden border border-white/20 shadow-sm flex-shrink-0" style={{ width: '68px', height: '88px', aspectRatio: '3 / 4', background: 'transparent' }}>
-                        <img
+                        <Image
                           src="/passport_portrait_long_braids.jpg"
-                          alt="Tashara Zahra Vashira"
+                          alt="Zahra Vashira"
+                          width={68}
+                          height={88}
                           className="w-full h-full object-cover"
                           style={{
                             width: '100%',
@@ -618,13 +778,13 @@ export default function WorldClassLandingPage() {
                       </div>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', flex: 1, minWidth: 0 }}>
                         <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.85)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.8px' }}>CITIZEN FULL NAME</div>
-                        <div style={{ fontSize: '16px', fontWeight: 700, color: '#ffffff', lineHeight: 1.2 }}>Tashara Z. Vashira</div>
+                        <div style={{ fontSize: '16px', fontWeight: 700, color: '#ffffff', lineHeight: 1.2 }}>Zahra Vashira</div>
 
                         <div style={{ marginTop: '6px' }}>
-                          <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.85)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.8px' }}>NOVARIA SOCIAL NUMBER</div>
+                          <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.85)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.8px' }}>NOVARIA SOCIAL NUMBER (NSN)</div>
                           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '6px', marginTop: '2px', width: '100%' }}>
                             <span className="mono-text" style={{ fontSize: '13.5px', fontWeight: 700, letterSpacing: '0.3px', whiteSpace: 'nowrap' }}>
-                              {isNsnRevealed ? '7204-3318-9050' : '•••• •••• 9050'}
+                              {isNsnRevealed ? '7204-3318-9050' : '••••-••••-9050'}
                             </span>
                             <button
                               onClick={() => setIsNsnRevealed(!isNsnRevealed)}
@@ -709,7 +869,7 @@ export default function WorldClassLandingPage() {
               )}
             </div>
 
-            {/* REAL MOBILE BOTTOM APP TAB NAVIGATION BAR (Citizen-Friendly Labels: Wallet, Scan / QR, Security, Account) */}
+            {/* REAL MOBILE BOTTOM APP TAB NAVIGATION BAR (Citizen-Friendly Labels: Wallet, Scan/QR, Security, Account) */}
             <div style={{ background: '#f5faf9', borderBottomLeftRadius: '32px', borderBottomRightRadius: '32px', padding: '10px 14px 12px', borderTop: '1px solid rgba(20,60,70,0.12)', display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px', color: activeAppFeature === 'CARD' ? 'var(--accent-deep)' : 'var(--ink-muted)', cursor: 'pointer' }} onClick={() => setActiveAppFeature('CARD')}>
                 <ShieldCheck size={20} />
@@ -717,7 +877,7 @@ export default function WorldClassLandingPage() {
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px', color: activeAppFeature === 'OAUTH' ? 'var(--accent-deep)' : 'var(--ink-muted)', cursor: 'pointer' }} onClick={() => setActiveAppFeature('OAUTH')}>
                 <QrCode size={20} />
-                <span style={{ fontSize: '11px', fontWeight: 600 }}>Scan / QR</span>
+                <span style={{ fontSize: '11px', fontWeight: 600 }}>Scan/QR</span>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px', color: activeAppFeature === 'BIOMETRIC' ? 'var(--accent-deep)' : 'var(--ink-muted)', cursor: 'pointer' }} onClick={() => setActiveAppFeature('BIOMETRIC')}>
                 <UserCheck size={20} />
@@ -740,7 +900,7 @@ export default function WorldClassLandingPage() {
             </h3>
 
             <p style={{ fontSize: '16.5px', color: 'var(--ink-muted)', lineHeight: 1.65 }}>
-              {activeAppFeature === 'CARD' && 'Citizens can view their official virtual identity card, toggle NSN masking, and verify credentials directly from their mobile app wallet.'}
+              {activeAppFeature === 'CARD' && 'Your official virtual identity card stays accessible directly inside the mobile app wallet, complete with on-demand NSN privacy masking and instant credential verification.'}
               {activeAppFeature === 'BIOMETRIC' && 'On-device facial template matching ensures that sensitive biometric data is verified securely against ISO/IEC 39794 standards.'}
               {activeAppFeature === 'OAUTH' && 'Select "Log in with NovaID" on connected portals like OneHealth or Immigration to authenticate safely without managing passwords.'}
               {activeAppFeature === 'NOTIFICATIONS' && 'Receive instant status notifications when hospital birth notifications are processed and NSNs are issued.'}
@@ -765,7 +925,7 @@ export default function WorldClassLandingPage() {
               End-to-End Civil Registration &amp; Verification
             </h2>
             <p style={{ fontSize: '16.5px', color: 'var(--ink-muted)', maxWidth: '680px', margin: '0 auto', lineHeight: 1.6 }}>
-              Built according to the Novaria National Identity System Act, providing secure lifecycle management from birth to verification.
+              Built according to the Novaria Identity and Civil Registration Act, providing secure lifecycle management from birth to verification.
             </p>
           </div>
 
@@ -864,7 +1024,7 @@ export default function WorldClassLandingPage() {
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: '20px' }}>
-            {lgas.slice(0, 6).map((lga) => (
+            {lgas.map((lga) => (
               <div key={lga.code} style={{ padding: '18px', borderRadius: '14px', background: 'rgba(255,255,255,0.85)', border: '1px solid rgba(20,60,70,0.14)', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <div style={{ fontSize: '16.5px', fontWeight: 600, color: 'var(--ink)' }}>{lga.name} Enrolment Hub</div>
@@ -893,7 +1053,7 @@ export default function WorldClassLandingPage() {
                 <span style={{ fontFamily: 'var(--font-heading)', fontSize: '26px', fontWeight: 600 }}>NovaID</span>
               </div>
               <p style={{ fontSize: '15.5px', color: 'rgba(255,255,255,0.92)', lineHeight: 1.6, maxWidth: '420px' }}>
-                National Identity Credential &amp; Registration System (NICRS). Operating under the statutory mandate of the Novaria National Identity System Act.
+                National Identity Civil Registration System (NICRS). Operating under the statutory mandate of the Novaria Identity and Civil Registration Act.
               </p>
             </div>
 
@@ -926,7 +1086,7 @@ export default function WorldClassLandingPage() {
           </div>
 
           <div style={{ borderTop: '1px solid rgba(255,255,255,0.15)', paddingTop: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '15px', color: 'rgba(255,255,255,0.92)' }}>
-            <div>&copy; 2026 Federal Republic of Novaria — National Identity &amp; Civil Registration Authority (NICRA). All rights reserved.</div>
+            <div>&copy; 2026 Federal State of Novaria — National Identity &amp; Civil Registration Authority (NICRA). All rights reserved.</div>
             <div style={{ display: 'flex', gap: '18px', fontWeight: 500 }}>
               <span>Strictly Official Use</span>
               <span>ISO/IEC 39794 Compliant</span>
@@ -934,6 +1094,399 @@ export default function WorldClassLandingPage() {
           </div>
         </div>
       </footer>
+
+      {/* DEMO: SIMULATE NEW REGISTRATION MODAL OVERLAY */}
+      {isRegModalOpen && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(10, 25, 30, 0.75)',
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
+            zIndex: 1000,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '20px'
+          }}
+        >
+          <div
+            style={{
+              background: '#ffffff',
+              borderRadius: '24px',
+              maxWidth: '620px',
+              width: '100%',
+              maxHeight: '90vh',
+              overflowY: 'auto',
+              boxShadow: '0 32px 75px -15px rgba(10, 30, 35, 0.45)',
+              border: '1px solid rgba(20, 60, 70, 0.18)',
+              padding: '32px',
+              position: 'relative',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '24px'
+            }}
+          >
+            {/* Modal Close Button */}
+            <button
+              onClick={resetRegModal}
+              style={{
+                position: 'absolute',
+                top: '20px',
+                right: '20px',
+                background: 'rgba(20,60,70,0.06)',
+                border: 'none',
+                borderRadius: '50%',
+                width: '36px',
+                height: '36px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                color: 'var(--ink)'
+              }}
+            >
+              <X size={20} />
+            </button>
+
+            {/* Modal Header */}
+            <div>
+              <div style={{ fontSize: '13px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--accent-deep)' }}>
+                Simulated Enrolment Journey
+              </div>
+              <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '26px', fontWeight: 600, margin: '4px 0 0', color: 'var(--ink)' }}>
+                {regStep === 4 ? 'Registration Successful' : 'Demo: Simulate New Registration'}
+              </h2>
+            </div>
+
+            {/* Step Progress Bar */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(20, 60, 70, 0.1)', paddingBottom: '16px' }}>
+              {[
+                { num: 1, label: 'Personal' },
+                { num: 2, label: 'Centre' },
+                { num: 3, label: 'Review' },
+                { num: 4, label: 'Issued NSN' }
+              ].map((s) => {
+                const isActive = regStep === s.num;
+                const isDone = regStep > s.num;
+                return (
+                  <div key={s.num} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <div
+                      style={{
+                        width: '28px',
+                        height: '28px',
+                        borderRadius: '50%',
+                        background: isDone ? 'var(--success)' : isActive ? 'var(--accent)' : 'rgba(20,60,70,0.1)',
+                        color: isDone || isActive ? '#ffffff' : 'var(--ink-muted)',
+                        fontSize: '13px',
+                        fontWeight: 700,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}
+                    >
+                      {isDone ? <Check size={16} /> : s.num}
+                    </div>
+                    <span style={{ fontSize: '13.5px', fontWeight: isActive ? 700 : 500, color: isActive ? 'var(--ink)' : 'var(--ink-muted)' }}>
+                      {s.label}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* STEP 1: PERSONAL DETAILS */}
+            {regStep === 1 && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
+                  <div>
+                    <label style={{ fontSize: '13.5px', fontWeight: 600, color: 'var(--ink-label)', display: 'block', marginBottom: '6px' }}>
+                      Legal First Name *
+                    </label>
+                    <input
+                      type="text"
+                      value={regFirstName}
+                      onChange={(e) => setRegFirstName(e.target.value)}
+                      placeholder="e.g. Amina"
+                      style={{ width: '100%', padding: '10px 14px', fontSize: '15px', borderRadius: '10px', border: '1px solid rgba(20,60,70,0.2)' }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ fontSize: '13.5px', fontWeight: 600, color: 'var(--ink-label)', display: 'block', marginBottom: '6px' }}>
+                      Middle Name (Optional)
+                    </label>
+                    <input
+                      type="text"
+                      value={regMiddleName}
+                      onChange={(e) => setRegMiddleName(e.target.value)}
+                      placeholder="e.g. Fatima"
+                      style={{ width: '100%', padding: '10px 14px', fontSize: '15px', borderRadius: '10px', border: '1px solid rgba(20,60,70,0.2)' }}
+                    />
+                  </div>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
+                  <div>
+                    <label style={{ fontSize: '13.5px', fontWeight: 600, color: 'var(--ink-label)', display: 'block', marginBottom: '6px' }}>
+                      Surname *
+                    </label>
+                    <input
+                      type="text"
+                      value={regSurname}
+                      onChange={(e) => setRegSurname(e.target.value)}
+                      placeholder="e.g. Bello"
+                      style={{ width: '100%', padding: '10px 14px', fontSize: '15px', borderRadius: '10px', border: '1px solid rgba(20,60,70,0.2)' }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ fontSize: '13.5px', fontWeight: 600, color: 'var(--ink-label)', display: 'block', marginBottom: '6px' }}>
+                      Date of Birth *
+                    </label>
+                    <input
+                      type="date"
+                      value={regDob}
+                      onChange={(e) => setRegDob(e.target.value)}
+                      style={{ width: '100%', padding: '10px 14px', fontSize: '15px', borderRadius: '10px', border: '1px solid rgba(20,60,70,0.2)' }}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label style={{ fontSize: '13.5px', fontWeight: 600, color: 'var(--ink-label)', display: 'block', marginBottom: '6px' }}>
+                    Place of Birth *
+                  </label>
+                  <input
+                    type="text"
+                    value={regPob}
+                    onChange={(e) => setRegPob(e.target.value)}
+                    placeholder="Facility name or town & state"
+                    style={{ width: '100%', padding: '10px 14px', fontSize: '15px', borderRadius: '10px', border: '1px solid rgba(20,60,70,0.2)' }}
+                  />
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
+                  <div>
+                    <label style={{ fontSize: '13.5px', fontWeight: 600, color: 'var(--ink-label)', display: 'block', marginBottom: '6px' }}>
+                      Sex at Birth *
+                    </label>
+                    <select
+                      value={regSex}
+                      onChange={(e) => setRegSex(e.target.value as any)}
+                      style={{ width: '100%', padding: '10px 14px', fontSize: '15px', borderRadius: '10px', border: '1px solid rgba(20,60,70,0.2)' }}
+                    >
+                      <option value="FEMALE">Female</option>
+                      <option value="MALE">Male</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label style={{ fontSize: '13.5px', fontWeight: 600, color: 'var(--ink-label)', display: 'block', marginBottom: '6px' }}>
+                      Citizenship Basis *
+                    </label>
+                    <select
+                      value={regCitizenshipBasis}
+                      onChange={(e) => setRegCitizenshipBasis(e.target.value)}
+                      style={{ width: '100%', padding: '10px 14px', fontSize: '15px', borderRadius: '10px', border: '1px solid rgba(20,60,70,0.2)' }}
+                    >
+                      <option value="Naturalization">Naturalization</option>
+                      <option value="Birth">Birth</option>
+                      <option value="Registration">Registration</option>
+                      <option value="Descent">Descent</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '12px' }}>
+                  <button
+                    onClick={() => {
+                      if (regFirstName && regSurname && regDob && regPob) {
+                        setRegStep(2);
+                      }
+                    }}
+                    disabled={!regFirstName || !regSurname || !regDob || !regPob}
+                    className="btn-primary"
+                    style={{ opacity: regFirstName && regSurname && regDob && regPob ? 1 : 0.5 }}
+                  >
+                    Continue to Centre Selection
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* STEP 2: REGISTRATION CENTRE SELECTION */}
+            {regStep === 2 && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <div>
+                  <label style={{ fontSize: '14px', fontWeight: 600, color: 'var(--ink-label)', display: 'block', marginBottom: '6px' }}>
+                    Select State:
+                  </label>
+                  <select
+                    value={regStateCode}
+                    onChange={(e) => handleRegStateChange(e.target.value)}
+                    style={{ width: '100%', padding: '10px 14px', fontSize: '15.5px', fontWeight: 600, borderRadius: '10px', border: '1px solid rgba(20,60,70,0.2)' }}
+                  >
+                    {NOVARIA_STATES.map((state) => (
+                      <option key={state.code} value={state.code}>
+                        {state.name} ({state.zoneCode})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label style={{ fontSize: '14px', fontWeight: 600, color: 'var(--ink-label)', display: 'block', marginBottom: '8px' }}>
+                    Select Authorized Enrolment Hub:
+                  </label>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxHeight: '200px', overflowY: 'auto', paddingRight: '4px' }}>
+                    {getLGAsByState(regStateCode).map((lga) => {
+                      const name = `${lga.name} Enrolment Hub`;
+                      const isSelected = regCentreName === name;
+                      return (
+                        <div
+                          key={lga.code}
+                          onClick={() => setRegCentreName(name)}
+                          style={{
+                            padding: '12px 16px',
+                            borderRadius: '10px',
+                            background: isSelected ? 'var(--accent-tint)' : 'rgba(20,60,70,0.04)',
+                            border: isSelected ? '1.5px solid var(--accent)' : '1px solid rgba(20,60,70,0.12)',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between'
+                          }}
+                        >
+                          <div>
+                            <div style={{ fontSize: '15px', fontWeight: 600, color: isSelected ? 'var(--accent-deep)' : 'var(--ink)' }}>{name}</div>
+                            <div style={{ fontSize: '13px', color: 'var(--ink-muted)' }}>LGA Code: {lga.code} · Operating Mon-Fri 08:00-16:00</div>
+                          </div>
+                          {isSelected && <Check size={18} color="var(--accent-deep)" />}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '12px' }}>
+                  <button onClick={() => setRegStep(1)} className="btn-secondary">
+                    Back
+                  </button>
+                  <button onClick={() => setRegStep(3)} className="btn-primary">
+                    Continue to Review
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* STEP 3: REVIEW & SUBMIT */}
+            {regStep === 3 && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+                <div style={{ padding: '18px', borderRadius: '14px', background: 'rgba(20,60,70,0.04)', border: '1px solid rgba(20,60,70,0.12)', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                    <div>
+                      <div style={{ fontSize: '12px', color: 'var(--ink-label)', fontWeight: 600 }}>Full Legal Name</div>
+                      <div style={{ fontSize: '15.5px', fontWeight: 700, color: 'var(--ink)' }}>
+                        {regFirstName} {regMiddleName ? `${regMiddleName} ` : ''}{regSurname}
+                      </div>
+                    </div>
+                    <div>
+                      <div style={{ fontSize: '12px', color: 'var(--ink-label)', fontWeight: 600 }}>Date of Birth</div>
+                      <div style={{ fontSize: '15px', fontWeight: 600, color: 'var(--ink)' }}>{regDob}</div>
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', borderTop: '1px dashed rgba(20,60,70,0.12)', paddingTop: '10px' }}>
+                    <div>
+                      <div style={{ fontSize: '12px', color: 'var(--ink-label)', fontWeight: 600 }}>Place of Birth</div>
+                      <div style={{ fontSize: '14.5px', color: 'var(--ink)' }}>{regPob}</div>
+                    </div>
+                    <div>
+                      <div style={{ fontSize: '12px', color: 'var(--ink-label)', fontWeight: 600 }}>Sex / Citizenship</div>
+                      <div style={{ fontSize: '14.5px', color: 'var(--ink)' }}>{regSex} · Citizen by {regCitizenshipBasis}</div>
+                    </div>
+                  </div>
+
+                  <div style={{ borderTop: '1px dashed rgba(20,60,70,0.12)', paddingTop: '10px' }}>
+                    <div style={{ fontSize: '12px', color: 'var(--ink-label)', fontWeight: 600 }}>Selected Registration Centre</div>
+                    <div style={{ fontSize: '15px', fontWeight: 700, color: 'var(--accent-deep)' }}>
+                      {regCentreName} ({regStateCode})
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{ fontSize: '13.5px', color: 'var(--ink-muted)', lineHeight: 1.5 }}>
+                  Submitting this simulated registration will issue an official 12-digit Novaria Social Number (NSN) formatted with Luhn check digit verification, stored in browser local state for instant public lookup testing.
+                </div>
+
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '6px' }}>
+                  <button onClick={() => setRegStep(2)} className="btn-secondary">
+                    Back
+                  </button>
+                  <button onClick={handleCompleteRegistration} className="btn-primary" style={{ padding: '12px 28px' }}>
+                    Submit Registration
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* STEP 4: CONFIRMATION SCREEN */}
+            {regStep === 4 && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'center', textAlign: 'center' }}>
+                <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'var(--success-tint)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <CheckCircle2 size={38} color="var(--success-deep)" />
+                </div>
+
+                <div>
+                  <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '24px', fontWeight: 600, margin: 0, color: 'var(--ink)' }}>
+                    Registration Successful!
+                  </h3>
+                  <p style={{ fontSize: '15px', color: 'var(--ink-muted)', marginTop: '4px', margin: '4px 0 0' }}>
+                    A new Novaria Social Number (NSN) has been issued for {regFirstName} {regSurname}.
+                  </p>
+                </div>
+
+                {/* Issued NSN Display Box */}
+                <div style={{ width: '100%', padding: '20px', borderRadius: '16px', background: 'var(--accent-tint)', border: '1.5px solid var(--accent)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
+                  <div style={{ fontSize: '13px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--accent-deep)' }}>
+                    Issued Novaria Social Number (NSN)
+                  </div>
+                  <div className="mono-text" style={{ fontSize: '28px', fontWeight: 700, color: 'var(--accent-deep)', letterSpacing: '1px' }}>
+                    {issuedNsn}
+                  </div>
+
+                  <button
+                    onClick={handleCopyNsn}
+                    className="btn-secondary"
+                    style={{ padding: '6px 16px', fontSize: '13.5px', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}
+                  >
+                    {isCopied ? <Check size={16} color="var(--success-deep)" /> : <Copy size={16} />}
+                    <span>{isCopied ? 'Copied to Clipboard!' : 'Copy NSN'}</span>
+                  </button>
+                </div>
+
+                {/* Registration Summary info */}
+                <div style={{ fontSize: '14px', color: 'var(--ink-muted)' }}>
+                  Registered at <strong>{regCentreName}</strong> · Citizen by {regCitizenshipBasis}
+                </div>
+
+                <div style={{ display: 'flex', gap: '14px', width: '100%', justifyContent: 'center', marginTop: '8px' }}>
+                  <button
+                    onClick={handleTryLookupWithNsn}
+                    className="btn-primary"
+                    style={{ flex: 1, padding: '14px 20px', fontSize: '15.5px', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+                  >
+                    <span>Try the Public NSN Lookup</span>
+                    <ArrowRight size={18} />
+                  </button>
+                  <button onClick={resetRegModal} className="btn-secondary" style={{ padding: '14px 20px', fontSize: '15.5px' }}>
+                    Close
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

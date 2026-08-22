@@ -139,10 +139,17 @@ button {
   border-radius: 11px;
   padding: 9px 18px;
   box-shadow: 0 10px 22px -12px rgba(31, 138, 134, 0.8);
+  -webkit-tap-highlight-color: transparent;
 }
 
 .btn-primary:hover {
   background: linear-gradient(100deg, var(--accent-deep), #24647c);
+  color: #ffffff;
+}
+
+.btn-primary:active {
+  background: linear-gradient(100deg, #0e4846, #1b4f63);
+  color: #ffffff;
 }
 
 .btn-secondary {
@@ -150,10 +157,15 @@ button {
   color: var(--accent-deep);
   border-radius: 11px;
   padding: 9px 18px;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .btn-secondary:hover {
   background: rgba(31, 138, 134, 0.14);
+}
+
+.btn-secondary:active {
+  background: rgba(31, 138, 134, 0.22);
 }
 
 /* Monospace Helpers */

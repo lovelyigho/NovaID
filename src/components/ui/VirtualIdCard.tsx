@@ -116,7 +116,7 @@ export function VirtualIdCard({ citizen, onAuditReveal }: VirtualIdCardProps) {
                 </div>
                 <div>
                   <div style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 700, color: 'var(--accent-deep)' }}>
-                    Federal Republic of Novaria
+                    Federal State of Novaria
                   </div>
                   <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--ink)' }}>
                     National Identity Credential
